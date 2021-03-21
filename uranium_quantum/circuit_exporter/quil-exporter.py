@@ -308,105 +308,165 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
         return ""
 
     @staticmethod
-    def _gate_ctrl_hadamard(control, target, add_comments=False):
+    def _gate_ctrl_hadamard(control, target, controlstate, add_comments=False):
         out = "# ctrl-hadamard gate\n" if add_comments else ""
         out += f"ch {control} {target}\n"
         return out
 
     @staticmethod
     def _gate_ctrl_u3(
-        control, target, theta_radians, phi_radians, lambda_radians, add_comments=False
+        control,
+        target,
+        controlstate,
+        theta_radians,
+        phi_radians,
+        lambda_radians,
+        add_comments=False,
     ):
         out = "# ctrl-u3 gate\n" if add_comments else ""
         out += f"cu3 ({theta_radians} {phi_radians}, {lambda_radians}) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_u2(control, target, phi_radians, lambda_radians, add_comments=False):
+    def _gate_ctrl_u2(
+        control, target, controlstate, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "# ctrl-u2 gate\n" if add_comments else ""
         out += f"cu2 ({phi_radians}, {lambda_radians}) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_u1(control, target, lambda_radians, add_comments=False):
+    def _gate_ctrl_u1(
+        control, target, controlstate, lambda_radians, add_comments=False
+    ):
         out = "# ctrl-u1 gate\n" if add_comments else ""
         out += f"CPHASE ({lambda_radians}) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_t(control, target, add_comments=False):
+    def _gate_ctrl_t(control, target, controlstate, add_comments=False):
         out = "# ctrl-t gate\n" if add_comments else ""
         out += f"CPHASE (pi/4) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_t_dagger(control, target, add_comments=False):
+    def _gate_ctrl_t_dagger(control, target, controlstate, add_comments=False):
         out = "# ctrl-t-dagger gate\n" if add_comments else ""
         out += f"CPHASE (-pi/4) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_pauli_x(control, target, add_comments=False):
+    def _gate_ctrl_pauli_x(control, target, controlstate, add_comments=False):
         out = "# ctrl-pauli-x gate\n" if add_comments else ""
         out += f"CNOT {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_pauli_y(control, target, add_comments=False):
+    def _gate_ctrl_pauli_y(control, target, controlstate, add_comments=False):
         out = "# ctrl-pauli-y gate\n" if add_comments else ""
         out += f"cy {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_pauli_z(control, target, add_comments=False):
+    def _gate_ctrl_pauli_z(control, target, controlstate, add_comments=False):
         out = "# ctrl-pauli-z gate\n" if add_comments else ""
         out += f"CZ {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_sqrt_not(control, target, add_comments=False):
+    def _gate_ctrl_pauli_x_root(
+        control, target, controlstate, root, add_comments=False
+    ):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_ctrl_pauli_y_root(
+        control, target, controlstate, root, add_comments=False
+    ):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_ctrl_pauli_z_root(
+        control, target, controlstate, root, add_comments=False
+    ):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_ctrl_pauli_x_root_dagger(
+        control, target, controlstate, root, add_comments=False
+    ):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_ctrl_pauli_y_root_dagger(
+        control, target, controlstate, root, add_comments=False
+    ):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_ctrl_pauli_z_root_dagger(
+        control, target, controlstate, root, add_comments=False
+    ):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_ctrl_sqrt_not(control, target, controlstate, add_comments=False):
         out = "# ctrl-sqrt-not gate\n" if add_comments else ""
         out += f"csrn {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_rx_theta(control, target, theta_radians, add_comments=False):
+    def _gate_ctrl_rx_theta(
+        control, target, controlstate, theta_radians, add_comments=False
+    ):
         out = "# ctrl-rx-theta gate\n" if add_comments else ""
         out += f"crx ({theta_radians}) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_ry_theta(control, target, theta_radians, add_comments=False):
+    def _gate_ctrl_ry_theta(
+        control, target, controlstate, theta_radians, add_comments=False
+    ):
         out = "# ctrl-ry-theta gate\n" if add_comments else ""
         out += f"cry ({theta_radians}) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_rz_theta(control, target, theta_radians, add_comments=False):
+    def _gate_ctrl_rz_theta(
+        control, target, controlstate, theta_radians, add_comments=False
+    ):
         out = "# ctrl-rz-theta gate\n" if add_comments else ""
         out += f"crz ({theta_radians}) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_s(control, target, add_comments=False):
+    def _gate_ctrl_s(control, target, controlstate, add_comments=False):
         out = "# ctrl-s gate\n" if add_comments else ""
         out += f"CPHASE (pi/2) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_s_dagger(control, target, add_comments=False):
+    def _gate_ctrl_s_dagger(control, target, controlstate, add_comments=False):
         out = "# ctrl-s-dagger gate\n" if add_comments else ""
         out += f"CPHASE (-pi/2) {control} {target}\n"
         return out
 
     @staticmethod
-    def _gate_toffoli(control, control2, target, add_comments=False):
+    def _gate_toffoli(
+        control, control2, target, controlstate, controlstate2, add_comments=False
+    ):
         out = "# toffoli gate\n" if add_comments else ""
         out += f"CCNOT {control} {control2} {target}\n"
         return out
 
     @staticmethod
-    def _gate_fredkin(control, target, target2, add_comments=False):
+    def _gate_fredkin(control, target, target2, controlstate, add_comments=False):
         out = "# fredkin gate\n" if add_comments else ""
         out += f"CSWAP {control} {target} {target2}\n"
         return out
