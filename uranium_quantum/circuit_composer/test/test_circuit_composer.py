@@ -4,7 +4,7 @@ creating quantum circuits in yaml format."""
 import filecmp
 import pytest
 
-from circuit_composer import (
+from ..circuit_composer import (
     QuantumRegistry,
     QbitAleadyTaken,
     QbitIndexLargerThanRegistrySize,
