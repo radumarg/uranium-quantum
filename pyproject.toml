@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "uranium-quantum-utils"
+name = "uranium_quantum"
 version = "0.1.0"
 description = "Support Python libraries for Uranium quantum computing platform."
 authors = ["Radu Marginean <radu.marg@gmail.com>"]
