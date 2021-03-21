@@ -1,0 +1,189 @@
+steps:
+  - index: 0
+    gates:
+      - name: identity
+        target: 0
+  - index: 1
+    gates:
+      - name: u3
+        target: 1
+        theta: 1.57
+        phi: 1.57
+        lambda: 1.57
+  - index: 2
+    gates:
+      - name: u2
+        target: 2
+        phi: 1.57
+        lambda: 1.57
+  - index: 3
+    gates:
+      - name: u1
+        target: 3
+        lambda: 1.57
+  - index: 4
+    gates:
+      - name: hadamard
+        target: 4
+  - index: 5
+    gates:
+      - name: pauli-x
+        target: 5
+  - index: 6
+    gates:
+      - name: pauli-y
+        target: 6
+  - index: 7
+    gates:
+      - name: pauli-z
+        target: 7
+  - index: 8
+    gates:
+      - name: sqrt-not
+        target: 8
+  - index: 9
+    gates:
+      - name: t
+        target: 9
+  - index: 10
+    gates:
+      - name: t-dagger
+        target: 10
+  - index: 11
+    gates:
+      - name: rx-theta
+        target: 11
+        theta: 1.57
+  - index: 12
+    gates:
+      - name: ry-theta
+        target: 12
+        theta: 1.57
+  - index: 13
+    gates:
+      - name: rz-theta
+        target: 13
+        theta: 1.57
+  - index: 14
+    gates:
+      - name: s
+        target: 14
+  - index: 15
+    gates:
+      - name: s-dagger
+        target: 15
+  - index: 16
+    gates:
+      - name: ctrl-u3
+        target: 2
+        control: 1
+        theta: 1.57
+        phi: 1.57
+        lambda: 1.57
+  - index: 17
+    gates:
+      - name: ctrl-u2
+        target: 3
+        control: 2
+        phi: 1.57
+        lambda: 1.57
+  - index: 18
+    gates:
+      - name: ctrl-u1
+        target: 4
+        control: 3
+        lambda: 1.57
+  - index: 19
+    gates:
+      - name: hadamard
+        target: 5
+  - index: 20
+    gates:
+      - name: ctrl-pauli-x
+        target: 6
+        control: 5
+  - index: 21
+    gates:
+      - name: ctrl-pauli-y
+        target: 7
+        control: 6
+  - index: 22
+    gates:
+      - name: ctrl-pauli-z
+        target: 8
+        control: 7
+  - index: 23
+    gates:
+      - name: ctrl-sqrt-not
+        target: 9
+        control: 8
+  - index: 24
+    gates:
+      - name: ctrl-t
+        target: 10
+        control: 9
+  - index: 25
+    gates:
+      - name: ctrl-t-dagger
+        target: 11
+        control: 10
+  - index: 26
+    gates:
+      - name: ctrl-rx-theta
+        target: 12
+        control: 11
+        theta: 1.57
+  - index: 27
+    gates:
+      - name: ctrl-ry-theta
+        target: 13
+        control: 12
+        theta: 1.57
+  - index: 28
+    gates:
+      - name: ctrl-rz-theta
+        target: 14
+        control: 13
+        theta: 1.57
+  - index: 29
+    gates:
+      - name: ctrl-s
+        target: 15
+        control: 14
+  - index: 30
+    gates:
+      - name: ctrl-s-dagger
+        target: 16
+        control: 15
+  - index: 31
+    gates:
+      - name: swap
+        target: 1
+        target2: 2
+  - index: 32
+    gates:
+      - name: iswap
+        target: 2
+        target2: 3
+  - index: 33
+    gates:
+      - name: sqrt-swap
+        target: 3
+        target2: 4
+  - index: 35
+    gates:
+      - name: toffoli
+        target: 6
+        control: 4
+        control2: 5
+  - index: 36
+    gates:
+      - name: fredkin
+        target: 9
+        control: 7
+        control2: 8
+  - index: 39
+    gates:
+      - name: measure-z
+        target: 3
+        bit: 3

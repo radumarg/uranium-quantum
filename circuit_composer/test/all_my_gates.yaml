@@ -1,0 +1,252 @@
+steps:
+  - index: 0
+    gates:
+      - name: identity
+        target: 0
+      - name: u3
+        target: 1
+        theta: 1.57
+        phi: 1.57
+        lambda: 1.57
+      - name: u2
+        target: 2
+        phi: 1.57
+        lambda: 1.57
+      - name: u1
+        target: 3
+        lambda: 1.57
+      - name: identity
+        target: 4
+      - name: hadamard
+        target: 5
+      - name: pauli-x
+        target: 6
+      - name: pauli-y
+        target: 7
+      - name: pauli-z
+        target: 8
+      - name: t
+        target: 9
+      - name: t-dagger
+        target: 10
+      - name: rx-theta
+        target: 11
+        theta: 1.57
+      - name: ry-theta
+        target: 12
+        theta: 1.57
+      - name: rz-theta
+        target: 13
+        theta: 1.57
+      - name: s
+        target: 14
+      - name: s-dagger
+        target: 15
+      - name: pauli-x-root
+        target: 16
+        root: 1/2.0
+      - name: pauli-y-root
+        target: 17
+        root: 1/2^7.0
+      - name: pauli-z-root
+        target: 18
+        root: 1/2^22.0
+      - name: pauli-x-root-dagger
+        target: 19
+        root: 1/2^29.0
+      - name: pauli-y-root-dagger
+        target: 20
+        root: 1/2^8.0
+      - name: pauli-z-root-dagger
+        target: 21
+        root: 1/1.1
+  - index: 1
+    gates:
+      - name: ctrl-u3
+        control: 1
+        controlstate: 1
+        target: 2
+        theta: 1.57
+        phi: 1.57
+        lambda: 1.57
+  - index: 2
+    gates:
+      - name: ctrl-u2
+        control: 2
+        controlstate: 1
+        target: 3
+        phi: 1.57
+        lambda: 1.57
+  - index: 3
+    gates:
+      - name: ctrl-u1
+        control: 3
+        controlstate: 0
+        target: 4
+        lambda: 1.57
+  - index: 4
+    gates:
+      - name: ctrl-hadamard
+        control: 4
+        controlstate: 1
+        target: 5
+  - index: 5
+    gates:
+      - name: ctrl-pauli-x
+        control: 5
+        controlstate: 0
+        target: 6
+  - index: 6
+    gates:
+      - name: ctrl-pauli-y
+        control: 6
+        controlstate: 1
+        target: 7
+  - index: 7
+    gates:
+      - name: ctrl-pauli-z
+        control: 7
+        controlstate: 0
+        target: 8
+  - index: 8
+    gates:
+      - name: ctrl-t
+        control: 8
+        controlstate: 1
+        target: 9
+  - index: 9
+    gates:
+      - name: ctrl-t-dagger
+        control: 9
+        controlstate: 0
+        target: 10
+  - index: 10
+    gates:
+      - name: ctrl-rx-theta
+        control: 10
+        controlstate: 1
+        target: 11
+        theta: 1.57
+  - index: 11
+    gates:
+      - name: ctrl-ry-theta
+        control: 11
+        controlstate: 0
+        target: 12
+        theta: 1.57
+  - index: 12
+    gates:
+      - name: ctrl-rz-theta
+        control: 12
+        controlstate: 1
+        target: 13
+        theta: 1.57
+  - index: 13
+    gates:
+      - name: ctrl-s
+        control: 13
+        controlstate: 0
+        target: 14
+  - index: 14
+    gates:
+      - name: ctrl-s-dagger
+        control: 14
+        controlstate: 1
+        target: 15
+  - index: 15
+    gates:
+      - name: ctrl-pauli-x-root
+        control: 15
+        controlstate: 0
+        target: 16
+        root: 1/2.0
+  - index: 16
+    gates:
+      - name: ctrl-pauli-y-root
+        control: 16
+        controlstate: 1
+        target: 17
+        root: 1/2^17.0
+  - index: 17
+    gates:
+      - name: ctrl-pauli-z-root
+        control: 17
+        controlstate: 0
+        target: 18
+        root: 1/2.0
+  - index: 18
+    gates:
+      - name: ctrl-pauli-x-root-dagger
+        control: 18
+        controlstate: 0
+        target: 19
+        root: 1/2^22.0
+  - index: 19
+    gates:
+      - name: ctrl-pauli-y-root-dagger
+        control: 19
+        controlstate: 1
+        target: 20
+        root: 1/2^35.0
+  - index: 20
+    gates:
+      - name: ctrl-pauli-z-root-dagger
+        control: 20
+        controlstate: 0
+        target: 21
+        root: 1/2.22
+  - index: 21
+    gates:
+      - name: swap
+        target: 1
+        target2: 2
+      - name: iswap
+        target: 4
+        target2: 5
+      - name: sqrt-swap
+        target: 6
+        target2: 7
+      - name: swap-phi
+        target: 9
+        target2: 10
+        phi: 1.57
+  - index: 22
+    gates:
+      - name: xx
+        target: 1
+        target2: 2
+        theta: 0.5
+      - name: yy
+        target: 4
+        target2: 6
+        theta: 0.5
+      - name: zz
+        target: 8
+        target2: 10
+        theta: 0.5
+  - index: 23
+    gates:
+      - name: toffoli
+        control: 4
+        controlstate: 1
+        control2: 5
+        controlstate2: 1
+        target: 6
+  - index: 24
+    gates:
+      - name: fredkin
+        control: 7
+        controlstate: 1
+        target: 8
+        target2: 9
+  - index: 25
+    gates:
+      - name: measure-x
+        target: 0
+        bit: 0
+      - name: measure-y
+        target: 1
+        bit: 1
+      - name: measure-z
+        target: 2
+        bit: 2
