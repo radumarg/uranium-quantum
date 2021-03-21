@@ -1,22 +1,23 @@
 class ExportException(BaseException):
     pass
 
+
 class BaseExporter:
-    
+
     """Base class for exporting circuits from YAML format.
-        to Qiskit, OpenQasm, Pyquil, Quil and Cirq. """
-    
+    to Qiskit, OpenQasm, Pyquil, Quil and Cirq."""
+
     def __init__(self):
         self._qubits = None
 
     def set_number_qubits(self, qubits):
         """Set the number of qubits in this circuit."""
         self._qubits = qubits
-        
+
     def set_number_bits(self, bits):
         """Set the number of classical bits in this circuit."""
         self._bits = bits
-        
+
     def process_step(self, step, add_comments=False):
         """Export gates present in one step from the input YAML file."""
         output = ""
@@ -44,18 +45,39 @@ class BaseExporter:
 
                 name = gate["name"]
                 output += self.process_gate(
-                    name, theta_radians, phi_radians, lambda_radians, bit, *qubits, add_comments=add_comments
+                    name,
+                    theta_radians,
+                    phi_radians,
+                    lambda_radians,
+                    bit,
+                    *qubits,
+                    add_comments=add_comments,
                 )
         return output + "\n"
 
     def process_gate(
-        self, name, theta_radians, phi_radians, lambda_radians, bit, *qubits, add_comments=False
+        self,
+        name,
+        theta_radians,
+        phi_radians,
+        lambda_radians,
+        bit,
+        *qubits,
+        add_comments=False,
     ):
         """Create export code corresponding to a gate in yaml circuit."""
         if name == "u3":
-            return self._gate_u3(qubits[0], theta_radians, phi_radians, lambda_radians, add_comments=add_comments)
+            return self._gate_u3(
+                qubits[0],
+                theta_radians,
+                phi_radians,
+                lambda_radians,
+                add_comments=add_comments,
+            )
         elif name == "u2":
-            return self._gate_u2(qubits[0], phi_radians, lambda_radians, add_comments=add_comments)
+            return self._gate_u2(
+                qubits[0], phi_radians, lambda_radians, add_comments=add_comments
+            )
         elif name == "u1":
             return self._gate_u1(qubits[0], lambda_radians, add_comments=add_comments)
         elif name == "identity":
@@ -79,43 +101,82 @@ class BaseExporter:
         elif name == "s-dagger":
             return self._gate_s_dagger(qubits[0], add_comments=add_comments)
         elif name == "rx-theta":
-            return self._gate_rx_theta(qubits[0], theta_radians, add_comments=add_comments)
+            return self._gate_rx_theta(
+                qubits[0], theta_radians, add_comments=add_comments
+            )
         elif name == "ry-theta":
-            return self._gate_ry_theta(qubits[0], theta_radians, add_comments=add_comments)
+            return self._gate_ry_theta(
+                qubits[0], theta_radians, add_comments=add_comments
+            )
         elif name == "rz-theta":
-            return self._gate_rz_theta(qubits[0], theta_radians, add_comments=add_comments)
+            return self._gate_rz_theta(
+                qubits[0], theta_radians, add_comments=add_comments
+            )
         elif name == "ctrl-u3":
             return self._gate_ctrl_u3(
-                qubits[0], qubits[1], theta_radians, phi_radians, lambda_radians, add_comments=add_comments
+                qubits[0],
+                qubits[1],
+                theta_radians,
+                phi_radians,
+                lambda_radians,
+                add_comments=add_comments,
             )
         elif name == "ctrl-u2":
-            return self._gate_ctrl_u2(qubits[0], qubits[1], phi_radians, lambda_radians, add_comments=add_comments)
+            return self._gate_ctrl_u2(
+                qubits[0],
+                qubits[1],
+                phi_radians,
+                lambda_radians,
+                add_comments=add_comments,
+            )
         elif name == "ctrl-u1":
-            return self._gate_ctrl_u1(qubits[0], qubits[1], lambda_radians, add_comments=add_comments)
+            return self._gate_ctrl_u1(
+                qubits[0], qubits[1], lambda_radians, add_comments=add_comments
+            )
         elif name == "ctrl-hadamard":
-            return self._gate_ctrl_hadamard(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_hadamard(
+                qubits[0], qubits[1], add_comments=add_comments
+            )
         elif name == "ctrl-pauli-x":
-            return self._gate_ctrl_pauli_x(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_pauli_x(
+                qubits[0], qubits[1], add_comments=add_comments
+            )
         elif name == "ctrl-pauli-y":
-            return self._gate_ctrl_pauli_y(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_pauli_y(
+                qubits[0], qubits[1], add_comments=add_comments
+            )
         elif name == "ctrl-pauli-z":
-            return self._gate_ctrl_pauli_z(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_pauli_z(
+                qubits[0], qubits[1], add_comments=add_comments
+            )
         elif name == "ctrl-sqrt-not":
-            return self._gate_ctrl_sqrt_not(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_sqrt_not(
+                qubits[0], qubits[1], add_comments=add_comments
+            )
         elif name == "ctrl-t":
             return self._gate_ctrl_t(qubits[0], qubits[1], add_comments=add_comments)
         elif name == "ctrl-t-dagger":
-            return self._gate_ctrl_t_dagger(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_t_dagger(
+                qubits[0], qubits[1], add_comments=add_comments
+            )
         elif name == "ctrl-s":
             return self._gate_ctrl_s(qubits[0], qubits[1], add_comments=add_comments)
         elif name == "ctrl-s-dagger":
-            return self._gate_ctrl_s_dagger(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_s_dagger(
+                qubits[0], qubits[1], add_comments=add_comments
+            )
         elif name == "ctrl-rx-theta":
-            return self._gate_ctrl_rx_theta(qubits[0], qubits[1], theta_radians, add_comments=add_comments)
+            return self._gate_ctrl_rx_theta(
+                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+            )
         elif name == "ctrl-ry-theta":
-            return self._gate_ctrl_ry_theta(qubits[0], qubits[1], theta_radians, add_comments=add_comments)
+            return self._gate_ctrl_ry_theta(
+                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+            )
         elif name == "ctrl-rz-theta":
-            return self._gate_ctrl_rz_theta(qubits[0], qubits[1], theta_radians, add_comments=add_comments)
+            return self._gate_ctrl_rz_theta(
+                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+            )
         elif name == "swap":
             return self._gate_swap(qubits[0], qubits[1], add_comments=add_comments)
         elif name == "iswap":
@@ -123,11 +184,17 @@ class BaseExporter:
         elif name == "sqrt-swap":
             return self._gate_sqrt_swap(qubits[0], qubits[1], add_comments=add_comments)
         elif name == "swap-phi":
-            return self._gate_swap_phi(qubits[0], qubits[1], phi_radians, add_comments=add_comments)
+            return self._gate_swap_phi(
+                qubits[0], qubits[1], phi_radians, add_comments=add_comments
+            )
         elif name == "toffoli":
-            return self._gate_toffoli(qubits[0], qubits[1], qubits[2], add_comments=add_comments)
+            return self._gate_toffoli(
+                qubits[0], qubits[1], qubits[2], add_comments=add_comments
+            )
         elif name == "fredkin":
-            return self._gate_fredkin(qubits[0], qubits[1], qubits[2], add_comments=add_comments)
+            return self._gate_fredkin(
+                qubits[0], qubits[1], qubits[2], add_comments=add_comments
+            )
         elif name == "measure-x":
             return self._gate_measure_x(qubits[0], bit, add_comments=add_comments)
         elif name == "measure-y":
@@ -137,7 +204,9 @@ class BaseExporter:
         raise ExportException(f"The gate {name} is not implemented in exporter code.")
 
     @staticmethod
-    def _gate_u3(target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_u3(
+        target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         return ""
 
     @staticmethod
@@ -179,7 +248,7 @@ class BaseExporter:
     @staticmethod
     def _gate_t_dagger(target, add_comments=False):
         return ""
-    
+
     @staticmethod
     def _gate_rx_theta(target, theta, add_comments=False):
         return ""
@@ -221,7 +290,9 @@ class BaseExporter:
         return ""
 
     @staticmethod
-    def _gate_ctrl_u3(control, target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_ctrl_u3(
+        control, target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         return ""
 
     @staticmethod

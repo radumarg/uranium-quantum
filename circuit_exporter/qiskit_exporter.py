@@ -5,7 +5,6 @@ BaseExporter = importlib.import_module("base-exporter")
 
 
 class Exporter(BaseExporter.BaseExporter):
-
     def start_code(self):
         return f"\
 from qiskit import QuantumRegister\n\
@@ -24,7 +23,9 @@ job_result = job.result()\n\
 print(job_result.status)\n"
 
     @staticmethod
-    def _gate_u3(target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_u3(
+        target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "# u3 gate\n" if add_comments else ""
         out += f"qc.u({theta_radians}, {phi_radians}, {lambda_radians}, qr[{target}])\n"
         return out
@@ -134,7 +135,7 @@ print(job_result.status)\n"
     @staticmethod
     def _gate_swap_phi(target, target2, phi, add_comments=False):
         raise BaseExporter.ExportException("The swap-phi gate is not implemented.")
-        
+
     @staticmethod
     def _gate_sqrt_swap(target, target2, add_comments=False):
         out = "# sqrt-swap gate\n" if add_comments else ""
@@ -158,7 +159,9 @@ print(job_result.status)\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_u3(control, target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_ctrl_u3(
+        control, target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "# ctrl-u3 gate\n" if add_comments else ""
         out += f"qc.cu({theta_radians}, {phi_radians}, {lambda_radians}, {math.pi/2}, qr[{control}], qr[{target}])\n"
         return out

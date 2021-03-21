@@ -4,7 +4,6 @@ BaseExporter = importlib.import_module("base-exporter")
 
 
 class Exporter(BaseExporter.BaseExporter):
-    
     def _define_import_code_section(self):
         return f"\
 import numpy as np\n\
@@ -73,7 +72,7 @@ cy = cy_defgate.get_constructor()\n"
 # define ctrl-sqrt-not gate\n\
 csqrt_not_array = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0.5+0.5j, 0.5-0.5j], [0, 0, 0.5-0.5j, 0.5+0.5j]])\n\
 csqrt_not_defgate = DefGate('csqrt_not', csqrt_not_array)\n\
-csqrt_not = csqrt_not_defgate.get_constructor()\n"  
+csqrt_not = csqrt_not_defgate.get_constructor()\n"
 
     def _define_crtl_rx(self):
         return "\
@@ -119,7 +118,6 @@ cu3_defgate = DefGate('cu3', cu3_array, [theta_radians, phi_radians, lambda_radi
 cu3 = cu3_defgate.get_constructor()\n\
 p.inst(cu3_defgate)\n"
 
-          
     def start_code(self):
         return (
             self._define_import_code_section()
@@ -158,7 +156,9 @@ print(qc.run(p))\n\
 '
 
     @staticmethod
-    def _gate_u3(target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_u3(
+        target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "# u3 gate\n" if add_comments else ""
         out += (
             f"p.inst(u3({theta_radians}, {phi_radians}, {lambda_radians})({target}))\n"

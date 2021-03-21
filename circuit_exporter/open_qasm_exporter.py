@@ -5,19 +5,20 @@ BaseExporter = importlib.import_module("base-exporter")
 
 
 class Exporter(BaseExporter.BaseExporter):
-
     def start_code(self):
-        return f"\
+        return f'\
 OPENQASM 2.0;\n\
-include \"qelib1.inc\";\n\
+include "qelib1.inc";\n\
 qreg q0[{self._qubits}];\n\
-creg c0[{self._bits}];\n\n\n"
+creg c0[{self._bits}];\n\n\n'
 
     def end_code(self):
         return ""
 
     @staticmethod
-    def _gate_u3(target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_u3(
+        target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "# u3 gate\n" if add_comments else ""
         out += f"u({theta_radians}, {phi_radians}, {lambda_radians}) q0[{target}];\n"
         return out
@@ -127,7 +128,7 @@ creg c0[{self._bits}];\n\n\n"
     @staticmethod
     def _gate_swap_phi(target, target2, phi):
         raise BaseExporter.ExportException("The swap-phi gate is not implemented.")
-        
+
     @staticmethod
     def _gate_sqrt_swap(target, target2, add_comments=False):
         out = "# sqrt-swap gate\n" if add_comments else ""
@@ -151,7 +152,9 @@ creg c0[{self._bits}];\n\n\n"
         return out
 
     @staticmethod
-    def _gate_ctrl_u3(control, target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_ctrl_u3(
+        control, target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "# ctrl-u3 gate\n" if add_comments else ""
         out += f"cu({theta_radians}, {phi_radians}, {lambda_radians}, {math.pi/2}) q0[{control}], q0[{target}];\n"
         return out

@@ -9,6 +9,7 @@ NO_SINGLE_QBIT_GATES = 21
 NO_TWO_QBIT_GATES = 24
 NO_THREE_QBIT_GATES = 2
 
+
 def _add_random_single_qbit_gate(quantum_registry, qbit):
 
     gate = random.randint(0, NO_SINGLE_QBIT_GATES - 1)
@@ -60,7 +61,7 @@ def _add_random_single_qbit_gate(quantum_registry, qbit):
 def _add_random_two_qbit_gate(quantum_registry, qbit, qbit2):
 
     gate = random.randint(0, NO_TWO_QBIT_GATES - 1)
-    
+
     # randomly reorder the qbits
     if random.randint(0, 1) == 1:
         qbit2, qbit = qbit, qbit2
@@ -209,8 +210,12 @@ def _add_three_qubit_gate(quantum_registry, qubits, latest_qbit, fillqubits=Fals
 
 
 @click.command()
-@click.option("--qubits", "-q", type=int, required=True, help="Number of qubits in the circuit.")
-@click.option("--gates", "-g", type=int, required=True, help="Number of gates in the circuit.")
+@click.option(
+    "--qubits", "-q", type=int, required=True, help="Number of qubits in the circuit."
+)
+@click.option(
+    "--gates", "-g", type=int, required=True, help="Number of gates in the circuit."
+)
 @click.option(
     "--output",
     "-o",
@@ -241,10 +246,10 @@ def _add_three_qubit_gate(quantum_registry, qubits, latest_qbit, fillqubits=Fals
     help="Assign gates to each and every qubit.",
 )
 def main(qubits, gates, output, seed, measuregates, fill):
-    
+
     qubits = int(qubits)
-    gates = int(gates)        
-    
+    gates = int(gates)
+
     if seed:
         seed = int(seed)
         random.seed(seed)
@@ -260,11 +265,17 @@ def main(qubits, gates, output, seed, measuregates, fill):
 
         gate_choice = random.randint(0, no_all_gates)
         if gate_choice < NO_SINGLE_QBIT_GATES:
-            latest_qbit = _add_single_qubit_gate(quantum_registry, qubits, latest_qbit, fill)
+            latest_qbit = _add_single_qubit_gate(
+                quantum_registry, qubits, latest_qbit, fill
+            )
         elif gate_choice < NO_SINGLE_QBIT_GATES + NO_TWO_QBIT_GATES:
-            latest_qbit = _add_two_qubit_gate(quantum_registry, qubits, latest_qbit, fill)
+            latest_qbit = _add_two_qubit_gate(
+                quantum_registry, qubits, latest_qbit, fill
+            )
         else:
-            latest_qbit = _add_three_qubit_gate(quantum_registry, qubits, latest_qbit, fill)
+            latest_qbit = _add_three_qubit_gate(
+                quantum_registry, qubits, latest_qbit, fill
+            )
 
     if measuregates:
         quantum_registry.increment_step()

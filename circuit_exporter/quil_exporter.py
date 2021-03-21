@@ -4,7 +4,6 @@ BaseExporter = importlib.import_module("base-exporter")
 
 
 class Exporter(BaseExporter.BaseExporter):
-    
     def _define_initial_code_section(self):
         return f"DECLARE ro BIT[{self._bits}]\n"
 
@@ -110,7 +109,6 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
     0, 0, COS(%theta/2), -1*EXP(i*%lambda)*SIN(%theta/2)\n\
     0, 0, EXP(i*%phi)*SIN(%theta/2), EXP(i*%lambda + i*%phi)*COS(%theta/2)\n"
 
-          
     def start_code(self):
         return (
             self._define_initial_code_section()
@@ -145,11 +143,11 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
         return ""
 
     @staticmethod
-    def _gate_u3(target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_u3(
+        target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "# u3 gate\n" if add_comments else ""
-        out += (
-            f"u3 ({theta_radians}, {phi_radians}, {lambda_radians}) {target}\n"
-        )
+        out += f"u3 ({theta_radians}, {phi_radians}, {lambda_radians}) {target}\n"
         return out
 
     @staticmethod

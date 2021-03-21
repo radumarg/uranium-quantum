@@ -25,6 +25,7 @@ def get_number_qubits(yaml):
                         qubits = max(qubits, gate["control2"] + 1)
     return qubits
 
+
 def get_number_bits(yaml):
     """Extract the numebr of bits in yaml circuit."""
     bits = 0

@@ -4,7 +4,6 @@ BaseExporter = importlib.import_module("base-exporter")
 
 
 class Exporter(BaseExporter.BaseExporter):
-    
     def _define_import_code_section(self):
         return f"\
 import cirq\n\
@@ -53,7 +52,7 @@ def cu2(phi_radians, lambda_radians):\n\
 def cu3(theta_radians, phi_radians, lambda_radians):\n\
     return cirq.MatrixGate(np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, np.cos(theta_radians/2), -np.exp(1j * lambda_radians) * np.sin(theta_radians/2)], [0, 0, np.exp(1j * phi_radians) * np.sin(theta_radians/2), np.exp(1j * lambda_radians+1j * phi_radians) * np.cos(theta_radians/2)]]))\n\
 \n"
-          
+
     def start_code(self):
         return (
             self._define_import_code_section()
@@ -81,9 +80,13 @@ simulator = cirq.Simulator()\n\
 simulator.run(circuit, repetitions=1000)\n"
 
     @staticmethod
-    def _gate_u3(target, theta_radians, phi_radians, lambda_radians, add_comments=False):
+    def _gate_u3(
+        target, theta_radians, phi_radians, lambda_radians, add_comments=False
+    ):
         out = "    # u3 gate\n" if add_comments else ""
-        out += f"    u3({theta_radians}, {phi_radians}, {lambda_radians})(q[{target}]),\n"
+        out += (
+            f"    u3({theta_radians}, {phi_radians}, {lambda_radians})(q[{target}]),\n"
+        )
         return out
 
     @staticmethod
@@ -177,7 +180,7 @@ simulator.run(circuit, repetitions=1000)\n"
         return out
 
     @staticmethod
-    def _gate_swap(target, target2, add_comments=False):##
+    def _gate_swap(target, target2, add_comments=False):  ##
         out = "    # swap gate\n" if add_comments else ""
         out += f"    cirq.SWAP(q[{target}], q[{target2}]),\n"
         return out

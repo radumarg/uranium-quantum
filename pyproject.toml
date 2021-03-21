@@ -1,11 +1,20 @@
 [tool.poetry]
 name = "uranium-quantum-utils"
 version = "0.1.0"
-description = ""
+description = "Support Python libraries for Uranium quantum computing platform."
 authors = ["Radu Marginean <radu.marg@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://www.transilvania-quantum.org/uranium"
+repository = "https://github.com/radumarg/uranium_quantum"
+keywords = ["uranium", "quantum", "computing"]
+
+include = [
+    "LICENSE",
+]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.7"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

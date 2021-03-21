@@ -114,9 +114,13 @@ delivering some of the logic intended by the creator of the circuit."""
                     if "lambda" in gate:
                         yaml_file.write("        lambda: " + str(gate["lambda"]) + "\n")
                     if "root-k" in gate:
-                        yaml_file.write("        root: " + f'1/2^{gate["root-k"]}' + "\n")
+                        yaml_file.write(
+                            "        root: " + f'1/2^{gate["root-k"]}' + "\n"
+                        )
                     if "root-t" in gate:
-                        yaml_file.write("        root: " + f'1/{str(gate["root-t"])}' + "\n")
+                        yaml_file.write(
+                            "        root: " + f'1/{str(gate["root-t"])}' + "\n"
+                        )
                     if "bit" in gate:
                         yaml_file.write("        bit: " + str(gate["bit"]) + "\n")
 
