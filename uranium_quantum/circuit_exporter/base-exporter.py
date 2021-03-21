@@ -24,7 +24,11 @@ class BaseExporter:
         if "gates" in step:
             for gate in step["gates"]:
 
-                theta_radians, phi_radians, lambda_radians, bit = None, None, None, None
+                controlstate, theta_radians, phi_radians, lambda_radians, bit = None, None, None, None, None
+                if "controlstate" in gate:
+                    controlstate = gate["controlstate"]
+                if "root" in gate:
+                    root = gate["root"]
                 if "theta" in gate:
                     theta_radians = gate["theta"]
                 if "phi" in gate:
@@ -46,6 +50,8 @@ class BaseExporter:
                 name = gate["name"]
                 output += self.process_gate(
                     name,
+                    controlstate,
+                    root,
                     theta_radians,
                     phi_radians,
                     lambda_radians,
@@ -58,6 +64,8 @@ class BaseExporter:
     def process_gate(
         self,
         name,
+        controlstate,
+        root,
         theta_radians,
         phi_radians,
         lambda_radians,
@@ -90,6 +98,18 @@ class BaseExporter:
             return self._gate_pauli_y(qubits[0], add_comments=add_comments)
         elif name == "pauli-z":
             return self._gate_pauli_z(qubits[0], add_comments=add_comments)
+        elif name == "pauli-x-root":
+            return self._gate_pauli_x_root(qubits[0], root, add_comments=add_comments)
+        elif name == "pauli-y-root":
+            return self._gate_pauli_y_root(qubits[0], root, add_comments=add_comments)
+        elif name == "pauli-z-root":
+            return self._gate_pauli_z_root(qubits[0], root, add_comments=add_comments)
+        elif name == "pauli-x-root-dagger":
+            return self._gate_pauli_x_root_dagger(qubits[0], root, add_comments=add_comments)
+        elif name == "pauli-y-root-dagger":
+            return self._gate_pauli_y_root_dagger(qubits[0], root, add_comments=add_comments)
+        elif name == "pauli-z-root-dagger":
+            return self._gate_pauli_z_root_dagger(qubits[0], root, add_comments=add_comments)
         elif name == "sqrt-not":
             return self._gate_sqrt_not(qubits[0], add_comments=add_comments)
         elif name == "t":
@@ -116,6 +136,7 @@ class BaseExporter:
             return self._gate_ctrl_u3(
                 qubits[0],
                 qubits[1],
+                controlstate,
                 theta_radians,
                 phi_radians,
                 lambda_radians,
@@ -125,57 +146,58 @@ class BaseExporter:
             return self._gate_ctrl_u2(
                 qubits[0],
                 qubits[1],
+                controlstate,
                 phi_radians,
                 lambda_radians,
                 add_comments=add_comments,
             )
         elif name == "ctrl-u1":
             return self._gate_ctrl_u1(
-                qubits[0], qubits[1], lambda_radians, add_comments=add_comments
+                qubits[0], qubits[1], controlstate, lambda_radians, add_comments=add_comments
             )
         elif name == "ctrl-hadamard":
             return self._gate_ctrl_hadamard(
-                qubits[0], qubits[1], add_comments=add_comments
+                qubits[0], qubits[1], controlstate, add_comments=add_comments
             )
         elif name == "ctrl-pauli-x":
             return self._gate_ctrl_pauli_x(
-                qubits[0], qubits[1], add_comments=add_comments
+                qubits[0], qubits[1], controlstate, add_comments=add_comments
             )
         elif name == "ctrl-pauli-y":
             return self._gate_ctrl_pauli_y(
-                qubits[0], qubits[1], add_comments=add_comments
+                qubits[0], qubits[1], controlstate, add_comments=add_comments
             )
         elif name == "ctrl-pauli-z":
             return self._gate_ctrl_pauli_z(
-                qubits[0], qubits[1], add_comments=add_comments
+                qubits[0], qubits[1], controlstate, add_comments=add_comments
             )
         elif name == "ctrl-sqrt-not":
             return self._gate_ctrl_sqrt_not(
-                qubits[0], qubits[1], add_comments=add_comments
+                qubits[0], qubits[1], controlstate, add_comments=add_comments
             )
         elif name == "ctrl-t":
-            return self._gate_ctrl_t(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_t(qubits[0], qubits[1], controlstate, add_comments=add_comments)
         elif name == "ctrl-t-dagger":
             return self._gate_ctrl_t_dagger(
-                qubits[0], qubits[1], add_comments=add_comments
+                qubits[0], qubits[1], controlstate, add_comments=add_comments
             )
         elif name == "ctrl-s":
-            return self._gate_ctrl_s(qubits[0], qubits[1], add_comments=add_comments)
+            return self._gate_ctrl_s(qubits[0], qubits[1], controlstate, add_comments=add_comments)
         elif name == "ctrl-s-dagger":
             return self._gate_ctrl_s_dagger(
-                qubits[0], qubits[1], add_comments=add_comments
+                qubits[0], qubits[1], controlstate, add_comments=add_comments
             )
         elif name == "ctrl-rx-theta":
             return self._gate_ctrl_rx_theta(
-                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+                qubits[0], qubits[1], controlstate, theta_radians, add_comments=add_comments
             )
         elif name == "ctrl-ry-theta":
             return self._gate_ctrl_ry_theta(
-                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+                qubits[0], qubits[1], controlstate, theta_radians, add_comments=add_comments
             )
         elif name == "ctrl-rz-theta":
             return self._gate_ctrl_rz_theta(
-                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+                qubits[0], qubits[1], controlstate, theta_radians, add_comments=add_comments
             )
         elif name == "swap":
             return self._gate_swap(qubits[0], qubits[1], add_comments=add_comments)
@@ -186,6 +208,18 @@ class BaseExporter:
         elif name == "swap-phi":
             return self._gate_swap_phi(
                 qubits[0], qubits[1], phi_radians, add_comments=add_comments
+            )
+        elif name == "xx":
+            return self._gate_xx(
+                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+            )
+        elif name == "yy":
+            return self._gate_yy(
+                qubits[0], qubits[1], theta_radians, add_comments=add_comments
+            )
+        elif name == "xx":
+            return self._gate_zz(
+                qubits[0], qubits[1], theta_radians, add_comments=add_comments
             )
         elif name == "toffoli":
             return self._gate_toffoli(
@@ -238,6 +272,30 @@ class BaseExporter:
         return ""
 
     @staticmethod
+    def _gate_pauli_x_root(target, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_pauli_y_root(target, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_pauli_z_root(target, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_pauli_x_root_dagger(target, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_pauli_y_root_dagger(target, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_pauli_z_root_dagger(target, add_comments=False):
+        return ""
+
+    @staticmethod
     def _gate_sqrt_not(target, add_comments=False):
         return ""
 
@@ -283,6 +341,18 @@ class BaseExporter:
 
     @staticmethod
     def _gate_sqrt_swap(target, target2, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_xx(target, target2, theta, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_yy(target, target2, theta, add_comments=False):
+        return ""
+
+    @staticmethod
+    def _gate_zz(target, target2, theta, add_comments=False):
         return ""
 
     @staticmethod

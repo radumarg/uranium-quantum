@@ -66,6 +66,36 @@ creg c0[{self._bits}];\n\n\n'
         return out
 
     @staticmethod
+    def _gate_pauli_x_root(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_y_root(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_z_root(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_x_root_dagger(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_y_root_dagger(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_z_root_dagger(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
     def _gate_sqrt_not(target, add_comments=False):
         out = "# sqrt-not gate\n" if add_comments else ""
         out += f"sx q0[{target}];\n"
@@ -144,6 +174,21 @@ creg c0[{self._bits}];\n\n\n'
         out += f"u({math.pi/2}, 0, {-1.5 * math.pi}) q0[{target}];\n"
         out += f"u({math.pi/2}, {math.pi/2}, 0) q0[{target2}];\n"
         return out
+
+    @staticmethod
+    def _gate_xx(target, target2, theta, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_yy(target, target2, theta, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_zz(target, target2, theta, add_comments=False):
+        # TODO
+        return ""
 
     @staticmethod
     def _gate_ctrl_hadamard(control, target, add_comments=False):

@@ -193,6 +193,36 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
         return out
 
     @staticmethod
+    def _gate_pauli_x_root(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_y_root(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_z_root(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_x_root_dagger(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_y_root_dagger(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_pauli_z_root_dagger(target, root, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
     def _gate_sqrt_not(target, add_comments=False):
         out = "# sqrt-not gate\n" if add_comments else ""
         out += f"srn {target}\n"
@@ -261,6 +291,21 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
         out = "# sqrt-swap gate\n" if add_comments else ""
         out += f"srswap {target} {target2}\n"
         return out
+
+    @staticmethod
+    def _gate_xx(target, target2, theta, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_yy(target, target2, theta, add_comments=False):
+        # TODO
+        return ""
+
+    @staticmethod
+    def _gate_zz(target, target2, theta, add_comments=False):
+        # TODO
+        return ""
 
     @staticmethod
     def _gate_ctrl_hadamard(control, target, add_comments=False):
