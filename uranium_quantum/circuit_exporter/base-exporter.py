@@ -24,12 +24,13 @@ class BaseExporter:
         if "gates" in step:
             for gate in step["gates"]:
 
-                controlstate, theta_radians, phi_radians, lambda_radians, bit = (
+                controlstate, root, theta_radians, phi_radians, lambda_radians, bit = (
                     None,
                     None,
                     None,
                     None,
                     None,
+                    None
                 )
                 if "controlstate" in gate:
                     controlstate = gate["controlstate"]
