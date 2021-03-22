@@ -210,32 +210,38 @@ print(qc.run(p))\n\
     @staticmethod
     def _gate_pauli_x_root(target, root, add_comments=False):
         # TODO
-        return ""
+        out = "# pauli-x-root gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_pauli_y_root(target, root, add_comments=False):
         # TODO
-        return ""
+        out = "# pauli-y-root gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_pauli_z_root(target, root, add_comments=False):
         # TODO
-        return ""
+        out = "# pauli-z-root gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_pauli_x_root_dagger(target, root, add_comments=False):
         # TODO
-        return ""
+        out = "# pauli-x-root-dagger gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_pauli_y_root_dagger(target, root, add_comments=False):
         # TODO
-        return ""
+        out = "# pauli-y-root-dagger gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_pauli_z_root_dagger(target, root, add_comments=False):
         # TODO
-        return ""
+        out = "# pauli-z-root-dagger gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_sqrt_not(target, add_comments=False):
@@ -312,17 +318,20 @@ print(qc.run(p))\n\
     @staticmethod
     def _gate_xx(target, target2, theta, add_comments=False):
         # TODO
-        return ""
+        out = "# xx gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_yy(target, target2, theta, add_comments=False):
         # TODO
-        return ""
+        out = "# yy gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_zz(target, target2, theta, add_comments=False):
         # TODO
-        return ""
+        out = "# zz gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_ctrl_hadamard(control, target, controlstate, add_comments=False):
@@ -395,42 +404,46 @@ print(qc.run(p))\n\
         control, target, controlstate, root, add_comments=False
     ):
         # TODO
-        return ""
+        return out
 
     @staticmethod
     def _gate_ctrl_pauli_y_root(
         control, target, controlstate, root, add_comments=False
     ):
         # TODO
-        return ""
+        out = "# ctrl-pauli-y-root gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_ctrl_pauli_z_root(
         control, target, controlstate, root, add_comments=False
     ):
         # TODO
-        return ""
+        out = "# ctrl-pauli-z-root gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_ctrl_pauli_x_root_dagger(
         control, target, controlstate, root, add_comments=False
     ):
         # TODO
-        return ""
+        return out
 
     @staticmethod
     def _gate_ctrl_pauli_y_root_dagger(
         control, target, controlstate, root, add_comments=False
     ):
         # TODO
-        return ""
+        out = "# ctrl-pauli-y-root-dagger gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_ctrl_pauli_z_root_dagger(
         control, target, controlstate, root, add_comments=False
     ):
         # TODO
-        return ""
+        out = "# ctrl-pauli-z-root-dagger gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_ctrl_sqrt_not(control, target, controlstate, add_comments=False):

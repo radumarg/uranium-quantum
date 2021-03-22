@@ -274,7 +274,7 @@ class BaseExporter:
             return self._gate_yy(
                 qubits[0], qubits[1], theta_radians, add_comments=add_comments
             )
-        elif name == "xx":
+        elif name == "zz":
             return self._gate_zz(
                 qubits[0], qubits[1], theta_radians, add_comments=add_comments
             )
