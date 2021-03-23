@@ -68,42 +68,42 @@ creg c0[{self._bits}];\n\n\n'
     @staticmethod
     def _gate_pauli_x_root(target, root, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# pauli-x-root gate\n" if add_comments else ""
         return out
 
     @staticmethod
     def _gate_pauli_y_root(target, root, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# pauli-y-root gate\n" if add_comments else ""
         return out
 
     @staticmethod
     def _gate_pauli_z_root(target, root, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# pauli-z-root gate\n" if add_comments else ""
         return out
 
     @staticmethod
     def _gate_pauli_x_root_dagger(target, root, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# pauli-x-root-dagger gate\n" if add_comments else ""
         return out
 
     @staticmethod
     def _gate_pauli_y_root_dagger(target, root, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# pauli-y-root-dagger gate\n" if add_comments else ""
         return out
 
     @staticmethod
     def _gate_pauli_z_root_dagger(target, root, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# pauli-z-root-dagger gate\n" if add_comments else ""
         return out
 
@@ -190,21 +190,21 @@ creg c0[{self._bits}];\n\n\n'
     @staticmethod
     def _gate_xx(target, target2, theta, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# xx gate\n" if add_comments else ""
         return out
 
     @staticmethod
     def _gate_yy(target, target2, theta, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# yy gate\n" if add_comments else ""
         return out
 
     @staticmethod
     def _gate_zz(target, target2, theta, add_comments=True):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# zz gate\n" if add_comments else ""
         return out
 
@@ -279,7 +279,7 @@ creg c0[{self._bits}];\n\n\n'
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# ctrl-pauli-x-root gate\n" if add_comments else ""
         return out
 
@@ -288,7 +288,7 @@ creg c0[{self._bits}];\n\n\n'
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# ctrl-pauli-y-root gate\n" if add_comments else ""
         return out
 
@@ -297,7 +297,7 @@ creg c0[{self._bits}];\n\n\n'
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# ctrl-pauli-z-root gate\n" if add_comments else ""
         return out
 
@@ -306,7 +306,7 @@ creg c0[{self._bits}];\n\n\n'
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# ctrl-pauli-x-root-dagger gate\n" if add_comments else ""
         return out
 
@@ -315,7 +315,7 @@ creg c0[{self._bits}];\n\n\n'
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# ctrl-pauli-y-root-dagger gate\n" if add_comments else ""
         return out
 
@@ -324,7 +324,7 @@ creg c0[{self._bits}];\n\n\n'
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
-        root = root[4:] if '^' in root else root[2:]
+        root = f"(2**{root[4:]})" if '^' in root else root[2:]
         out = "# ctrl-pauli-z-root-dagger gate\n" if add_comments else ""
         return out
 
