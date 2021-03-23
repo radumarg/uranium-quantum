@@ -12,6 +12,7 @@ from qiskit.circuit import ClassicalRegister\n\
 from qiskit import QuantumCircuit, execute, Aer\n\
 from qiskit.circuit.library.standard_gates import iswap\n\
 from qiskit.circuit.library import RXXGate, RYYGate, RZZGate\n\
+from qiskit.quantum_info.operators import Operator\n\
 cr = ClassicalRegister({self._bits})\n\
 qr = QuantumRegister({self._qubits})\n\
 qc = QuantumCircuit(qr, cr)\n\n\n"
@@ -76,37 +77,73 @@ print(job_result.status)\n"
     @staticmethod
     def _gate_pauli_x_root(target, root, add_comments=True):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# pauli-x-root gate\n" if add_comments else ""
+        out += f"pauli_x_root = Operator([\n\
+    [1, 0],\n\
+    [0, 0],\n\
+    ])\n\n"
+        out += f"qc.unitary(pauli_x_root, [{target}], label='pauli-x-root')"
         return out
 
     @staticmethod
     def _gate_pauli_y_root(target, root, add_comments=True):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# pauli-y-root gate\n" if add_comments else ""
+        out += f"pauli_y_root = Operator([\n\
+    [1, 0],\n\
+    [0, 0],\n\
+    ])\n\n"
+        out += f"qc.unitary(pauli_y_root, [{target}], label='pauli-y-root')"
         return out
 
     @staticmethod
     def _gate_pauli_z_root(target, root, add_comments=True):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# pauli-z-root gate\n" if add_comments else ""
+        out += f"pauli_z_root = Operator([\n\
+    [1, 0],\n\
+    [0, 0],\n\
+    ])\n\n"
+        out += f"qc.unitary(pauli_z_root, [{target}], label='pauli-z-root')"
         return out
 
     @staticmethod
     def _gate_pauli_x_root_dagger(target, root, add_comments=True):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# pauli-x-root-dagger gate\n" if add_comments else ""
+        out += f"pauli-x-root-dagger = Operator([\n\
+    [1, 0],\n\
+    [0, 0],\n\
+    ])\n\n"
+        out += f"qc.unitary(pauli_x_root_dagger, [{target}], label='pauli-x-root-dagger')"
         return out
 
     @staticmethod
     def _gate_pauli_y_root_dagger(target, root, add_comments=True):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# pauli-y-root-dagger gate\n" if add_comments else ""
+        out += f"pauli-y-root-dagger = Operator([\n\
+    [1, 0],\n\
+    [0, 0],\n\
+    ])\n\n"
+        out += f"qc.unitary(pauli_y_root_dagger, [{target}], label='pauli-y-root-dagger')"
         return out
 
     @staticmethod
     def _gate_pauli_z_root_dagger(target, root, add_comments=True):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# pauli-z-root-dagger gate\n" if add_comments else ""
+        out += f"pauli-z-root-dagger = Operator([\n\
+    [1, 0],\n\
+    [0, 0],\n\
+    ])\n\n"
+        out += f"qc.unitary(pauli_z_root_dagger, [{target}], label='pauli-z-root-dagger')"
         return out
 
     @staticmethod
@@ -278,7 +315,14 @@ print(job_result.status)\n"
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# ctrl-pauli-x-root gate\n" if add_comments else ""
+    #     out += f"cx = Operator([\n\
+    # [1, 0, 0, 0],\n\
+    # [0, 0, 0, 1],\n\
+    # [0, 0, 1, 0],\n\
+    # [0, 1, 0, 0]])\n\n"
+        out += f"qc.unitary(ctrl_pauli_x_root, [{target}], label='ctrl-pauli-x-root')"
         return out
 
     @staticmethod
@@ -286,7 +330,9 @@ print(job_result.status)\n"
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# ctrl-pauli-y-root gate\n" if add_comments else ""
+        out += f"qc.unitary(ctrl_pauli_y_root, [{target}], label='ctrl-pauli-y-root')"
         return out
 
     @staticmethod
@@ -294,7 +340,9 @@ print(job_result.status)\n"
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# ctrl-pauli-z-root gate\n" if add_comments else ""
+        out += f"qc.unitary(ctrl_pauli_z_root, [{target}], label='ctrl-pauli-z-root')"
         return out
 
     @staticmethod
@@ -302,7 +350,9 @@ print(job_result.status)\n"
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# ctrl-pauli-x-root-dagger gate\n" if add_comments else ""
+        out += f"qc.unitary(ctrl_pauli_x_root_dagger, [{target}], label='ctrl-pauli-x-root-dagger')"
         return out
 
     @staticmethod
@@ -310,7 +360,9 @@ print(job_result.status)\n"
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# ctrl-pauli-y-root-dagger gate\n" if add_comments else ""
+        out += f"qc.unitary(ctrl_pauli_y_root_dagger, [{target}], label='ctrl-pauli-y-root-dagger')"
         return out
 
     @staticmethod
@@ -318,7 +370,9 @@ print(job_result.status)\n"
         control, target, controlstate, root, add_comments=True
     ):
         # TODO
+        root = root[4:] if '^' in root else root[2:]
         out = "# ctrl-pauli-z-root-dagger gate\n" if add_comments else ""
+        out += f"qc.unitary(ctrl_pauli_z_root_dagger, [{target}], label='ctrl-pauli-z-root-dagger')"
         return out
 
     @staticmethod

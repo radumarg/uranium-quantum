@@ -59,9 +59,9 @@ def export_yaml(yaml_data, exporter, add_comments):
     help="Specific format for exporting the circuit into: 'qiskit', 'openqasm', 'pyquil', 'quil' or 'cirq'.",
 )
 @click.option(
-    "--comments", "-c", required=False, help="Comment code for each exported gate."
+    "--nocomments", "-n", required=False, help="Do not comment code for each exported gate with gate name."
 )
-def main(file, export_format, comments):
+def main(file, export_format, nocomments):
 
     output_file = file.replace(".yaml", f"_{export_format}.py")
 
@@ -91,10 +91,10 @@ def main(file, export_format, comments):
             exporter.set_number_qubits(no_qubits)
             no_bits = get_number_bits(yaml_data)
             exporter.set_number_bits(no_bits)
-            if comments:
-                quantum_code = export_yaml(yaml_data, exporter, add_comments=True)
-            else:
+            if nocomments:
                 quantum_code = export_yaml(yaml_data, exporter, add_comments=False)
+            else:
+                quantum_code = export_yaml(yaml_data, exporter, add_comments=True)
         except yaml.YAMLError as ex:
             quantum_code = str(ex)
 
