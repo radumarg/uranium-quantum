@@ -18,7 +18,7 @@ class BaseExporter:
         """Set the number of classical bits in this circuit."""
         self._bits = bits
 
-    def process_step(self, step, add_comments=False):
+    def process_step(self, step, add_comments=True):
         """Export gates present in one step from the input YAML file."""
         output = ""
         if "gates" in step:
@@ -78,7 +78,7 @@ class BaseExporter:
         lambda_radians,
         bit,
         *qubits,
-        add_comments=False,
+        add_comments=True,
     ):
         """Create export code corresponding to a gate in yaml circuit."""
         if name == "u3":
@@ -296,124 +296,124 @@ class BaseExporter:
 
     @staticmethod
     def _gate_u3(
-        target, theta_radians, phi_radians, lambda_radians, add_comments=False
+        target, theta_radians, phi_radians, lambda_radians, add_comments=True
     ):
         return ""
 
     @staticmethod
-    def _gate_u2(target, phi_radians, lambda_radians, add_comments=False):
+    def _gate_u2(target, phi_radians, lambda_radians, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_u1(target, lambda_radians, add_comments=False):
+    def _gate_u1(target, lambda_radians, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_identity(target, add_comments=False):
+    def _gate_identity(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_hadamard(target, add_comments=False):
+    def _gate_hadamard(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_x(target, add_comments=False):
+    def _gate_pauli_x(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_y(target, add_comments=False):
+    def _gate_pauli_y(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_z(target, add_comments=False):
+    def _gate_pauli_z(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_x_root(target, add_comments=False):
+    def _gate_pauli_x_root(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_y_root(target, add_comments=False):
+    def _gate_pauli_y_root(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_z_root(target, add_comments=False):
+    def _gate_pauli_z_root(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_x_root_dagger(target, add_comments=False):
+    def _gate_pauli_x_root_dagger(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_y_root_dagger(target, add_comments=False):
+    def _gate_pauli_y_root_dagger(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_pauli_z_root_dagger(target, add_comments=False):
+    def _gate_pauli_z_root_dagger(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_sqrt_not(target, add_comments=False):
+    def _gate_sqrt_not(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_t(target, add_comments=False):
+    def _gate_t(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_t_dagger(target, add_comments=False):
+    def _gate_t_dagger(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_rx_theta(target, theta, add_comments=False):
+    def _gate_rx_theta(target, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ry_theta(target, theta, add_comments=False):
+    def _gate_ry_theta(target, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_rz_theta(target, theta, add_comments=False):
+    def _gate_rz_theta(target, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_s(target, add_comments=False):
+    def _gate_s(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_s_dagger(target, add_comments=False):
+    def _gate_s_dagger(target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_swap(target, target2, add_comments=False):
+    def _gate_swap(target, target2, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_iswap(target, target2, add_comments=False):
+    def _gate_iswap(target, target2, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_swap_phi(target, target2, phi, add_comments=False):
+    def _gate_swap_phi(target, target2, phi, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_sqrt_swap(target, target2, add_comments=False):
+    def _gate_sqrt_swap(target, target2, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_xx(target, target2, theta, add_comments=False):
+    def _gate_xx(target, target2, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_yy(target, target2, theta, add_comments=False):
+    def _gate_yy(target, target2, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_zz(target, target2, theta, add_comments=False):
+    def _gate_zz(target, target2, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_hadamard(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_hadamard(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
@@ -424,82 +424,82 @@ class BaseExporter:
         theta_radians,
         phi_radians,
         lambda_radians,
-        add_comments=False,
+        add_comments=True,
     ):
         return ""
 
     @staticmethod
     def _gate_ctrl_u2(
-        control, target, controlstate, phi_radians, lambda_radians, add_comments=False
+        control, target, controlstate, phi_radians, lambda_radians, add_comments=True
     ):
         return ""
 
     @staticmethod
     def _gate_ctrl_u1(
-        control, target, controlstate, lambda_radians, add_comments=False
+        control, target, controlstate, lambda_radians, add_comments=True
     ):
         return ""
 
     @staticmethod
-    def _gate_ctrl_t(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_t(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_t_dagger(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_t_dagger(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_pauli_x(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_pauli_x(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_pauli_y(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_pauli_y(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_pauli_z(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_pauli_z(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_sqrt_not(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_sqrt_not(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_rx_theta(control, target, controlstate, theta, add_comments=False):
+    def _gate_ctrl_rx_theta(control, target, controlstate, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_ry_theta(control, target, controlstate, theta, add_comments=False):
+    def _gate_ctrl_ry_theta(control, target, controlstate, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_rz_theta(control, target, controlstate, theta, add_comments=False):
+    def _gate_ctrl_rz_theta(control, target, controlstate, theta, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_s(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_s(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_ctrl_s_dagger(control, target, controlstate, add_comments=False):
+    def _gate_ctrl_s_dagger(control, target, controlstate, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_toffoli(control, control2, target, add_comments=False):
+    def _gate_toffoli(control, control2, target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_fredkin(control, control2, target, add_comments=False):
+    def _gate_fredkin(control, control2, target, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_measure_x(target, classic_bit, add_comments=False):
+    def _gate_measure_x(target, classic_bit, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_measure_y(target, classic_bit, add_comments=False):
+    def _gate_measure_y(target, classic_bit, add_comments=True):
         return ""
 
     @staticmethod
-    def _gate_measure_z(arget, classic_bit, add_comments=False):
+    def _gate_measure_z(arget, classic_bit, add_comments=True):
         return ""
