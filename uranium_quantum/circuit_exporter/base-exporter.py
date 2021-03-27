@@ -24,7 +24,8 @@ class BaseExporter:
         if "gates" in step:
             for gate in step["gates"]:
 
-                controlstate, root, theta_radians, phi_radians, lambda_radians, bit = (
+                controlstate, controlstate2, root, theta_radians, phi_radians, lambda_radians, bit = (
+                    None,
                     None,
                     None,
                     None,
@@ -34,6 +35,8 @@ class BaseExporter:
                 )
                 if "controlstate" in gate:
                     controlstate = gate["controlstate"]
+                if "controlstate2" in gate:
+                    controlstate2 = gate["controlstate2"]
                 if "root" in gate:
                     root = gate["root"]
                 if "theta" in gate:
@@ -58,6 +61,7 @@ class BaseExporter:
                 output += self.process_gate(
                     name,
                     controlstate,
+                    controlstate2,
                     root,
                     theta_radians,
                     phi_radians,
@@ -72,6 +76,7 @@ class BaseExporter:
         self,
         name,
         controlstate,
+        controlstate2,
         root,
         theta_radians,
         phi_radians,
@@ -280,11 +285,11 @@ class BaseExporter:
             )
         elif name == "toffoli":
             return self._gate_toffoli(
-                qubits[0], qubits[1], qubits[2], add_comments=add_comments
+                qubits[0], qubits[1], qubits[2], controlstate, controlstate2, add_comments=add_comments
             )
         elif name == "fredkin":
             return self._gate_fredkin(
-                qubits[0], qubits[1], qubits[2], add_comments=add_comments
+                qubits[0], qubits[1], qubits[2], controlstate, add_comments=add_comments
             )
         elif name == "measure-x":
             return self._gate_measure_x(qubits[0], bit, add_comments=add_comments)
@@ -489,7 +494,7 @@ class BaseExporter:
         return ""
 
     @staticmethod
-    def _gate_fredkin(control, control2, target, add_comments=True):
+    def _gate_fredkin(control, control2, controlstate, target, add_comments=True):
         return ""
 
     @staticmethod
