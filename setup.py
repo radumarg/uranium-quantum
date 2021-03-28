@@ -1,10 +1,16 @@
 from distutils.core import setup
+
+with open("README.md", "r") as readme:
+    long_description = readme.read()
+
 setup(
   name = 'uranium-quantum',         
-  packages = ['uranium-quantum'],   
+  packages = ['uranium_quantum'],   
   version = '0.1.0',     
   license='MIT', 
-  description = 'This package contains support Python libraries for the Uranium Quantum Computing Platform.',  
+  description = 'Support libraries for the Uranium quantum computing platform.',  
+  long_description=long_description,
+  long_description_content_type='text/markdown',
   author = 'Radu Marginean',                   
   author_email = 'radu.marg@gmail.com',     
   url = 'https://github.com/radumarg/uranium-quantum',   
