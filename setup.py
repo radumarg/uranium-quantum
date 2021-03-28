@@ -1,12 +1,17 @@
 from distutils.core import setup
+from os import path
 
-with open("README.md", "r") as readme:
-    long_description = readme.read()
+try:
+  this_directory = path.abspath(path.dirname(__file__))
+  with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+      long_description = f.read()
+except:
+  long_description = ""
 
 setup(
   name = 'uranium-quantum',
-  packages = ['uranium_quantum'],  
-  version = '0.1.1', 
+  packages = ['uranium_quantum/circuit_composer', 'uranium_quantum/circuit_exporter'],  
+  version = '0.1.2', 
   license='MIT',
   description = 'Support libraries for the Uranium quantum computing platform.',
   long_description=long_description,
@@ -14,7 +19,7 @@ setup(
   author = 'Radu Marginean',
   author_email = 'radu.marg@gmail.com',
   url = 'https://github.com/radumarg/uranium-quantum',
-  download_url = 'https://github.com/radumarg/uranium-quantum/archive/refs/tags/v0.1.1.tar.gz',
+  download_url = 'https://github.com/radumarg/uranium-quantum/archive/refs/tags/v0.1.2.tar.gz',
   keywords = ['quantum', 'computing', 'uranium platform'],  
   install_requires=[            
           'click',
