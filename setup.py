@@ -8,14 +8,14 @@ setup(
   author = 'Radu Marginean',                   
   author_email = 'radu.marg@gmail.com',     
   url = 'https://github.com/radumarg/uranium-quantum',   
-  download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',    # I explain this later on
-  keywords = ['qauntum', 'computing'],  
+  download_url = 'https://github.com/radumarg/uranium-quantum/archive/refs/tags/v0.1.0.tar.gz',    
+  keywords = ['quantum', 'computing', 'uranium platform'],  
   install_requires=[            
           'click',
           'pyyaml'
       ],
   classifiers=[
-    # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
+    # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" 
     'Development Status :: 3 - Alpha',      
     'Intended Audience :: Developers',      
     'Topic :: Software Development :: Build Tools',
