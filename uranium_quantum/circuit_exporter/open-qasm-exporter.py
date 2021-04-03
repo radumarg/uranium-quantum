@@ -1,7 +1,7 @@
 import importlib
 import math
 
-BaseExporter = importlib.import_module("base-exporter")
+BaseExporter = importlib.import_module("uranium_quantum.circuit_exporter.base-exporter")
 
 
 class Exporter(BaseExporter.BaseExporter):

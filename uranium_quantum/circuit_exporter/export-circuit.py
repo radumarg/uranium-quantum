@@ -2,11 +2,11 @@ import click
 import importlib
 import yaml
 
-QiskitExporter = importlib.import_module("qiskit-exporter")
-OpenQASMExporter = importlib.import_module("open-qasm-exporter")
-PyquilExporter = importlib.import_module("pyquil-exporter")
-QuilExporter = importlib.import_module("quil-exporter")
-CirqExporter = importlib.import_module("cirq-exporter")
+QiskitExporter = importlib.import_module("uranium_quantum.circuit_exporter.qiskit-exporter")
+OpenQASMExporter = importlib.import_module("uranium_quantum.circuit_exporter.open-qasm-exporter")
+PyquilExporter = importlib.import_module("uranium_quantum.circuit_exporter.pyquil-exporter")
+QuilExporter = importlib.import_module("uranium_quantum.circuit_exporter.quil-exporter")
+CirqExporter = importlib.import_module("uranium_quantum.circuit_exporter.cirq-exporter")
 
 
 def get_number_qubits(yaml):
