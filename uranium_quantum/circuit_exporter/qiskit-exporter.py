@@ -29,7 +29,7 @@ job = execute(qc, backend=simulator, shots=1000)\n\n\
 result = job.result()\n\n\
 print('Job result status', result.status)\n\
 counts = result.get_counts(qc)\n\n\
-# You need to include some measure gates in your circuits in order to see some plots:)\n\
+# Note: you need to include some measure gates in your circuit in order to see some plots here:\n\
 plot_histogram(counts)\n"
 
     @staticmethod

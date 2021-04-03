@@ -59,8 +59,23 @@ def process_yaml(yaml_data, exporter, add_comments):
     return code
 
 
-def get_exported_code(file, exporter, nocomments):
+def get_exported_code(file, export_format, nocomments):
     """Get circuit code in exported format"""
+
+    exporter = None
+    if export_format.lower() == "qiskit":
+        exporter = QiskitExporter.Exporter()
+    elif export_format.lower() == "openqasm":
+        exporter = OpenQASMExporter.Exporter()
+    elif export_format.lower() == "pyquil":
+        exporter = PyquilExporter.Exporter()
+    elif export_format.lower() == "quil":
+        exporter = QuilExporter.Exporter()
+    elif export_format.lower() == "cirq":
+        exporter = CirqExporter.Exporter()
+    else:
+        raise Exception(f"Export format {export_format} is not supported.")
+
     quantum_code = ""
     with open(file, "r") as stream:
         try:
@@ -99,25 +114,22 @@ def main(file, export_format, nocomments):
         print("A yaml file is required as input for this script.")
         return
 
-    exporter = None
     if export_format.lower() == "qiskit":
-        exporter = QiskitExporter.Exporter()
+        pass
     elif export_format.lower() == "openqasm":
         raise Exception("The openqasm exporter is not yet fully implemented. Will be fixed soon!")
-        exporter = OpenQASMExporter.Exporter()
         output_file = file.replace(".yaml", "_OpenQASM.qasm")
     elif export_format.lower() == "pyquil":
         raise Exception("The pyquil exporter is not yet fully implemented. Will be fixed soon!")
-        exporter = PyquilExporter.Exporter()
+        pass
     elif export_format.lower() == "quil":
         raise Exception("The quil exporter is not yet fully implemented. Will be fixed soon!")
-        exporter = QuilExporter.Exporter()
         output_file = file.replace(".yaml", "_Quil.quil")
     elif export_format.lower() == "cirq":
         raise Exception("The cirq exporter is not yet fully implemented. Will be fixed soon!")
-        exporter = CirqExporter.Exporter()
+        pass
 
-    quantum_code = get_exported_code(file, exporter, nocomments=False)
+    quantum_code = get_exported_code(file, export_format, nocomments=False)
 
     with open(output_file, "w") as outfile:
         outfile.write(quantum_code)
