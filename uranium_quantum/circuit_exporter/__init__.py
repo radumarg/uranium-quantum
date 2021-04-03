@@ -2,4 +2,4 @@
 
 __all__ = ["QuantumRegistry"]
 
-from .circuit_composer import QuantumRegistry
+from uranium_quantum.circuit_composer.circuit_composer import QuantumRegistry

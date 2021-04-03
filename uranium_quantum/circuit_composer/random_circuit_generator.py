@@ -1,7 +1,7 @@
 import random
 import click
 
-from circuit_composer import (
+from uranium_quantum.circuit_composer.circuit_composer import (
     QuantumRegistry,
 )
 
