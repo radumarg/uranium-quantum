@@ -29,9 +29,8 @@ job = execute(qc, backend=simulator, shots=1000)\n\n\
 result = job.result()\n\n\
 print('Job result status', result.status)\n\
 counts = result.get_counts(qc)\n\n\
-# If you circuit includes measure gates for all your qubits or only some\n\
-# of them you can uncomment line below and see some nice plots\n\
-#plot_histogram(counts)\n"
+# You need to include some measure gates in your circuits in order to see some plots:)\n\
+plot_histogram(counts)\n"
 
     @staticmethod
     def _gate_u3(

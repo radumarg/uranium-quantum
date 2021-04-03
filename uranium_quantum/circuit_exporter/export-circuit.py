@@ -38,7 +38,7 @@ def get_number_bits(yaml):
     return bits
 
 
-def export_yaml(yaml_data, exporter, add_comments):
+def process_yaml(yaml_data, exporter, add_comments):
     """Export quantium circuit from YAML format to target language."""
     code = exporter.start_code()
     if "steps" in yaml_data.keys():
@@ -57,6 +57,25 @@ def export_yaml(yaml_data, exporter, add_comments):
             code += exporter.process_step(step, add_comments)
     code += exporter.end_code()
     return code
+
+
+def get_exported_code(file, exporter, nocomments):
+    """Get circuit code in exported format"""
+    quantum_code = ""
+    with open(file, "r") as stream:
+        try:
+            yaml_data = yaml.safe_load(stream)
+            no_qubits = get_number_qubits(yaml_data)
+            exporter.set_number_qubits(no_qubits)
+            no_bits = get_number_bits(yaml_data)
+            exporter.set_number_bits(no_bits)
+            if nocomments:
+                quantum_code = process_yaml(yaml_data, exporter, add_comments=False)
+            else:
+                quantum_code = process_yaml(yaml_data, exporter, add_comments=True)
+        except yaml.YAMLError as ex:
+            quantum_code = str(ex)
+    return quantum_code
 
 
 @click.command()
@@ -98,20 +117,7 @@ def main(file, export_format, nocomments):
         raise Exception("The cirq exporter is not yet fully implemented. Will be fixed soon!")
         exporter = CirqExporter.Exporter()
 
-    quantum_code = ""
-    with open(file, "r") as stream:
-        try:
-            yaml_data = yaml.safe_load(stream)
-            no_qubits = get_number_qubits(yaml_data)
-            exporter.set_number_qubits(no_qubits)
-            no_bits = get_number_bits(yaml_data)
-            exporter.set_number_bits(no_bits)
-            if nocomments:
-                quantum_code = export_yaml(yaml_data, exporter, add_comments=False)
-            else:
-                quantum_code = export_yaml(yaml_data, exporter, add_comments=True)
-        except yaml.YAMLError as ex:
-            quantum_code = str(ex)
+    quantum_code = get_exported_code(file, exporter, nocomments=False)
 
     with open(output_file, "w") as outfile:
         outfile.write(quantum_code)
