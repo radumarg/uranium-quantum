@@ -5,7 +5,7 @@ description = "Support Python libraries for Uranium quantum computing platform."
 authors = ["Radu Marginean <radu.marg@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-homepage = "https://www.transilvania-quantum.org/uranium"
+homepage = "https://transilvania-quantum.org/uranium"
 repository = "https://github.com/radumarg/uranium_quantum"
 keywords = ["uranium", "quantum", "computing"]
 
