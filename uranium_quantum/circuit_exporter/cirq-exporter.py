@@ -234,8 +234,8 @@ simulator.run(circuit, repetitions=1000)\n"
         return out
 
     @staticmethod
-    def _gate_swap_phi(target, target2, phi, add_comments=True):
-        raise BaseExporter.ExportException("The swap-phi gate is not implemented.")
+    def _gate_swap_theta(target, target2, phi, add_comments=True):
+        raise BaseExporter.ExportException("The swap-theta gate is not implemented.")
 
     @staticmethod
     def _gate_sqrt_swap(target, target2, add_comments=True):

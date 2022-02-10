@@ -1,189 +1,323 @@
+version: '1.1'
+circuit-type: simple
 steps:
   - index: 0
     gates:
-      - name: identity
-        target: 0
+      - name: pauli-x
+        targets:
+          - 0
+      - name: pauli-x-root
+        targets:
+          - 1
+        root: 1/1
+      - name: pauli-x-root
+        targets:
+          - 2
+        root: 1/2^7
+      - name: pauli-x-root-dagger
+        targets:
+          - 3
+        root: 1/1
+      - name: pauli-x-root-dagger
+        targets:
+          - 4
+        root: 1/2^11
+      - name: rx-theta
+        targets:
+          - 5
+        theta: 0.11
+      - name: v
+        targets:
+          - 6
+      - name: hadamard-xy
+        targets:
+          - 7
+      - name: u1
+        targets:
+          - 8
+        lambda: 0.11
+      - name: c
+        targets:
+          - 9
   - index: 1
     gates:
-      - name: u3
-        target: 1
-        theta: 1.57
-        phi: 1.57
-        lambda: 1.57
+      - name: pauli-y
+        targets:
+          - 0
+      - name: pauli-y-root
+        targets:
+          - 1
+        root: 1/1
+      - name: pauli-y-root
+        targets:
+          - 2
+        root: 1/2^7
+      - name: pauli-y-root-dagger
+        targets:
+          - 3
+        root: 1/1
+      - name: pauli-y-root-dagger
+        targets:
+          - 4
+        root: 1/2^11
+      - name: ry-theta
+        targets:
+          - 5
+        theta: 0.22
+      - name: v-dagger
+        targets:
+          - 6
+      - name: hadamard-yz
+        targets:
+          - 7
+      - name: u2
+        targets:
+          - 8
+        phi: 0.11
+        lambda: 0.22
+      - name: c-dagger
+        targets:
+          - 9
   - index: 2
     gates:
-      - name: u2
-        target: 2
-        phi: 1.57
-        lambda: 1.57
+      - name: pauli-z
+        targets:
+          - 0
+      - name: pauli-z-root
+        targets:
+          - 1
+        root: 1/1
+      - name: pauli-z-root
+        targets:
+          - 2
+        root: 1/2^7
+      - name: pauli-z-root-dagger
+        targets:
+          - 3
+        root: 1/1
+      - name: pauli-z-root-dagger
+        targets:
+          - 4
+        root: 1/2^11
+      - name: rz-theta
+        targets:
+          - 5
+        theta: 0.33
+      - name: h
+        targets:
+          - 6
+      - name: hadamard-zx
+        targets:
+          - 7
+      - name: u3
+        targets:
+          - 8
+        phi: 0.22
+        theta: 0.11
+        lambda: 0.33
+      - name: identity
+        targets:
+          - 9
+      - name: measure-z
+        targets:
+          - 12
+        bit: 12
   - index: 3
     gates:
-      - name: u1
-        target: 3
-        lambda: 1.57
+      - name: s
+        targets:
+          - 0
+      - name: s-dagger
+        targets:
+          - 1
+      - name: s-dagger
+        targets:
+          - 2
+      - name: t
+        targets:
+          - 3
+      - name: t
+        targets:
+          - 4
+      - name: t-dagger
+        targets:
+          - 5
+      - name: h-dagger
+        targets:
+          - 6
+      - name: hadamard
+        targets:
+          - 7
+      - name: p
+        targets:
+          - 8
+        theta: 7.77
   - index: 4
     gates:
-      - name: hadamard
-        target: 4
+      - name: barrier
   - index: 5
     gates:
-      - name: pauli-x
-        target: 5
+      - name: swap
+        targets:
+          - 0
+          - 1
+      - name: iswap
+        targets:
+          - 2
+          - 3
+      - name: xx
+        targets:
+          - 4
+          - 5
+        theta: 7.77
+      - name: molmer-sorensen
+        targets:
+          - 6
+          - 7
+      - name: ecp
+        targets:
+          - 8
+          - 9
+      - name: magic
+        targets:
+          - 10
+          - 11
   - index: 6
     gates:
-      - name: pauli-y
-        target: 6
+      - name: sqrt-swap
+        targets:
+          - 0
+          - 1
+      - name: fswap
+        targets:
+          - 2
+          - 3
+      - name: yy
+        targets:
+          - 4
+          - 5
+        theta: 7.77
+      - name: molmer-sorensen-dagger
+        targets:
+          - 6
+          - 7
+      - name: ecp-dagger
+        targets:
+          - 8
+          - 9
+      - name: magic-dagger
+        targets:
+          - 10
+          - 11
   - index: 7
     gates:
-      - name: pauli-z
-        target: 7
+      - name: sqrt-swap-dagger
+        targets:
+          - 0
+          - 1
+      - name: swap-root
+        targets:
+          - 2
+          - 3
+        root: 1/1.11
+      - name: zz
+        targets:
+          - 4
+          - 5
+        theta: 7.77
+      - name: berkeley
+        targets:
+          - 6
+          - 7
+      - name: w
+        targets:
+          - 8
+          - 9
+      - name: cross-resonance
+        targets:
+          - 10
+          - 11
+        theta: 7.77
   - index: 8
     gates:
-      - name: sqrt-not
-        target: 8
+      - name: swap-theta
+        targets:
+          - 0
+          - 1
+        theta: 0.11
+      - name: swap-root-dagger
+        targets:
+          - 2
+          - 3
+        root: 1/2.22
+      - name: xy
+        targets:
+          - 4
+          - 5
+        theta: 7.77
+      - name: berkeley-dagger
+        targets:
+          - 6
+          - 7
+      - name: a
+        targets:
+          - 8
+          - 9
+        phi: 8.88
+        theta: 7.77
+      - name: cross-resonance-dagger
+        targets:
+          - 10
+          - 11
+        theta: 7.77
   - index: 9
     gates:
-      - name: t
-        target: 9
+      - name: barrier
   - index: 10
     gates:
-      - name: t-dagger
-        target: 10
+      - name: aggregate
+        controls:
+          - target: 4
+            state: '1'
+          - target: 5
+            state: +i
+          - target: 6
+            state: +
+        gates:
+          - name: hadamard-yz
+            targets:
+              - 0
+          - name: rx-theta
+            targets:
+              - 1
+            theta: 7
+          - name: pauli-y-root
+            targets:
+              - 2
+            root: 1/2^7
+          - name: pauli-x-root
+            targets:
+              - 3
+            root: 1/2^7
   - index: 11
     gates:
-      - name: rx-theta
-        target: 11
-        theta: 1.57
+      - name: qft
+        targets:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
   - index: 12
     gates:
-      - name: ry-theta
-        target: 12
-        theta: 1.57
-  - index: 13
-    gates:
-      - name: rz-theta
-        target: 13
-        theta: 1.57
-  - index: 14
-    gates:
-      - name: s
-        target: 14
-  - index: 15
-    gates:
-      - name: s-dagger
-        target: 15
-  - index: 16
-    gates:
-      - name: ctrl-u3
-        target: 2
-        control: 1
-        theta: 1.57
-        phi: 1.57
-        lambda: 1.57
-  - index: 17
-    gates:
-      - name: ctrl-u2
-        target: 3
-        control: 2
-        phi: 1.57
-        lambda: 1.57
-  - index: 18
-    gates:
-      - name: ctrl-u1
-        target: 4
-        control: 3
-        lambda: 1.57
-  - index: 19
-    gates:
-      - name: hadamard
-        target: 5
-  - index: 20
-    gates:
-      - name: ctrl-pauli-x
-        target: 6
-        control: 5
-  - index: 21
-    gates:
-      - name: ctrl-pauli-y
-        target: 7
-        control: 6
-  - index: 22
-    gates:
-      - name: ctrl-pauli-z
-        target: 8
-        control: 7
-  - index: 23
-    gates:
-      - name: ctrl-sqrt-not
-        target: 9
-        control: 8
-  - index: 24
-    gates:
-      - name: ctrl-t
-        target: 10
-        control: 9
-  - index: 25
-    gates:
-      - name: ctrl-t-dagger
-        target: 11
-        control: 10
-  - index: 26
-    gates:
-      - name: ctrl-rx-theta
-        target: 12
-        control: 11
-        theta: 1.57
-  - index: 27
-    gates:
-      - name: ctrl-ry-theta
-        target: 13
-        control: 12
-        theta: 1.57
-  - index: 28
-    gates:
-      - name: ctrl-rz-theta
-        target: 14
-        control: 13
-        theta: 1.57
-  - index: 29
-    gates:
-      - name: ctrl-s
-        target: 15
-        control: 14
-  - index: 30
-    gates:
-      - name: ctrl-s-dagger
-        target: 16
-        control: 15
-  - index: 31
-    gates:
-      - name: swap
-        target: 1
-        target2: 2
-  - index: 32
-    gates:
-      - name: iswap
-        target: 2
-        target2: 3
-  - index: 33
-    gates:
-      - name: sqrt-swap
-        target: 3
-        target2: 4
-  - index: 35
-    gates:
-      - name: toffoli
-        target: 6
-        control: 4
-        control2: 5
-  - index: 36
-    gates:
-      - name: fredkin
-        target: 9
-        control: 7
-        control2: 8
-  - index: 39
-    gates:
-      - name: measure-z
-        target: 3
-        bit: 3
+      - name: qft-dagger
+        targets:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6

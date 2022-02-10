@@ -125,7 +125,7 @@ def _add_random_two_qbit_gate(quantum_registry, qbit, qbit2):
     elif gate == 21:
         quantum_registry.gate_sqrt_swap(qbit, qbit2)
     elif gate == 22:
-        quantum_registry.gate_swap_phi(qbit, qbit2, 2.0)
+        quantum_registry.gate_swap_theta(qbit, qbit2, 2.0)
     elif gate == 23:
         quantum_registry.gate_iswap(qbit, qbit2)
     # elif gate == 24:

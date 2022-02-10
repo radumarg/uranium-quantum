@@ -295,7 +295,7 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
         return out
 
     @staticmethod
-    def _gate_swap_phi(target, target2, phi, add_comments=True):
+    def _gate_swap_theta(target, target2, phi, add_comments=True):
         raise BaseExporter.ExportException("The swap-phi gate is not implemented.")
 
     @staticmethod

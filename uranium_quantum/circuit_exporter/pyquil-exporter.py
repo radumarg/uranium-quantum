@@ -310,8 +310,8 @@ print(qc.run(p))\n\
         return out
 
     @staticmethod
-    def _gate_swap_phi(target, target2, phi, add_comments=True):
-        out = "# swap-phi gate\n" if add_comments else ""
+    def _gate_swap_theta(target, target2, phi, add_comments=True):
+        out = "# swap-theta gate\n" if add_comments else ""
         out += f"p.inst(PSWAP({phi}, {target}, {target2}))\n"
         return out
 

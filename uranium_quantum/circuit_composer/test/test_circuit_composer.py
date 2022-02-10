@@ -70,7 +70,7 @@ def two_qbit_gates(args0, args1):
         f"gate_ctrl_pauli_z_root_dagger({args0[19]}, 0, {args1[19]}, t=2.0)",
         f"gate_swap({args0[20]}, {args1[20]})",
         f"gate_sqrt_swap({args0[21]}, {args1[21]})",
-        f"gate_swap_phi({args0[22]}, {args1[22]}, 2)",
+        f"gate_swap_theta({args0[22]}, {args1[22]}, 2)",
         f"gate_iswap({args0[23]}, {args1[23]})",
         f"gate_xx({args0[24]}, {args1[24]}, 3.0)",
         f"gate_yy({args0[25]}, {args1[25]}, 4.0)",
@@ -354,7 +354,7 @@ def test_full():
     quantum_registry.increment_step().gate_swap(1, 2)
     quantum_registry.gate_iswap(4, 5)
     quantum_registry.gate_sqrt_swap(6, 7)
-    quantum_registry.gate_swap_phi(9, 10, 3.14 / 2)
+    quantum_registry.gate_swap_theta(9, 10, 3.14 / 2)
 
     # ising gates
     quantum_registry.increment_step().gate_xx(1, 2, 0.5)

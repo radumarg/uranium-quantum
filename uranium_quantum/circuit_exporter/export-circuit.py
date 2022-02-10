@@ -10,19 +10,22 @@ CirqExporter = importlib.import_module("uranium_quantum.circuit_exporter.cirq-ex
 
 
 def get_number_qubits(yaml):
-    """Extract the numebr of qubits in yaml circuit."""
+    """Extract the number of qubits in yaml circuit."""
     qubits = 0
     if "steps" in yaml.keys():
         for step in yaml["steps"]:
             if "gates" in step:
                 for gate in step["gates"]:
-                    qubits = max(qubits, gate["target"] + 1)
-                    if "target2" in gate:
-                        qubits = max(qubits, gate["target2"] + 1)
-                    if "control" in gate:
-                        qubits = max(qubits, gate["control"] + 1)
-                    if "control2" in gate:
-                        qubits = max(qubits, gate["control2"] + 1)
+                    if "controls" in gate:
+                        for ctrl_info in gate["controls"]:
+                            qubits = max(qubits, ctrl_info["target"] + 1)
+                    if "targets" in gate:
+                        for target in gate["targets"]:
+                            qubits = max(qubits, target + 1)
+                    if "gates" in gate:
+                        for gate in gate["gates"]:
+                            for target in gate["targets"]:
+                                qubits = max(qubits, target + 1)
     return qubits
 
 
@@ -45,21 +48,26 @@ def process_yaml(yaml_data, exporter, add_comments):
         for step in yaml_data["steps"]:
             step_index = step["index"]
             if type(exporter) == QiskitExporter.Exporter:
-                code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                if add_comments:
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
             elif type(exporter) == OpenQASMExporter.Exporter:
-                code += f"\n//////////// New circuit step no: {step_index} ////////////\n\n\n"
+                if add_comments:
+                    code += f"\n//////////// New circuit step no: {step_index} ////////////\n\n\n"
             elif type(exporter) == PyquilExporter.Exporter:
-                code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                if add_comments:
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
             elif type(exporter) == QuilExporter.Exporter:
-                code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                if add_comments:
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
             elif type(exporter) == CirqExporter.Exporter:
-                code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                if add_comments:
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
             code += exporter.process_step(step, add_comments)
     code += exporter.end_code()
     return code
 
 
-def get_exported_code(file, export_format, nocomments):
+def get_exported_code(file, export_format, comments):
     """Get circuit code in exported format"""
 
     exporter = None
@@ -84,10 +92,10 @@ def get_exported_code(file, export_format, nocomments):
             exporter.set_number_qubits(no_qubits)
             no_bits = get_number_bits(yaml_data)
             exporter.set_number_bits(no_bits)
-            if nocomments:
-                quantum_code = process_yaml(yaml_data, exporter, add_comments=False)
-            else:
+            if comments:
                 quantum_code = process_yaml(yaml_data, exporter, add_comments=True)
+            else:
+                quantum_code = process_yaml(yaml_data, exporter, add_comments=False)
         except yaml.YAMLError as ex:
             quantum_code = str(ex)
     return quantum_code
@@ -104,9 +112,9 @@ def get_exported_code(file, export_format, nocomments):
     help="Specific format for exporting the circuit into: 'qiskit', 'openqasm', 'pyquil', 'quil' or 'cirq'.",
 )
 @click.option(
-    "--nocomments", "-n", required=False, help="Do not comment code for each exported gate with gate name."
+    "-comments", "-c", required=False, help="Add comments with step index gate names in exported code."
 )
-def main(file, export_format, nocomments):
+def main(file, export_format, comments = False):
 
     output_file = file.replace(".yaml", f"_{export_format}.py")
 
@@ -117,19 +125,16 @@ def main(file, export_format, nocomments):
     if export_format.lower() == "qiskit":
         pass
     elif export_format.lower() == "openqasm":
-        raise Exception("The openqasm exporter is not yet fully implemented. Will be fixed soon!")
-        output_file = file.replace(".yaml", "_OpenQASM.qasm")
+        output_file = file.replace(".yaml", ".qasm")
     elif export_format.lower() == "pyquil":
-        raise Exception("The pyquil exporter is not yet fully implemented. Will be fixed soon!")
-        pass
+        raise Exception("The pyquil exporter is not yet implemented.")
     elif export_format.lower() == "quil":
-        raise Exception("The quil exporter is not yet fully implemented. Will be fixed soon!")
-        output_file = file.replace(".yaml", "_Quil.quil")
+        output_file = file.replace(".yaml", ".quil")
+        raise Exception("The quil exporter is not yet implemented.")
     elif export_format.lower() == "cirq":
-        raise Exception("The cirq exporter is not yet fully implemented. Will be fixed soon!")
-        pass
+        raise Exception("The cirq exporter is not yet implemented.")
 
-    quantum_code = get_exported_code(file, export_format, nocomments=False)
+    quantum_code = get_exported_code(file, export_format, comments)
 
     with open(output_file, "w") as outfile:
         outfile.write(quantum_code)

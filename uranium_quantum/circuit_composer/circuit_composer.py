@@ -466,14 +466,14 @@ delivering some of the logic intended by the creator of the circuit."""
         self.setup_new_gate(gate, target, target2)
         return self
 
-    def gate_swap_phi(self, target, target2, phi):
+    def gate_swap_theta(self, target, target2, theta):
         """Apply a "swap-phi" gate on these two qbits."""
         assert target != target2
         gate = {}
         gate["name"] = "swap-phi"
         gate["target"] = target
         gate["target2"] = target2
-        gate["phi"] = phi
+        gate["tehta"] = theta
         self.setup_new_gate(gate, target, target2)
         return self
 
