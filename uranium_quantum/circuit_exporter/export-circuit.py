@@ -49,19 +49,19 @@ def process_yaml(yaml_data, exporter, add_comments):
             step_index = step["index"]
             if type(exporter) == QiskitExporter.Exporter:
                 if add_comments:
-                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n"
             elif type(exporter) == OpenQASMExporter.Exporter:
                 if add_comments:
-                    code += f"\n//////////// New circuit step no: {step_index} ////////////\n\n\n"
+                    code += f"\n//////////// New circuit step no: {step_index} ////////////\n\n"
             elif type(exporter) == PyquilExporter.Exporter:
                 if add_comments:
-                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n"
             elif type(exporter) == QuilExporter.Exporter:
                 if add_comments:
-                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n"
             elif type(exporter) == CirqExporter.Exporter:
                 if add_comments:
-                    code += f"\n############ New circuit step no: {step_index} ############\n\n\n"
+                    code += f"\n############ New circuit step no: {step_index} ############\n\n"
             code += exporter.process_step(step, add_comments)
     code += exporter.end_code()
     return code
@@ -74,7 +74,7 @@ def get_exported_code(file, export_format, comments):
     if export_format.lower() == "qiskit":
         exporter = QiskitExporter.Exporter()
     elif export_format.lower() == "openqasm":
-        exporter = OpenQASMExporter.Exporter()
+        exporter = QiskitExporter.Exporter()
     elif export_format.lower() == "pyquil":
         exporter = PyquilExporter.Exporter()
     elif export_format.lower() == "quil":
@@ -134,7 +134,12 @@ def main(file, export_format, comments = False):
     elif export_format.lower() == "cirq":
         raise Exception("The cirq exporter is not yet implemented.")
 
-    quantum_code = get_exported_code(file, export_format, comments)
+    quantum_code = get_exported_code(file, export_format, comments.lower() in ['true', '1', 't', 'y', 'yes'])
+
+    if export_format.lower() == "openqasm":
+        for code_line in quantum_code.splitlines():
+            exec(code_line)
+        quantum_code = eval('qc.qasm()')
 
     with open(output_file, "w") as outfile:
         outfile.write(quantum_code)

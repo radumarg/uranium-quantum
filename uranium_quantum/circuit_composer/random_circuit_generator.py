@@ -2,7 +2,7 @@ import random
 import click
 
 from uranium_quantum.circuit_composer.circuit_composer import (
-    QuantumRegistry,
+    QuantumCircuit,
 )
 
 NO_SINGLE_QBIT_GATES = 21
@@ -10,55 +10,55 @@ NO_TWO_QBIT_GATES = 24
 NO_THREE_QBIT_GATES = 2
 
 
-def _add_random_single_qbit_gate(quantum_registry, qbit):
+def _add_random_single_qbit_gate(quantum_circuit, qbit):
 
     gate = random.randint(0, NO_SINGLE_QBIT_GATES - 1)
 
     if gate == 0:
-        quantum_registry.gate_u3(qbit, 1, 2, 3)
+        quantum_circuit.gate_u3(qbit, 1, 2, 3)
     elif gate == 1:
-        quantum_registry.gate_u2(qbit, 2, 3)
+        quantum_circuit.gate_u2(qbit, 2, 3)
     elif gate == 2:
-        quantum_registry.gate_u1(qbit, 2)
+        quantum_circuit.gate_u1(qbit, 2)
     elif gate == 3:
-        quantum_registry.gate_identity(qbit)
+        quantum_circuit.gate_identity(qbit)
     elif gate == 4:
-        quantum_registry.gate_hadamard(qbit)
+        quantum_circuit.gate_hadamard(qbit)
     elif gate == 5:
-        quantum_registry.gate_pauli_x(qbit)
+        quantum_circuit.gate_pauli_x(qbit)
     elif gate == 6:
-        quantum_registry.gate_pauli_y(qbit)
+        quantum_circuit.gate_pauli_y(qbit)
     elif gate == 7:
-        quantum_registry.gate_pauli_z(qbit)
+        quantum_circuit.gate_pauli_z(qbit)
     elif gate == 8:
-        quantum_registry.gate_t(qbit)
+        quantum_circuit.gate_t(qbit)
     elif gate == 9:
-        quantum_registry.gate_t_dagger(qbit)
+        quantum_circuit.gate_t_dagger(qbit)
     elif gate == 10:
-        quantum_registry.gate_rx_theta(qbit, 1.2)
+        quantum_circuit.gate_rx_theta(qbit, 1.2)
     elif gate == 11:
-        quantum_registry.gate_ry_theta(qbit, 1.3)
+        quantum_circuit.gate_ry_theta(qbit, 1.3)
     elif gate == 12:
-        quantum_registry.gate_rz_theta(qbit, 1.4)
+        quantum_circuit.gate_rz_theta(qbit, 1.4)
     elif gate == 13:
-        quantum_registry.gate_s(qbit)
+        quantum_circuit.gate_s(qbit)
     elif gate == 14:
-        quantum_registry.gate_s_dagger(qbit)
+        quantum_circuit.gate_s_dagger(qbit)
     elif gate == 15:
-        quantum_registry.gate_pauli_x_root(qbit, k=random.randint(3, 10))
+        quantum_circuit.gate_pauli_x_root(qbit, k=random.randint(3, 10))
     elif gate == 16:
-        quantum_registry.gate_pauli_y_root(qbit, k=random.randint(3, 10))
+        quantum_circuit.gate_pauli_y_root(qbit, k=random.randint(3, 10))
     elif gate == 17:
-        quantum_registry.gate_pauli_z_root(qbit, k=random.randint(3, 10))
+        quantum_circuit.gate_pauli_z_root(qbit, k=random.randint(3, 10))
     elif gate == 18:
-        quantum_registry.gate_pauli_x_root_dagger(qbit, k=random.randint(3, 10))
+        quantum_circuit.gate_pauli_x_root_dagger(qbit, k=random.randint(3, 10))
     elif gate == 19:
-        quantum_registry.gate_pauli_y_root_dagger(qbit, k=random.randint(3, 10))
+        quantum_circuit.gate_pauli_y_root_dagger(qbit, k=random.randint(3, 10))
     elif gate == 20:
-        quantum_registry.gate_pauli_z_root_dagger(qbit, k=random.randint(3, 10))
+        quantum_circuit.gate_pauli_z_root_dagger(qbit, k=random.randint(3, 10))
 
 
-def _add_random_two_qbit_gate(quantum_registry, qbit, qbit2):
+def _add_random_two_qbit_gate(quantum_circuit, qbit, qbit2):
 
     gate = random.randint(0, NO_TWO_QBIT_GATES - 1)
 
@@ -69,74 +69,74 @@ def _add_random_two_qbit_gate(quantum_registry, qbit, qbit2):
     control_state = random.randint(0, 1)
 
     if gate == 0:
-        quantum_registry.gate_ctrl_u3(qbit, control_state, qbit2, 1.0, 2.0, 3.0)
+        quantum_circuit.gate_ctrl_u3(qbit, control_state, qbit2, 1.0, 2.0, 3.0)
     elif gate == 1:
-        quantum_registry.gate_ctrl_u2(qbit, control_state, qbit2, 2.0, 3.0)
+        quantum_circuit.gate_ctrl_u2(qbit, control_state, qbit2, 2.0, 3.0)
     elif gate == 2:
-        quantum_registry.gate_ctrl_u1(qbit, control_state, qbit2, 1.0)
+        quantum_circuit.gate_ctrl_u1(qbit, control_state, qbit2, 1.0)
     elif gate == 3:
-        quantum_registry.gate_ctrl_hadamard(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_hadamard(qbit, control_state, qbit2)
     elif gate == 4:
-        quantum_registry.gate_ctrl_pauli_x(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_pauli_x(qbit, control_state, qbit2)
     elif gate == 5:
-        quantum_registry.gate_ctrl_pauli_x(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_pauli_x(qbit, control_state, qbit2)
     elif gate == 6:
-        quantum_registry.gate_ctrl_pauli_z(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_pauli_z(qbit, control_state, qbit2)
     elif gate == 7:
-        quantum_registry.gate_ctrl_t(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_t(qbit, control_state, qbit2)
     elif gate == 8:
-        quantum_registry.gate_ctrl_t_dagger(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_t_dagger(qbit, control_state, qbit2)
     elif gate == 9:
-        quantum_registry.gate_ctrl_rx_theta(qbit, control_state, qbit2, 2.0)
+        quantum_circuit.gate_ctrl_rx_theta(qbit, control_state, qbit2, 2.0)
     elif gate == 10:
-        quantum_registry.gate_ctrl_ry_theta(qbit, control_state, qbit2, 3.0)
+        quantum_circuit.gate_ctrl_ry_theta(qbit, control_state, qbit2, 3.0)
     elif gate == 11:
-        quantum_registry.gate_ctrl_rz_theta(qbit, control_state, qbit2, 4.0)
+        quantum_circuit.gate_ctrl_rz_theta(qbit, control_state, qbit2, 4.0)
     elif gate == 12:
-        quantum_registry.gate_ctrl_s(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_s(qbit, control_state, qbit2)
     elif gate == 13:
-        quantum_registry.gate_ctrl_s_dagger(qbit, control_state, qbit2)
+        quantum_circuit.gate_ctrl_s_dagger(qbit, control_state, qbit2)
     elif gate == 14:
-        quantum_registry.gate_ctrl_pauli_x_root(
+        quantum_circuit.gate_ctrl_pauli_x_root(
             qbit, control_state, qbit2, k=random.randint(3, 10)
         )
     elif gate == 15:
-        quantum_registry.gate_ctrl_pauli_y_root(
+        quantum_circuit.gate_ctrl_pauli_y_root(
             qbit, control_state, qbit2, k=random.randint(3, 10)
         )
     elif gate == 16:
-        quantum_registry.gate_ctrl_pauli_z_root(
+        quantum_circuit.gate_ctrl_pauli_z_root(
             qbit, control_state, qbit2, k=random.randint(3, 10)
         )
     elif gate == 17:
-        quantum_registry.gate_ctrl_pauli_x_root_dagger(
+        quantum_circuit.gate_ctrl_pauli_x_root_dagger(
             qbit, control_state, qbit2, k=random.randint(3, 10)
         )
     elif gate == 18:
-        quantum_registry.gate_ctrl_pauli_y_root_dagger(
+        quantum_circuit.gate_ctrl_pauli_y_root_dagger(
             qbit, control_state, qbit2, k=random.randint(3, 10)
         )
     elif gate == 19:
-        quantum_registry.gate_ctrl_pauli_z_root_dagger(
+        quantum_circuit.gate_ctrl_pauli_z_root_dagger(
             qbit, control_state, qbit2, k=random.randint(3, 10)
         )
     elif gate == 20:
-        quantum_registry.gate_swap(qbit, qbit2)
+        quantum_circuit.gate_swap(qbit, qbit2)
     elif gate == 21:
-        quantum_registry.gate_sqrt_swap(qbit, qbit2)
+        quantum_circuit.gate_sqrt_swap(qbit, qbit2)
     elif gate == 22:
-        quantum_registry.gate_swap_theta(qbit, qbit2, 2.0)
+        quantum_circuit.gate_swap_theta(qbit, qbit2, 2.0)
     elif gate == 23:
-        quantum_registry.gate_iswap(qbit, qbit2)
+        quantum_circuit.gate_iswap(qbit, qbit2)
     # elif gate == 24:
-    #     quantum_registry.gate_xx(qbit, qbit2, 3.0)
+    #     quantum_circuit.gate_xx(qbit, qbit2, 3.0)
     # elif gate == 25:
-    #     quantum_registry.gate_yy(qbit, qbit2, 3.0)
+    #     quantum_circuit.gate_yy(qbit, qbit2, 3.0)
     # elif gate == 26:
-    #     quantum_registry.gate_zz(qbit, qbit2, 3.0)
+    #     quantum_circuit.gate_zz(qbit, qbit2, 3.0)
 
 
-def _add_random_three_qbit_gate(quantum_registry, qbit, qbit2, qbit3):
+def _add_random_three_qbit_gate(quantum_circuit, qbit, qbit2, qbit3):
 
     gate = random.randint(0, NO_THREE_QBIT_GATES - 1)
 
@@ -157,25 +157,25 @@ def _add_random_three_qbit_gate(quantum_registry, qbit, qbit2, qbit3):
     control_state2 = random.randint(0, 1)
 
     if gate == 0:
-        quantum_registry.gate_toffoli(qbit, control_state, qbit2, control_state2, qbit3)
+        quantum_circuit.gate_toffoli(qbit, control_state, qbit2, control_state2, qbit3)
     else:
-        quantum_registry.gate_fredkin(qbit, control_state, qbit2, qbit3)
+        quantum_circuit.gate_fredkin(qbit, control_state, qbit2, qbit3)
 
 
-def _add_single_qubit_gate(quantum_registry, qubits, latest_qbit, fillqubits=False):
+def _add_single_qubit_gate(quantum_circuit, qubits, latest_qbit, fillqubits=False):
     if fillqubits:
         delta = 1
     else:
         delta = random.randint(1, 2)
     if latest_qbit + delta >= qubits:
         latest_qbit = -1
-        quantum_registry.increment_step()
-    _add_random_single_qbit_gate(quantum_registry, latest_qbit + delta)
+        quantum_circuit.increment_step()
+    _add_random_single_qbit_gate(quantum_circuit, latest_qbit + delta)
     latest_qbit += delta
     return latest_qbit
 
 
-def _add_two_qubit_gate(quantum_registry, qubits, latest_qbit, fillqubits=False):
+def _add_two_qubit_gate(quantum_circuit, qubits, latest_qbit, fillqubits=False):
     if fillqubits:
         fst = random.randint(2, 4)
         snd = 1
@@ -184,13 +184,13 @@ def _add_two_qubit_gate(quantum_registry, qubits, latest_qbit, fillqubits=False)
         snd = random.randint(1, fst - 1)
     if latest_qbit + fst >= qubits:
         latest_qbit = -1
-        quantum_registry.increment_step()
-    _add_random_two_qbit_gate(quantum_registry, latest_qbit + snd, latest_qbit + fst)
+        quantum_circuit.increment_step()
+    _add_random_two_qbit_gate(quantum_circuit, latest_qbit + snd, latest_qbit + fst)
     latest_qbit += fst
     return latest_qbit
 
 
-def _add_three_qubit_gate(quantum_registry, qubits, latest_qbit, fillqubits=False):
+def _add_three_qubit_gate(quantum_circuit, qubits, latest_qbit, fillqubits=False):
     if fillqubits:
         fst = random.randint(3, 5)
         snd = random.randint(2, fst - 1)
@@ -201,9 +201,9 @@ def _add_three_qubit_gate(quantum_registry, qubits, latest_qbit, fillqubits=Fals
         third = random.randint(1, snd - 1)
     if latest_qbit + fst >= qubits:
         latest_qbit = -1
-        quantum_registry.increment_step()
+        quantum_circuit.increment_step()
     _add_random_three_qbit_gate(
-        quantum_registry, latest_qbit + third, latest_qbit + snd, latest_qbit + fst
+        quantum_circuit, latest_qbit + third, latest_qbit + snd, latest_qbit + fst
     )
     latest_qbit += fst
     return latest_qbit
@@ -256,7 +256,7 @@ def main(qubits, gates, output, seed, measuregates, fill):
     else:
         random.seed(1024)
 
-    quantum_registry = QuantumRegistry(qubits)
+    quantum_circuit = QuantumCircuit(qubits)
     # I want three qubit gates to show up more often
     no_all_gates = NO_SINGLE_QBIT_GATES + NO_TWO_QBIT_GATES + 2 * NO_THREE_QBIT_GATES
 
@@ -266,27 +266,27 @@ def main(qubits, gates, output, seed, measuregates, fill):
         gate_choice = random.randint(0, no_all_gates)
         if gate_choice < NO_SINGLE_QBIT_GATES:
             latest_qbit = _add_single_qubit_gate(
-                quantum_registry, qubits, latest_qbit, fill
+                quantum_circuit, qubits, latest_qbit, fill
             )
         elif gate_choice < NO_SINGLE_QBIT_GATES + NO_TWO_QBIT_GATES:
             latest_qbit = _add_two_qubit_gate(
-                quantum_registry, qubits, latest_qbit, fill
+                quantum_circuit, qubits, latest_qbit, fill
             )
         else:
             latest_qbit = _add_three_qubit_gate(
-                quantum_registry, qubits, latest_qbit, fill
+                quantum_circuit, qubits, latest_qbit, fill
             )
 
     if measuregates:
-        quantum_registry.increment_step()
+        quantum_circuit.increment_step()
         for qubit in range(qubits):
-            quantum_registry.gate_measure_z(qubit, qubit)
+            quantum_circuit.gate_measure_z(qubit, qubit)
 
     output_file = output or "generated_circuit"
     output_file = output_file.rstrip(".yaml")
     output_file += f"_{qubits}_qubits_{gates}_gates.yaml"
     with open(output_file, "w") as outfile:
-        quantum_registry.export(output_file)
+        quantum_circuit.export(output_file)
 
 
 if __name__ == "__main__":
