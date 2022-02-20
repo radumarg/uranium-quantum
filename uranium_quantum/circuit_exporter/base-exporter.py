@@ -56,6 +56,7 @@ class BaseExporter:
                     name,
                     controls,
                     targets,
+                    gates,
                     root,
                     theta_radians,
                     phi_radians,
@@ -70,6 +71,7 @@ class BaseExporter:
         name,
         controls,
         targets,
+        gates,
         root,
         theta_radians,
         phi_radians,
@@ -145,10 +147,6 @@ class BaseExporter:
             return self._gate_pauli_z_root_dagger(
                 controls, targets, root, add_comments
             )
-        elif name == "sqrt-not":
-            return self._gate_sqrt_not(
-                controls, targets, add_comments
-            )
         elif name == "t":
             return self._gate_t(
                 controls, targets, add_comments
@@ -203,7 +201,7 @@ class BaseExporter:
             )
         elif name == "p":
             return self._gate_p(
-                controls, targets, add_comments
+                controls, targets, theta_radians, add_comments
             )
         elif name == "swap":
             return self._gate_swap(
@@ -211,11 +209,11 @@ class BaseExporter:
             )
         elif name == "swap-root":
             return self._gate_swap_root(
-                controls, targets, add_comments
+                controls, targets, root, add_comments
             )
         elif name == "swap-root-dagger":
             return self._gate_swap_root_dagger(
-                controls, targets, add_comments
+                controls, targets, root, add_comments
             )
         elif name == "iswap":
             return self._gate_iswap(
@@ -235,7 +233,7 @@ class BaseExporter:
             )
         elif name == "swap-theta":
             return self._gate_swap_theta(
-                controls, targets, phi_radians, add_comments
+                controls, targets, theta_radians, add_comments
             )
         elif name == "xx":
             return self._gate_xx(
@@ -293,6 +291,10 @@ class BaseExporter:
             return self._gate_magic_dagger(
                 controls, targets, add_comments
             )
+        elif name == "givens":
+            return self._gate_givens(
+                controls, targets, theta_radians, add_comments
+            )
         elif name == "cross-resonance":
             return self._gate_cross_resonance(
                 controls, targets, theta_radians, add_comments
@@ -300,10 +302,6 @@ class BaseExporter:
         elif name == "cross-resonance-dagger":
             return self._gate_cross_resonance_dagger(
                 controls, targets, theta_radians, add_comments
-            )
-        elif name == "aggregate":
-            return self._gate_aggregate(
-                controls, targets, add_comments
             )
         elif name == "qft":
             return self._gate_qft(
@@ -329,6 +327,164 @@ class BaseExporter:
             return self._gate_measure_z(
                 targets, bit, add_comments
             )
+        elif name == "aggregate":
+            code = ""
+            for gate in gates:
+                if gate["name"] == "u3":
+                    if len(code): code += "\n"
+                    code += self._gate_u3(
+                        controls, gate["targets"], gate["theta"], gate["phi'"], gate["lambda"], add_comments,
+                    )
+                elif gate["name"] == "u2":
+                    if len(code): code += "\n"
+                    code += self._gate_u2(
+                        controls, gate["targets"], gate["phi'"], gate["lambda"], add_comments
+                    )
+                elif gate["name"] == "u1":
+                    if len(code): code += "\n"
+                    code += self._gate_u1(
+                        controls, gate["targets"], gate["lambda"], add_comments
+                    )
+                elif gate["name"] == "identity":
+                    if len(code): code += "\n"
+                    code += self._gate_identity(
+                        gate["targets"], add_comments)
+                elif gate["name"] == "hadamard":
+                    if len(code): code += "\n"
+                    code += self._gate_hadamard(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "hadamard-xy":
+                    if len(code): code += "\n"
+                    code += self._gate_hadamard_xy(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "hadamard-yz":
+                    if len(code): code += "\n"
+                    code += self._gate_hadamard_yz(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "hadamard-zx":
+                    if len(code): code += "\n"
+                    code += self._gate_hadamard_zx(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "pauli-x":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_x(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "pauli-y":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_y(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "pauli-z":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_z(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "pauli-x-root":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_x_root(
+                        controls, gate["targets"], gate["root"], add_comments
+                    )
+                elif gate["name"] == "pauli-y-root":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_y_root(
+                        controls, gate["targets"], gate["root"], add_comments
+                    )
+                elif gate["name"] == "pauli-z-root":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_z_root(
+                        controls, gate["targets"], gate["root"], add_comments
+                    )
+                elif gate["name"] == "pauli-x-root-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_x_root_dagger(
+                        controls, gate["targets"], gate["root"], add_comments
+                    )
+                elif gate["name"] == "pauli-y-root-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_y_root_dagger(
+                        controls, gate["targets"], gate["root"], add_comments
+                    )
+                elif gate["name"] == "pauli-z-root-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_pauli_z_root_dagger(
+                        controls, gate["targets"], gate["root"], add_comments
+                    )
+                elif gate["name"] == "t":
+                    if len(code): code += "\n"
+                    code += self._gate_t(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "t-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_t_dagger(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "s":
+                    if len(code): code += "\n"
+                    code += self._gate_s(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "s-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_s_dagger(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "rx-theta":
+                    if len(code): code += "\n"
+                    code += self._gate_rx_theta(
+                        controls, gate["targets"], gate["theta"], add_comments
+                    )
+                elif gate["name"] == "ry-theta":
+                    if len(code): code += "\n"
+                    code += self._gate_ry_theta(
+                        controls, gate["targets"], gate["theta"], add_comments
+                    )
+                elif gate["name"] == "rz-theta":
+                    if len(code): code += "\n"
+                    code += self._gate_rz_theta(
+                        controls, gate["targets"], gate["theta"], add_comments
+                    )
+                elif gate["name"] == "v":
+                    if len(code): code += "\n"
+                    code += self._gate_v(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "v-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_v_dagger(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "h":
+                    if len(code): code += "\n"
+                    code += self._gate_h(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "h-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_h_dagger(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "c":
+                    if len(code): code += "\n"
+                    code += self._gate_c(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "c-dagger":
+                    if len(code): code += "\n"
+                    code += self._gate_c_dagger(
+                        controls, gate["targets"], add_comments
+                    )
+                elif gate["name"] == "p":
+                    if len(code): code += "\n"
+                    code += self._gate_p(
+                        controls, gate["targets"], gate["theta"], add_comments
+                    )
+            return code
         raise ExportException(f"The gate {name} is not implemented in exporter code.")
 
     @staticmethod
@@ -454,7 +610,7 @@ class BaseExporter:
         return ""
 
     @staticmethod
-    def _gate_p(controls, targets, add_comments):
+    def _gate_p(controls, targets, theta, add_comments):
         return ""
 
     @staticmethod
@@ -543,6 +699,10 @@ class BaseExporter:
 
     @staticmethod
     def _gate_magic_dagger(controls, targets, add_comments):
+        return ""
+
+    @staticmethod
+    def _gate_givens(controls, targets, theta, add_comments):
         return ""
 
     @staticmethod

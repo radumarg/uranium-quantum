@@ -134,7 +134,7 @@ def main(file, export_format, comments = False):
     elif export_format.lower() == "cirq":
         raise Exception("The cirq exporter is not yet implemented.")
 
-    quantum_code = get_exported_code(file, export_format, comments.lower() in ['true', '1', 't', 'y', 'yes'])
+    quantum_code = get_exported_code(file, export_format, comments and comments.lower() in ['true', '1', 't', 'y', 'yes'])
 
     if export_format.lower() == "openqasm":
         for code_line in quantum_code.splitlines():

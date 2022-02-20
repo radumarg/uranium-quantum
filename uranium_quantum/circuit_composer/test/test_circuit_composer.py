@@ -10,6 +10,7 @@ from ..circuit_composer import (
     QbitIndexLargerThanCircuitSize,
 )
 
+TEST_DATA_SET_COUNT = 30
 
 def single_qbit_gates(args):
 
@@ -42,6 +43,14 @@ def single_qbit_gates(args):
         f"gate_u3([], [{args[24]}], 1, 2, 3)",
         f"gate_u2([], [{args[25]}], 2, 3)",
         f"gate_u1([], [{args[26]}], 2)",
+        f"gate_v([], [{args[27]}])",
+        f"gate_v_dagger([], [{args[28]}])",
+        f"gate_h([], [{args[?]}])",
+        f"gate_h_dagger([], [{args[?]}])",
+        f"gate_hadamard_xy([], [{args[?]}])",
+        f"gate_hadamard_yz([], [{args[?]}])",
+        f"gate_c([], [{args[?]}])",
+        f"gate_c_dagger([], [{args[?]}])",
     ]
 
 
@@ -70,15 +79,20 @@ def two_qbit_gates(args0, args1):
         f"gate_pauli_z_root_dagger([{{'target': {args0[19]}, 'state': '1'}}], [{args1[19]}], t=2.0)",
         f"gate_swap([], [{args0[20]}, {args1[20]}])",
         f"gate_sqrt_swap([], [{args0[21]}, {args1[21]}])",
-        f"gate_swap_theta([], [{args0[22]}, {args1[22]}], 2)",
-        f"gate_iswap([], [{args0[23]}, {args1[23]}])",
-        f"gate_xx([], [{args0[24]},{args1[24]}], 3.0)",
-        f"gate_yy([], [{args0[25]}, {args1[25]}], 4.0)",
-        f"gate_zz([], [{args0[26]}, {args1[26]}], 5.0)",
+        f"gate_sqrt_swap_dagger([], [{args0[?]}, {args1[?]}])",
+        f"gate_swap_theta([], [{args0[?]}, {args1[?]}], 2)",
+        f"gate_swap_root([], [{args0[?]}, {args1[?]}], 7)",
+        f"gate_swap_root_dagger([], [{args0[?]}, {args1[?]}], 7)",
+        f"gate_iswap([], [{args0[?]}, {args1[?]}])",
+        f"gate_xx([], [{args0[?]}, {args1[?]}], 3.0)",
+        f"gate_yy([], [{args0[?]}, {args1[?]}], 4.0)",
+        f"gate_zz([], [{args0[?]}, {args1[?]}], 5.0)",
+        f"gate_cross_resonance([], [{args0[?]}, {args1[?]}], 1.1)",
+        f"gate_cross_resonance_dagger([], [{args0[?]}, {args1[?]}], 1.1)",
     ]
 
 
-SINGLE_QBIT_GATES = single_qbit_gates([x for x in range(27)])
+SINGLE_QBIT_GATES = single_qbit_gates([x for x in range(TEST_DATA_SET_COUNT)])
 
 
 @pytest.mark.parametrize("gate", SINGLE_QBIT_GATES)
@@ -88,7 +102,7 @@ def test_throws_when_single_qbit_gates_repeat(gate):
         eval(f"quantum_circuit.increment_step().{gate}.{gate}")
 
 
-TWO_QBIT_GATES = two_qbit_gates([x for x in range(27)], [x + 1 for x in range(27)])
+TWO_QBIT_GATES = two_qbit_gates([x for x in range(TEST_DATA_SET_COUNT)], [x + 1 for x in range(TEST_DATA_SET_COUNT)])
 
 
 @pytest.mark.parametrize("gate", TWO_QBIT_GATES)
@@ -98,90 +112,90 @@ def test_throws_when_two_qbit_gates_repeat(gate):
         eval(f"quantum_circuit.increment_step().{gate}.{gate}")
 
 
-# TWO_QBIT_GATES = two_qbit_gates([x for x in range(27)], [x for x in range(27)])
+TWO_QBIT_GATES = two_qbit_gates([x for x in range(TEST_DATA_SET_COUNT)], [x for x in range(TEST_DATA_SET_COUNT)])
 
 
-# @pytest.mark.parametrize("gate", TWO_QBIT_GATES)
-# def test_assert_raised_when_two_bit_gates_are_called_with_duplicated_arguments(gate):
-#     with pytest.raises(AssertionError):
-#         quantum_circuit = QuantumCircuit(len(TWO_QBIT_GATES))
-#         eval(f"quantum_circuit.increment_step().{gate}")
+@pytest.mark.parametrize("gate", TWO_QBIT_GATES)
+def test_assert_raised_when_two_bit_gates_are_called_with_duplicated_arguments(gate):
+    with pytest.raises(AssertionError):
+        quantum_circuit = QuantumCircuit(len(TWO_QBIT_GATES))
+        eval(f"quantum_circuit.increment_step().{gate}")
 
 
-# SINGLE_QBIT_GATES = single_qbit_gates([x for x in range(27)])
-# TWO_QBIT_GATES = two_qbit_gates([x for x in range(27)], [x + 27 for x in range(27)])
-# GATES = [(SINGLE_QBIT_GATES[i], TWO_QBIT_GATES[i]) for i in range(27)]
+SINGLE_QBIT_GATES = single_qbit_gates([x for x in range(TEST_DATA_SET_COUNT)])
+TWO_QBIT_GATES = two_qbit_gates([x for x in range(TEST_DATA_SET_COUNT)], [x + TEST_DATA_SET_COUNT for x in range(TEST_DATA_SET_COUNT)])
+GATES = [(SINGLE_QBIT_GATES[i], TWO_QBIT_GATES[i]) for i in range(TEST_DATA_SET_COUNT)]
 
 
-# @pytest.mark.parametrize("single_qbit_gate, two_qbit_gate", GATES)
-# def test_throws_when_single_and_control_arguments_overlap(
-#     single_qbit_gate, two_qbit_gate
-# ):
-#     with pytest.raises(QbitAleadyTaken):
-#         quantum_circuit = QuantumCircuit(55)
-#         eval(f"quantum_circuit.increment_step().{single_qbit_gate}.{two_qbit_gate}")
+@pytest.mark.parametrize("single_qbit_gate, two_qbit_gate", GATES)
+def test_throws_when_single_and_control_arguments_overlap(
+    single_qbit_gate, two_qbit_gate
+):
+    with pytest.raises(QbitAleadyTaken):
+        quantum_circuit = QuantumCircuit(55)
+        eval(f"quantum_circuit.increment_step().{single_qbit_gate}.{two_qbit_gate}")
 
 
-# SINGLE_QBIT_GATES = single_qbit_gates([1 for _ in range(27)])
-# TWO_QBIT_GATES = two_qbit_gates([0 for _ in range(27)], [2 for _ in range(27)])
-# GATES = [(TWO_QBIT_GATES[i], SINGLE_QBIT_GATES[i]) for i in range(27)]
+SINGLE_QBIT_GATES = single_qbit_gates([1 for _ in range(TEST_DATA_SET_COUNT)])
+TWO_QBIT_GATES = two_qbit_gates([0 for _ in range(TEST_DATA_SET_COUNT)], [2 for _ in range(TEST_DATA_SET_COUNT)])
+GATES = [(TWO_QBIT_GATES[i], SINGLE_QBIT_GATES[i]) for i in range(TEST_DATA_SET_COUNT)]
 
 
-# @pytest.mark.parametrize("two_qbit_gate, single_qbit_gate", GATES)
-# def test_throws_when_qbits_overlap(two_qbit_gate, single_qbit_gate):
-#     with pytest.raises(QbitAleadyTaken):
-#         quantum_circuit = QuantumCircuit(3)
-#         eval(f"quantum_circuit.increment_step().{two_qbit_gate}.{single_qbit_gate}")
+@pytest.mark.parametrize("two_qbit_gate, single_qbit_gate", GATES)
+def test_throws_when_qbits_overlap(two_qbit_gate, single_qbit_gate):
+    with pytest.raises(QbitAleadyTaken):
+        quantum_circuit = QuantumCircuit(3)
+        eval(f"quantum_circuit.increment_step().{two_qbit_gate}.{single_qbit_gate}")
 
 
-# SINGLE_QBIT_GATES = single_qbit_gates([1 for _ in range(27)])
+SINGLE_QBIT_GATES = single_qbit_gates([1 for _ in range(TEST_DATA_SET_COUNT)])
 
 
-# @pytest.mark.parametrize("gate", SINGLE_QBIT_GATES)
-# def test_throws_when_circuit_is_too_small_1(gate):
-#     with pytest.raises(QbitIndexLargerThanCircuitSize):
-#         quantum_circuit = QuantumCircuit(1)
-#         eval(f"quantum_circuit.increment_step().{gate}")
+@pytest.mark.parametrize("gate", SINGLE_QBIT_GATES)
+def test_throws_when_circuit_is_too_small_1(gate):
+    with pytest.raises(QbitIndexLargerThanCircuitSize):
+        quantum_circuit = QuantumCircuit(1)
+        eval(f"quantum_circuit.increment_step().{gate}")
 
 
-# TWO_QBIT_GATES = two_qbit_gates([0 for _ in range(27)], [2 for _ in range(27)])
+TWO_QBIT_GATES = two_qbit_gates([0 for _ in range(TEST_DATA_SET_COUNT)], [2 for _ in range(TEST_DATA_SET_COUNT)])
 
 
-# @pytest.mark.parametrize("gate", TWO_QBIT_GATES)
-# def test_throws_when_circuit_is_too_small_2(gate):
-#     with pytest.raises(QbitIndexLargerThanCircuitSize):
-#         quantum_circuit = QuantumCircuit(1)
-#         eval(f"quantum_circuit.increment_step().{gate}")
+@pytest.mark.parametrize("gate", TWO_QBIT_GATES)
+def test_throws_when_circuit_is_too_small_2(gate):
+    with pytest.raises(QbitIndexLargerThanCircuitSize):
+        quantum_circuit = QuantumCircuit(1)
+        eval(f"quantum_circuit.increment_step().{gate}")
 
 
-# SINGLE_QBIT_GATES = single_qbit_gates([2 for _ in range(27)])
-# TWO_QBIT_GATES = two_qbit_gates([3 for _ in range(27)], [5 for _ in range(27)])
-# GATES = [(TWO_QBIT_GATES[i], SINGLE_QBIT_GATES[i]) for i in range(27)]
+SINGLE_QBIT_GATES = single_qbit_gates([2 for _ in range(TEST_DATA_SET_COUNT)])
+TWO_QBIT_GATES = two_qbit_gates([3 for _ in range(TEST_DATA_SET_COUNT)], [5 for _ in range(TEST_DATA_SET_COUNT)])
+GATES = [(TWO_QBIT_GATES[i], SINGLE_QBIT_GATES[i]) for i in range(TEST_DATA_SET_COUNT)]
 
 
-# @pytest.mark.parametrize("single_qbit_gate, two_qbit_gate", GATES)
-# def test_throws_when_single_when_argument_overlap(single_qbit_gate, two_qbit_gate):
-#     with pytest.raises(QbitIndexLargerThanCircuitSize):
-#         quantum_circuit = QuantumCircuit(5)
-#         eval(f"quantum_circuit.increment_step().{single_qbit_gate}.{two_qbit_gate}")
+@pytest.mark.parametrize("single_qbit_gate, two_qbit_gate", GATES)
+def test_throws_when_single_when_argument_overlap(single_qbit_gate, two_qbit_gate):
+    with pytest.raises(QbitIndexLargerThanCircuitSize):
+        quantum_circuit = QuantumCircuit(5)
+        eval(f"quantum_circuit.increment_step().{single_qbit_gate}.{two_qbit_gate}")
 
 
-# SINGLE_QBIT_GATES_1 = single_qbit_gates([1 for _ in range(27)])
-# TWO_QBIT_GATES = two_qbit_gates([3 for _ in range(27)], [5 for _ in range(27)])
-# GATES = [(TWO_QBIT_GATES[i], SINGLE_QBIT_GATES[i]) for i in range(27)]
-# SINGLE_QBIT_GATES_2 = single_qbit_gates([7 for _ in range(27)])
-# GATES = [
-#     (SINGLE_QBIT_GATES_1[i], TWO_QBIT_GATES[i], SINGLE_QBIT_GATES_2[i])
-#     for i in range(24)
-# ]
+SINGLE_QBIT_GATES_1 = single_qbit_gates([1 for _ in range(TEST_DATA_SET_COUNT)])
+TWO_QBIT_GATES = two_qbit_gates([3 for _ in range(TEST_DATA_SET_COUNT)], [5 for _ in range(TEST_DATA_SET_COUNT)])
+GATES = [(TWO_QBIT_GATES[i], SINGLE_QBIT_GATES[i]) for i in range(TEST_DATA_SET_COUNT)]
+SINGLE_QBIT_GATES_2 = single_qbit_gates([7 for _ in range(TEST_DATA_SET_COUNT)])
+GATES = [
+    (SINGLE_QBIT_GATES_1[i], TWO_QBIT_GATES[i], SINGLE_QBIT_GATES_2[i])
+    for i in range(24)
+]
 
 
-# @pytest.mark.parametrize("single_qbit_gate_1, two_qbit_gate, single_qbit_gate_2", GATES)
-# def test_no_throw(single_qbit_gate_1, two_qbit_gate, single_qbit_gate_2):
-#     quantum_circuit = QuantumCircuit(8)
-#     eval(
-#         f"quantum_circuit.increment_step().{single_qbit_gate_1}.{two_qbit_gate}.{single_qbit_gate_2}"
-#     )
+@pytest.mark.parametrize("single_qbit_gate_1, two_qbit_gate, single_qbit_gate_2", GATES)
+def test_no_throw(single_qbit_gate_1, two_qbit_gate, single_qbit_gate_2):
+    quantum_circuit = QuantumCircuit(8)
+    eval(
+        f"quantum_circuit.increment_step().{single_qbit_gate_1}.{two_qbit_gate}.{single_qbit_gate_2}"
+    )
 
 
 def test_full():
