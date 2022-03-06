@@ -74,37 +74,6 @@ steps:
         targets:
           - 19
         theta: 1.57
-      - name: rz-theta
-        targets:
-          - 20
-        theta: 1.57
-      - name: t
-        targets:
-          - 21
-      - name: t-dagger
-        targets:
-          - 22
-      - name: s
-        targets:
-          - 23
-      - name: s-dagger
-        targets:
-          - 24
-      - name: v
-        targets:
-          - 25
-      - name: v-dagger
-        targets:
-          - 26
-      - name: h
-        targets:
-          - 27
-      - name: h-dagger
-        targets:
-          - 28
-      - name: c
-        targets:
-          - 29
   - index: 1
     gates:
       - name: c-dagger
@@ -114,10 +83,6 @@ steps:
         targets:
           - 1
         theta: 0.5
-      - name: measure-z
-        targets:
-          - 2
-        bit: 32
   - index: 2
     gates:
       - name: u3
@@ -127,10 +92,41 @@ steps:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
         theta: 1.57
         phi: 1.57
         lambda: 1.57
+      - name: rz-theta
+        targets:
+          - 5
+        theta: 1.57
+      - name: t
+        targets:
+          - 6
+      - name: t-dagger
+        targets:
+          - 7
+      - name: s
+        targets:
+          - 8
+      - name: s-dagger
+        targets:
+          - 9
+      - name: v
+        targets:
+          - 10
+      - name: v-dagger
+        targets:
+          - 11
+      - name: h
+        targets:
+          - 12
+      - name: h-dagger
+        targets:
+          - 13
+      - name: c
+        targets:
+          - 14
   - index: 3
     gates:
       - name: u2
@@ -140,7 +136,7 @@ steps:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
         phi: 1.57
         lambda: 1.57
   - index: 4
@@ -152,7 +148,7 @@ steps:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
         lambda: 1.57
   - index: 5
     gates:
@@ -163,7 +159,7 @@ steps:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
   - index: 6
     gates:
       - name: hadamard-xy
@@ -173,7 +169,7 @@ steps:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
   - index: 7
     gates:
       - name: hadamard-yz
@@ -183,7 +179,7 @@ steps:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
   - index: 8
     gates:
       - name: hadamard-zx
@@ -193,130 +189,130 @@ steps:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
   - index: 9
     gates:
       - name: pauli-x
+        targets:
+          - 8
+        controls:
+          - target: 0
+            state: '1'
+          - target: 1
+            state: +i
+  - index: 10
+    gates:
+      - name: pauli-y
+        targets:
+          - 8
+        controls:
+          - target: 0
+            state: '1'
+          - target: 1
+            state: +i
+  - index: 11
+    gates:
+      - name: pauli-z
         targets:
           - 9
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
-  - index: 10
-    gates:
-      - name: pauli-y
-        targets:
-          - 10
-        controls:
-          - target: 0
-            state: '1'
-          - target: 1
-            state: '+i'
-  - index: 11
-    gates:
-      - name: pauli-z
-        targets:
-          - 11
-        controls:
-          - target: 0
-            state: '1'
-          - target: 1
-            state: '+i'
+            state: +i
   - index: 12
     gates:
       - name: pauli-x-root
         targets:
-          - 12
+          - 8
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
         root: 1/2.0
   - index: 13
     gates:
       - name: pauli-y-root
         targets:
-          - 13
+          - 9
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
-        root: 1/2^7.0
+            state: +i
+        root: 1/2^7
   - index: 14
     gates:
       - name: pauli-z-root
         targets:
-          - 14
+          - 8
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
-        root: 1/2^22.0
+            state: +i
+        root: 1/2^22
   - index: 15
     gates:
       - name: pauli-x-root-dagger
         targets:
-          - 15
+          - 9
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
-        root: 1/2^29.0
+            state: +i
+        root: 1/2^29
   - index: 16
     gates:
       - name: pauli-y-root-dagger
         targets:
-          - 16
+          - 6
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
-        root: 1/2^8.0
+            state: +i
+        root: 1/2^8
   - index: 17
     gates:
       - name: pauli-z-root-dagger
         targets:
-          - 17
+          - 8
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
         root: 1/1.1
   - index: 18
     gates:
       - name: rx-theta
         targets:
-          - 18
+          - 8
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
         theta: 1.57
   - index: 19
     gates:
       - name: ry-theta
         targets:
-          - 19
+          - 8
         controls:
           - target: 0
             state: '1'
           - target: 1
-            state: '+i'
+            state: +i
         theta: 1.57
   - index: 20
     gates:
       - name: rz-theta
         targets:
-          - 20
+          - 10
         controls:
           - target: 0
             state: '1'
@@ -327,7 +323,7 @@ steps:
     gates:
       - name: t
         targets:
-          - 21
+          - 9
         controls:
           - target: 0
             state: '1'
@@ -337,7 +333,7 @@ steps:
     gates:
       - name: t-dagger
         targets:
-          - 22
+          - 17
         controls:
           - target: 0
             state: '1'
@@ -347,7 +343,7 @@ steps:
     gates:
       - name: s
         targets:
-          - 23
+          - 13
         controls:
           - target: 0
             state: '1'
@@ -357,7 +353,7 @@ steps:
     gates:
       - name: s-dagger
         targets:
-          - 24
+          - 15
         controls:
           - target: 0
             state: '1'
@@ -367,7 +363,7 @@ steps:
     gates:
       - name: v
         targets:
-          - 25
+          - 14
         controls:
           - target: 0
             state: '1'
@@ -377,7 +373,7 @@ steps:
     gates:
       - name: v-dagger
         targets:
-          - 26
+          - 16
         controls:
           - target: 0
             state: '1'
@@ -387,7 +383,7 @@ steps:
     gates:
       - name: h
         targets:
-          - 27
+          - 15
         controls:
           - target: 0
             state: '1'
@@ -397,7 +393,7 @@ steps:
     gates:
       - name: h-dagger
         targets:
-          - 28
+          - 16
         controls:
           - target: 0
             state: '1'
@@ -407,7 +403,7 @@ steps:
     gates:
       - name: c
         targets:
-          - 29
+          - 15
         controls:
           - target: 0
             state: '1'
@@ -423,6 +419,25 @@ steps:
             state: '1'
           - target: 1
             state: '-'
+      - name: yy
+        targets:
+          - 6
+          - 7
+        theta: 0.22
+      - name: zz
+        targets:
+          - 8
+          - 9
+        theta: 0.22
+      - name: xy
+        targets:
+          - 10
+          - 11
+        theta: 0.22
+      - name: molmer-sorensen
+        targets:
+          - 12
+          - 13
   - index: 31
     gates:
       - name: p
@@ -476,25 +491,6 @@ steps:
           - 16
           - 17
         theta: 0.22
-      - name: yy
-        targets:
-          - 18
-          - 19
-        theta: 0.22
-      - name: zz
-        targets:
-          - 20
-          - 21
-        theta: 0.22
-      - name: xy
-        targets:
-          - 22
-          - 23
-        theta: 0.22
-      - name: molmer-sorensen
-        targets:
-          - 24
-          - 25
   - index: 33
     gates:
       - name: molmer-sorensen-dagger
@@ -535,21 +531,6 @@ steps:
         targets:
           - 16
           - 17
-      - name: cross-resonance
-        targets:
-          - 18
-          - 19
-        theta: 0.1
-      - name: cross-resonance-dagger
-        targets:
-          - 20
-          - 21
-        theta: 0.2
-      - name: givens
-        targets:
-          - 22
-          - 23
-        theta: 2.1
   - index: 34
     gates:
       - name: swap
@@ -561,6 +542,21 @@ steps:
             state: '0'
           - target: 1
             state: '-i'
+      - name: cross-resonance
+        targets:
+          - 10
+          - 11
+        theta: 0.1
+      - name: cross-resonance-dagger
+        targets:
+          - 12
+          - 13
+        theta: 0.2
+      - name: givens
+        targets:
+          - 14
+          - 15
+        theta: 2.1
   - index: 35
     gates:
       - name: sqrt-swap
@@ -752,7 +748,7 @@ steps:
           - 4
         controls:
           - target: 0
-            state: '+'
+            state: +
           - target: 1
             state: '-i'
   - index: 52
@@ -787,9 +783,9 @@ steps:
           - 4
         controls:
           - target: 0
-            state: '+'
+            state: +
           - target: 1
-            state: '+'
+            state: +
   - index: 55
     gates:
       - name: magic-dagger
@@ -798,7 +794,7 @@ steps:
           - 4
         controls:
           - target: 0
-            state: '+'
+            state: +
           - target: 1
             state: '-'
   - index: 56
@@ -809,7 +805,7 @@ steps:
           - 4
         controls:
           - target: 0
-            state: '+'
+            state: +
           - target: 1
             state: '-'
         theta: 0.1
@@ -823,7 +819,7 @@ steps:
           - target: 0
             state: '-'
           - target: 1
-            state: '+i'
+            state: +i
         theta: 0.1
   - index: 58
     gates:
@@ -835,5 +831,87 @@ steps:
           - target: 0
             state: '-'
           - target: 1
-            state: '+i'
+            state: +i
         theta: 0.1
+  - index: 59
+    gates:
+      - name: measure-z
+        targets:
+          - 0
+        bit: 0
+      - name: measure-z
+        targets:
+          - 1
+        bit: 1
+      - name: measure-z
+        targets:
+          - 2
+        bit: 2
+      - name: measure-z
+        targets:
+          - 3
+        bit: 3
+      - name: measure-z
+        targets:
+          - 4
+        bit: 4
+      - name: measure-z
+        targets:
+          - 5
+        bit: 5
+      - name: measure-z
+        targets:
+          - 6
+        bit: 6
+      - name: measure-z
+        targets:
+          - 7
+        bit: 7
+      - name: measure-z
+        targets:
+          - 8
+        bit: 8
+      - name: measure-z
+        targets:
+          - 9
+        bit: 9
+      - name: measure-z
+        targets:
+          - 10
+        bit: 10
+      - name: measure-z
+        targets:
+          - 11
+        bit: 11
+      - name: measure-z
+        targets:
+          - 12
+        bit: 12
+      - name: measure-z
+        targets:
+          - 13
+        bit: 13
+      - name: measure-z
+        targets:
+          - 14
+        bit: 14
+      - name: measure-z
+        targets:
+          - 15
+        bit: 15
+      - name: measure-z
+        targets:
+          - 16
+        bit: 16
+      - name: measure-z
+        targets:
+          - 17
+        bit: 17
+      - name: measure-z
+        targets:
+          - 18
+        bit: 18
+      - name: measure-z
+        targets:
+          - 19
+        bit: 19

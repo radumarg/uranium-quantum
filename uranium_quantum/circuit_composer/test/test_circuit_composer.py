@@ -10,7 +10,7 @@ from ..circuit_composer import (
     QbitIndexLargerThanCircuitSize,
 )
 
-TEST_DATA_SET_COUNT = 30
+TEST_DATA_SET_COUNT = 47
 
 def single_qbit_gates(args):
 
@@ -39,18 +39,31 @@ def single_qbit_gates(args):
         f"gate_pauli_x_root_dagger([], [{args[21]}], k=23.0)",
         f"gate_pauli_y_root_dagger([], [{args[22]}], k=12.0)",
         f"gate_pauli_z_root_dagger([], [{args[23]}], t=8.0)",
+        f"gate_v([], [{args[24]}])",
+        f"gate_v_dagger([], [{args[25]}])",
+        f"gate_h([], [{args[26]}])",
+        f"gate_h_dagger([], [{args[27]}])",
+        f"gate_hadamard_xy([], [{args[28]}])",
+        f"gate_hadamard_yz([], [{args[29]}])",
+        f"gate_hadamard_zx([], [{args[30]}])",
+        f"gate_c([], [{args[31]}])",
+        f"gate_c_dagger([], [{args[32]}])",
+        f"gate_p([], [{args[33]}], 0.2)",
         # repeat several gates s.t. len(single_qbit_gates)=len(two_qbit_gates)
-        f"gate_u3([], [{args[24]}], 1, 2, 3)",
-        f"gate_u2([], [{args[25]}], 2, 3)",
-        f"gate_u1([], [{args[26]}], 2)",
-        f"gate_v([], [{args[27]}])",
-        f"gate_v_dagger([], [{args[28]}])",
-        f"gate_h([], [{args[?]}])",
-        f"gate_h_dagger([], [{args[?]}])",
-        f"gate_hadamard_xy([], [{args[?]}])",
-        f"gate_hadamard_yz([], [{args[?]}])",
-        f"gate_c([], [{args[?]}])",
-        f"gate_c_dagger([], [{args[?]}])",
+        f"gate_u3([], [{args[34]}], 1, 2, 3)",
+        f"gate_u2([], [{args[35]}], 2, 3)",
+        f"gate_u1([], [{args[36]}], 2)",
+        f"gate_identity([{args[37]}])",
+        f"gate_hadamard([], [{args[38]}])",
+        f"gate_pauli_x([], [{args[39]}])",
+        f"gate_pauli_y([], [{args[40]}])",
+        f"gate_pauli_z([], [{args[41]}])",
+        f"gate_t([], [{args[42]}])",
+        f"gate_t_dagger([], [{args[43]}])",
+        f"gate_rx_theta([], [{args[44]}], 12)",
+        f"gate_ry_theta([], [{args[45]}], 13)",
+        f"gate_rz_theta([], [{args[46]}], 14)",
+        
     ]
 
 
@@ -68,7 +81,7 @@ def two_qbit_gates(args0, args1):
         f"gate_t_dagger([{{'target': {args0[8]}, 'state': '1'}}], [{args1[8]}])",
         f"gate_rx_theta([{{'target': {args0[9]}, 'state': '1'}}], [{args1[9]}], 2.0)",
         f"gate_ry_theta([{{'target': {args0[10]}, 'state': '1'}}], [{args1[10]}], 3.0)",
-        f"gate_rz_theta([{{'target':{args0[11]}, 'state': '1'}}], [{args1[11]}], 4.0)",
+        f"gate_rz_theta([{{'target': {args0[11]}, 'state': '1'}}], [{args1[11]}], 4.0)",
         f"gate_s([{{'target': {args0[12]}, 'state': '1'}}], [{args1[12]}])",
         f"gate_s_dagger([{{'target': {args0[13]}, 'state': '1'}}], [{args1[13]}])",
         f"gate_pauli_x_root([{{'target': {args0[14]}, 'state': '1'}}], [{args1[14]}], k=2.0)",
@@ -79,16 +92,31 @@ def two_qbit_gates(args0, args1):
         f"gate_pauli_z_root_dagger([{{'target': {args0[19]}, 'state': '1'}}], [{args1[19]}], t=2.0)",
         f"gate_swap([], [{args0[20]}, {args1[20]}])",
         f"gate_sqrt_swap([], [{args0[21]}, {args1[21]}])",
-        f"gate_sqrt_swap_dagger([], [{args0[?]}, {args1[?]}])",
-        f"gate_swap_theta([], [{args0[?]}, {args1[?]}], 2)",
-        f"gate_swap_root([], [{args0[?]}, {args1[?]}], 7)",
-        f"gate_swap_root_dagger([], [{args0[?]}, {args1[?]}], 7)",
-        f"gate_iswap([], [{args0[?]}, {args1[?]}])",
-        f"gate_xx([], [{args0[?]}, {args1[?]}], 3.0)",
-        f"gate_yy([], [{args0[?]}, {args1[?]}], 4.0)",
-        f"gate_zz([], [{args0[?]}, {args1[?]}], 5.0)",
-        f"gate_cross_resonance([], [{args0[?]}, {args1[?]}], 1.1)",
-        f"gate_cross_resonance_dagger([], [{args0[?]}, {args1[?]}], 1.1)",
+        f"gate_sqrt_swap_dagger([], [{args0[22]}, {args1[22]}])",
+        f"gate_swap_theta([], [{args0[23]}, {args1[23]}], 2)",
+        f"gate_swap_root([], [{args0[24]}, {args1[24]}], 7)",
+        f"gate_swap_root_dagger([], [{args0[25]}, {args1[25]}], 7)",
+        f"gate_iswap([], [{args0[26]}, {args1[26]}])",
+        f"gate_fswap([], [{args0[27]}, {args1[27]}])",
+        f"gate_swap_root([], [{args0[28]}, {args1[28]}], 7)",
+        f"gate_swap_root_dagger([], [{args0[29]}, {args1[29]}], 7)",
+        f"gate_xx([], [{args0[30]}, {args1[30]}], 3.0)",
+        f"gate_yy([], [{args0[31]}, {args1[31]}], 4.0)",
+        f"gate_zz([], [{args0[32]}, {args1[32]}], 5.0)",
+        f"gate_xy([], [{args0[33]}, {args1[33]}], 6.0)",
+        f"gate_molmer_sorensen([], [{args0[34]}, {args1[34]}])",
+        f"gate_molmer_sorensen_dagger([], [{args0[35]}, {args1[35]}])",
+        f"gate_berkeley([], [{args0[36]}, {args1[36]}])",
+        f"gate_berkeley_dagger([], [{args0[37]}, {args1[37]}])",
+        f"gate_ecp([], [{args0[38]}, {args1[38]}])",
+        f"gate_ecp_dagger([], [{args0[39]}, {args1[39]}])",
+        f"gate_w([], [{args0[40]}, {args1[40]}])",
+        f"gate_a([], [{args0[41]}, {args1[41]}], 1.1, 1.2)",
+        f"gate_magic([], [{args0[42]}, {args1[42]}])",
+        f"gate_magic_dagger([], [{args0[43]}, {args1[43]}])",
+        f"gate_givens([], [{args0[44]}, {args1[44]}], 1.1)",
+        f"gate_cross_resonance([], [{args0[45]}, {args1[45]}], 1.1)",
+        f"gate_cross_resonance_dagger([], [{args0[46]}, {args1[46]}], 1.1)",
     ]
 
 
@@ -200,80 +228,133 @@ def test_no_throw(single_qbit_gate_1, two_qbit_gate, single_qbit_gate_2):
 
 def test_full():
     """Test circuit_composer."""
-    quantum_circuit = QuantumCircuit(22)
+    quantum_circuit = QuantumCircuit(33)
 
     # single qbit gates
-    quantum_circuit.gate_identity([0])
     quantum_circuit.gate_u3([], [1], 3.14 / 2, 3.14 / 2, 3.14 / 2)
     quantum_circuit.gate_u2([], [2], 3.14 / 2, 3.14 / 2)
     quantum_circuit.gate_u1([], [3], 3.14 / 2)
     quantum_circuit.gate_identity([4])
     quantum_circuit.gate_hadamard([], [5])
-    quantum_circuit.gate_pauli_x([], [6])
-    quantum_circuit.gate_pauli_y([], [7])
-    quantum_circuit.gate_pauli_z([], [8])
-    quantum_circuit.gate_t([], [9])
-    quantum_circuit.gate_t_dagger([], [10])
-    quantum_circuit.gate_rx_theta([], [11], 3.14 / 2)
-    quantum_circuit.gate_ry_theta([], [12], 3.14 / 2)
-    quantum_circuit.gate_rz_theta([], [13], 3.14 / 2)
-    quantum_circuit.gate_s([], [14])
-    quantum_circuit.gate_s_dagger([], [15])
-    quantum_circuit.gate_pauli_x_root([], [16], t=2.0)
-    quantum_circuit.gate_pauli_y_root([], [17], k=7.0)
-    quantum_circuit.gate_pauli_z_root([], [18], k=22.0)
-    quantum_circuit.gate_pauli_x_root_dagger([], [19], k=29.0)
-    quantum_circuit.gate_pauli_y_root_dagger([], [20], k=8.0)
-    quantum_circuit.gate_pauli_z_root_dagger([], [21], t=1.1)
+    quantum_circuit.gate_hadamard_xy([], [6])
+    quantum_circuit.gate_hadamard_yz([], [7])
+    quantum_circuit.gate_hadamard_zx([], [8])
+    quantum_circuit.gate_pauli_x([], [9])
+    quantum_circuit.gate_pauli_y([], [10])
+    quantum_circuit.gate_pauli_z([], [11])
+    quantum_circuit.gate_pauli_x_root([], [12], t=2.0)
+    quantum_circuit.gate_pauli_y_root([], [13], k=7.0)
+    quantum_circuit.gate_pauli_z_root([], [14], k=22.0)
+    quantum_circuit.gate_pauli_x_root_dagger([], [15], k=29.0)
+    quantum_circuit.gate_pauli_y_root_dagger([], [16], k=8.0)
+    quantum_circuit.gate_pauli_z_root_dagger([], [17], t=1.1)
+    quantum_circuit.gate_rx_theta([], [18], 3.14 / 2)
+    quantum_circuit.gate_ry_theta([], [19], 3.14 / 2)
+    quantum_circuit.gate_rz_theta([], [20], 3.14 / 2)
+    quantum_circuit.gate_t([], [21])
+    quantum_circuit.gate_t_dagger([], [22])
+    quantum_circuit.gate_s([], [23])
+    quantum_circuit.gate_s_dagger([], [24])
+    quantum_circuit.gate_v([], [25])
+    quantum_circuit.gate_v_dagger([], [26])
+    quantum_circuit.gate_h([], [27])
+    quantum_circuit.gate_h_dagger([], [28])
+    quantum_circuit.gate_c([], [29])
+    quantum_circuit.increment_step().gate_c_dagger([], [0])
+    quantum_circuit.gate_p([], [1], 0.5)
+    quantum_circuit.gate_measure_z([2], 32)
 
     # # controled single qbit gates
-    # quantum_circuit.increment_step().gate_u3(
-    #     1, 1, 2, 3.14 / 2, 3.14 / 2, 3.14 / 2
-    # )
-    # quantum_circuit.increment_step().gate_u2(2, 1, 3, 3.14 / 2, 3.14 / 2)
-    # quantum_circuit.increment_step().gate_u1(3, 0, 4, 3.14 / 2)
-    # quantum_circuit.increment_step().gate_hadamard(4, 1, 5)
-    # quantum_circuit.increment_step().gate_pauli_x(5, 0, 6)
-    # quantum_circuit.increment_step().gate_pauli_y(6, 1, 7)
-    # quantum_circuit.increment_step().gate_pauli_z(7, 0, 8)
-    # quantum_circuit.increment_step().gate_t(8, 1, 9)
-    # quantum_circuit.increment_step().gate_t_dagger(9, 0, 10)
-    # quantum_circuit.increment_step().gate_rx_theta(10, 1, 11, 3.14 / 2)
-    # quantum_circuit.increment_step().gate_ry_theta(11, 0, 12, 3.14 / 2)
-    # quantum_circuit.increment_step().gate_rz_theta(12, 1, 13, 3.14 / 2)
-    # quantum_circuit.increment_step().gate_s(13, 0, 14)
-    # quantum_circuit.increment_step().gate_s_dagger(14, 1, 15)
-    # quantum_circuit.increment_step().gate_pauli_x_root(15, 0, 16, t=2.0)
-    # quantum_circuit.increment_step().gate_pauli_y_root(16, 1, 17, k=17.0)
-    # quantum_circuit.increment_step().gate_pauli_z_root(17, 0, 18, t=2.0)
-    # quantum_circuit.increment_step().gate_pauli_x_root_dagger(18, 0, 19, k=22.0)
-    # quantum_circuit.increment_step().gate_pauli_y_root_dagger(19, 1, 20, k=35.0)
-    # quantum_circuit.increment_step().gate_pauli_z_root_dagger(20, 0, 21, t=2.22)
+    quantum_circuit.increment_step().gate_u3([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [2], 3.14 / 2, 3.14 / 2, 3.14 / 2)
+    quantum_circuit.increment_step().gate_u2([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [3], 3.14 / 2, 3.14 / 2)
+    quantum_circuit.increment_step().gate_u1([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [4], 3.14 / 2)
+    quantum_circuit.increment_step().gate_hadamard([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [5])
+    quantum_circuit.increment_step().gate_hadamard_xy([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [6])
+    quantum_circuit.increment_step().gate_hadamard_yz([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [7])
+    quantum_circuit.increment_step().gate_hadamard_zx([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [8])
+    quantum_circuit.increment_step().gate_pauli_x([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [9])
+    quantum_circuit.increment_step().gate_pauli_y([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [10])
+    quantum_circuit.increment_step().gate_pauli_z([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [11])
+    quantum_circuit.increment_step().gate_pauli_x_root([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [12], t=2.0)
+    quantum_circuit.increment_step().gate_pauli_y_root([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [13], k=7.0)
+    quantum_circuit.increment_step().gate_pauli_z_root([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [14], k=22.0)
+    quantum_circuit.increment_step().gate_pauli_x_root_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [15], k=29.0)
+    quantum_circuit.increment_step().gate_pauli_y_root_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [16], k=8.0)
+    quantum_circuit.increment_step().gate_pauli_z_root_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [17], t=1.1)
+    quantum_circuit.increment_step().gate_rx_theta([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [18], 3.14 / 2)
+    quantum_circuit.increment_step().gate_ry_theta([{'target': 0, 'state': '1'}, {'target': 1, 'state': '+i'}], [19], 3.14 / 2)
+    quantum_circuit.increment_step().gate_rz_theta([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [20], 3.14 / 2)
+    quantum_circuit.increment_step().gate_t([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [21])
+    quantum_circuit.increment_step().gate_t_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [22])
+    quantum_circuit.increment_step().gate_s([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [23])
+    quantum_circuit.increment_step().gate_s_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [24])
+    quantum_circuit.increment_step().gate_v([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [25])
+    quantum_circuit.increment_step().gate_v_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [26])
+    quantum_circuit.increment_step().gate_h([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [27])
+    quantum_circuit.increment_step().gate_h_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [28])
+    quantum_circuit.increment_step().gate_c([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [29])
+    quantum_circuit.increment_step().gate_c_dagger([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [2])
+    quantum_circuit.increment_step().gate_p([{'target': 0, 'state': '1'}, {'target': 1, 'state': '-'}], [3], 0.2)
 
-    # # swap gates
-    # quantum_circuit.increment_step().gate_swap(1, 2)
-    # quantum_circuit.gate_iswap(4, 5)
-    # quantum_circuit.gate_sqrt_swap(6, 7)
-    # quantum_circuit.gate_swap_theta(9, 10, 3.14 / 2)
+    # two qbit gates
+    quantum_circuit.increment_step().gate_swap([], [0, 1])
+    quantum_circuit.gate_sqrt_swap([], [2, 3])
+    quantum_circuit.gate_sqrt_swap_dagger([], [4, 5])
+    quantum_circuit.gate_swap_theta([], [6, 7], 1.1)
+    quantum_circuit.gate_iswap([], [8, 9])
+    quantum_circuit.gate_fswap([], [10, 11])
+    quantum_circuit.gate_swap_root([], [12, 13], 2.1)
+    quantum_circuit.gate_swap_root_dagger([], [14, 15], 2.1)
+    quantum_circuit.gate_xx([], [16, 17], 0.22)
+    quantum_circuit.gate_yy([], [18, 19], 0.22)
+    quantum_circuit.gate_zz([], [20, 21], 0.22)
+    quantum_circuit.gate_xy([], [22, 23], 0.22)
+    quantum_circuit.gate_molmer_sorensen([], [24, 25])
+    quantum_circuit.increment_step().gate_molmer_sorensen_dagger([], [0, 1])
+    quantum_circuit.gate_berkeley([], [2, 3])
+    quantum_circuit.gate_berkeley_dagger([], [4, 5])
+    quantum_circuit.gate_ecp([], [6, 7])
+    quantum_circuit.gate_ecp_dagger([], [8, 9])
+    quantum_circuit.gate_w([], [10, 11])
+    quantum_circuit.gate_a([], [12, 13], 1.22, 1.44)
+    quantum_circuit.gate_magic([], [14, 15])
+    quantum_circuit.gate_magic_dagger([], [16, 17])
+    quantum_circuit.gate_cross_resonance([], [18, 19], 0.1)
+    quantum_circuit.gate_cross_resonance_dagger([], [20, 21], 0.2)
+    quantum_circuit.gate_givens([], [22, 23], 2.1)
 
-    # # ising gates
-    # quantum_circuit.increment_step().gate_xx(1, 2, 0.5)
-    # quantum_circuit.gate_yy(4, 6, 0.5)
-    # quantum_circuit.gate_zz(8, 10, 0.5)
-
-    # # fredkin and toffoli
-    # quantum_circuit.increment_step().gate_toffoli(4, 1, 5, 1, 6)
-    # quantum_circuit.increment_step().gate_fredkin(7, 1, 8, 9)
-
-    #measure gates
-    quantum_circuit.increment_step().gate_measure_x([0], 0)
-    quantum_circuit.gate_measure_y([1], 1)
-    quantum_circuit.gate_measure_z([2], 2)
-
+    # controlled two qbit gates
+    quantum_circuit.increment_step().gate_swap([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4])
+    quantum_circuit.increment_step().gate_sqrt_swap([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4])
+    quantum_circuit.increment_step().gate_sqrt_swap_dagger([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4])
+    quantum_circuit.increment_step().gate_swap_theta([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4], 1.2)
+    quantum_circuit.increment_step().gate_iswap([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4])
+    quantum_circuit.increment_step().gate_fswap([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4])
+    quantum_circuit.increment_step().gate_swap_root([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4], 2)
+    quantum_circuit.increment_step().gate_swap_root_dagger([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4], 3)
+    quantum_circuit.increment_step().gate_xx([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4], 0.1)
+    quantum_circuit.increment_step().gate_yy([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4], 0.1)
+    quantum_circuit.increment_step().gate_zz([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4], 0.1)
+    quantum_circuit.increment_step().gate_xy([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-i'}], [3,4], 0.1)
+    quantum_circuit.increment_step().gate_molmer_sorensen([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-'}], [3,4])
+    quantum_circuit.increment_step().gate_molmer_sorensen_dagger([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-'}], [3,4])
+    quantum_circuit.increment_step().gate_berkeley([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-'}], [3,4])
+    quantum_circuit.increment_step().gate_berkeley_dagger([{'target': 0, 'state': '-'}, {'target': 1, 'state': '-'}], [3,4])
+    quantum_circuit.increment_step().gate_ecp([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-'}], [3,4])
+    quantum_circuit.increment_step().gate_ecp_dagger([{'target': 0, 'state': '+'}, {'target': 1, 'state': '-i'}], [3,4])
+    quantum_circuit.increment_step().gate_w([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-'}], [3,4])
+    quantum_circuit.increment_step().gate_a([{'target': 0, 'state': '0'}, {'target': 1, 'state': '-'}], [3,4], 0.1, 0.2)
+    quantum_circuit.increment_step().gate_magic([{'target': 0, 'state': '+'}, {'target': 1, 'state': '+'}], [3,4])
+    quantum_circuit.increment_step().gate_magic_dagger([{'target': 0, 'state': '+'}, {'target': 1, 'state': '-'}], [3,4])
+    quantum_circuit.increment_step().gate_cross_resonance([{'target': 0, 'state': '+'}, {'target': 1, 'state': '-'}], [3,4], 0.1)
+    quantum_circuit.increment_step().gate_cross_resonance_dagger([{'target': 0, 'state': '-'}, {'target': 1, 'state': '+i'}], [3,4], 0.1)
+    quantum_circuit.increment_step().gate_givens([{'target': 0, 'state': '-'}, {'target': 1, 'state': '+i'}], [3,4], 0.1)
+    
     quantum_circuit.export("test/tmp.yaml")
-    # assert filecmp.cmp(
-    #     "test/tmp.yaml", "test/all_my_gates.yaml"
-    # ), "The output tmp.yaml file is different from reference all_my_gates.yaml file."
+
+    assert filecmp.cmp(
+        "test/tmp.yaml", "test/all_my_gates.yaml"
+    ), "The output tmp.yaml file is different from reference all_my_gates.yaml file."
 
 
 if __name__ == "__main__":

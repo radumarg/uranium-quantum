@@ -64,7 +64,8 @@ class BaseExporter:
                     bit,
                     add_comments,
                 )
-        return output + "\n"
+                output += "\n"
+        return output
 
     def process_gate(
         self,

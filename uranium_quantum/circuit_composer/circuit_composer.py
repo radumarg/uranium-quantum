@@ -80,7 +80,7 @@ delivering some of the logic intended by the creator of the circuit."""
         """Get number of steps"""
         return self._current_step
 
-    def list_contains_no_duplicates(self, list):
+    def list_of_qubits_contains_no_duplicates(self, list):
         return len(list) == len(set(list))
 
     def export(self, name):
@@ -106,10 +106,10 @@ delivering some of the logic intended by the creator of the circuit."""
                         yaml_file.write("        controls:\n")
                         for control in gate["controls"]:
                             yaml_file.write(
-                                "          - target:" + str(control["target"]) + "\n"
+                                "          - target: " + str(control["target"]) + "\n"
                             )
                             yaml_file.write(
-                                "          - state:" + str(control["state"]) + "\n"
+                                "            state: '" + str(control["state"]) + "'\n"
                             )
                     if "gates" in gate and gate["gates"]:
                         yaml_file.write("        gates:\n")
@@ -158,8 +158,9 @@ delivering some of the logic intended by the creator of the circuit."""
         self._gates_in_current_step().append(gate)
 
     def gate_u1(self, controls, targets, lambda_radians):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
+        assert lambda_radians is not None
         gate = {}
         gate["name"] = "u1"
         gate["controls"] = controls
@@ -169,8 +170,10 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_u2(self, controls, targets, phi_radians, lambda_radians):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
+        assert lambda_radians is not None
+        assert phi_radians is not None
         gate = {}
         gate["name"] = "u2"
         gate["controls"] = controls
@@ -181,8 +184,11 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_u3(self, controls, targets, theta_radians, phi_radians, lambda_radians):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
+        assert lambda_radians is not None
+        assert phi_radians is not None
+        assert theta_radians is not None
         gate = {}
         gate["name"] = "u3"
         gate["controls"] = controls
@@ -202,7 +208,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_hadamard(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "hadamard"
@@ -212,7 +218,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_hadamard_xy(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "hadamard-xy"
@@ -222,7 +228,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_hadamard_yz(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "hadamard-yz"
@@ -232,7 +238,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_hadamard_zx(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "hadamard-zx"
@@ -242,7 +248,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_x(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "pauli-x"
@@ -252,7 +258,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_y(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "pauli-y"
@@ -262,7 +268,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_z(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "pauli-z"
@@ -272,7 +278,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_x_root(self, controls, targets, t=None, k=None):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         assert t != None or k != None
         gate = {}
@@ -287,7 +293,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_y_root(self, controls, targets, t=None, k=None):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         assert t != None or k != None
         gate = {}
@@ -302,7 +308,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_z_root(self, controls, targets, t=None, k=None):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         assert t != None or k != None
         gate = {}
@@ -317,7 +323,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_x_root_dagger(self, controls, targets, t=None, k=None):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         assert t != None or k != None
         gate = {}
@@ -332,7 +338,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_y_root_dagger(self, controls, targets, t=None, k=None):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         assert t != None or k != None
         gate = {}
@@ -347,7 +353,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_pauli_z_root_dagger(self, controls, targets, t=None, k=None):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         assert t != None or k != None
         gate = {}
@@ -362,8 +368,9 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_rx_theta(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
+        assert theta is not None
         gate = {}
         gate["name"] = "rx-theta"
         gate["controls"] = controls
@@ -373,8 +380,9 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_ry_theta(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
+        assert theta is not None
         gate = {}
         gate["name"] = "ry-theta"
         gate["controls"] = controls
@@ -384,8 +392,9 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_rz_theta(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
+        assert theta is not None
         gate = {}
         gate["name"] = "rz-theta"
         gate["controls"] = controls
@@ -395,7 +404,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_s(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "s"
@@ -405,7 +414,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_s_dagger(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "s-dagger"
@@ -414,8 +423,20 @@ delivering some of the logic intended by the creator of the circuit."""
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
 
+    def gate_p(self, controls, targets, theta):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 1
+        assert theta is not None
+        gate = {}
+        gate["name"] = "p"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["theta"] = theta
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
     def gate_t(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "t"
@@ -425,7 +446,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_t_dagger(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "t-dagger"
@@ -435,7 +456,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_v(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "v"
@@ -445,7 +466,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_v_dagger(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "v-dagger"
@@ -455,7 +476,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_h(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "h"
@@ -465,7 +486,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_h_dagger(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "h-dagger"
@@ -475,7 +496,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_c(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "c"
@@ -485,7 +506,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_c_dagger(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 1
         gate = {}
         gate["name"] = "c-dagger"
@@ -495,8 +516,9 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_xx(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
+        assert theta is not None
         gate = {}
         gate["name"] = "xx"
         gate["controls"] = controls
@@ -506,8 +528,9 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_yy(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
+        assert theta is not None
         gate = {}
         gate["name"] = "yy"
         gate["controls"] = controls
@@ -517,8 +540,9 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_zz(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
+        assert theta is not None
         gate = {}
         gate["name"] = "zz"
         gate["controls"] = controls
@@ -527,8 +551,20 @@ delivering some of the logic intended by the creator of the circuit."""
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
 
+    def gate_xy(self, controls, targets, theta):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        assert theta is not None
+        gate = {}
+        gate["name"] = "xy"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["theta"] = theta
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
     def gate_swap(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
         gate = {}
         gate["name"] = "swap"
@@ -538,7 +574,7 @@ delivering some of the logic intended by the creator of the circuit."""
         return self
 
     def gate_iswap(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
         gate = {}
         gate["name"] = "iswap"
@@ -547,18 +583,30 @@ delivering some of the logic intended by the creator of the circuit."""
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
 
-    def gate_swap_theta(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+    def gate_fswap(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
         gate = {}
-        gate["name"] = "swap-phi"
+        gate["name"] = "fswap"
+        gate["controls"] = controls
         gate["targets"] = targets
-        gate["tehta"] = theta
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_swap_theta(self, controls, targets, theta):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        assert theta is not None
+        gate = {}
+        gate["name"] = "swap-theta"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
 
     def gate_sqrt_swap(self, controls, targets):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
         gate = {}
         gate["name"] = "sqrt-swap"
@@ -567,11 +615,171 @@ delivering some of the logic intended by the creator of the circuit."""
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
 
-    def gate_cross_resonance(self, controls, targets, theta):
-        assert self.list_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+    def gate_sqrt_swap_dagger(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
         assert len(targets) == 2
         gate = {}
+        gate["name"] = "sqrt-swap-dagger"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_swap_root(self, controls, targets, t):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "swap-root"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["root-t"] = t
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_swap_root_dagger(self, controls, targets, t):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "swap-root-dagger"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["root-t"] = t
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_molmer_sorensen(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "molmer-sorensen"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_molmer_sorensen_dagger(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "molmer-sorensen-dagger"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_w(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "w"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_berkeley(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "berkeley"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_berkeley_dagger(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "berkeley-dagger"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_ecp(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "ecp"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_ecp_dagger(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "ecp-dagger"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_magic(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "magic"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_magic_dagger(self, controls, targets):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        gate = {}
+        gate["name"] = "magic-dagger"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_cross_resonance(self, controls, targets, theta):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        assert theta is not None
+        gate = {}
         gate["name"] = "cross-resonance"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["theta"] = theta
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_cross_resonance_dagger(self, controls, targets, theta):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        assert theta is not None
+        gate = {}
+        gate["name"] = "cross-resonance-dagger"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["theta"] = theta
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_a(self, controls, targets, theta, phi):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        assert theta is not None
+        gate = {}
+        gate["name"] = "a"
+        gate["controls"] = controls
+        gate["targets"] = targets
+        gate["theta"] = theta
+        gate["phi"] = phi
+        self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
+        return self
+
+    def gate_givens(self, controls, targets, theta):
+        assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + targets)
+        assert len(targets) == 2
+        assert theta is not None
+        gate = {}
+        gate["name"] = "givens"
         gate["controls"] = controls
         gate["targets"] = targets
         gate["theta"] = theta
@@ -604,3 +812,4 @@ delivering some of the logic intended by the creator of the circuit."""
         gate["bit"] = classic_bit
         self.setup_new_gate(gate, targets)
         return self
+

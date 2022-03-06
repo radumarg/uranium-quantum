@@ -3,7 +3,6 @@ import importlib
 import yaml
 
 QiskitExporter = importlib.import_module("uranium_quantum.circuit_exporter.qiskit-exporter")
-OpenQASMExporter = importlib.import_module("uranium_quantum.circuit_exporter.open-qasm-exporter")
 PyquilExporter = importlib.import_module("uranium_quantum.circuit_exporter.pyquil-exporter")
 QuilExporter = importlib.import_module("uranium_quantum.circuit_exporter.quil-exporter")
 CirqExporter = importlib.import_module("uranium_quantum.circuit_exporter.cirq-exporter")
@@ -41,25 +40,25 @@ def get_number_bits(yaml):
     return bits
 
 
-def process_yaml(yaml_data, exporter, add_comments):
+def process_yaml(yaml_data, exporter, export_format, add_comments):
     """Export quantium circuit from YAML format to target language."""
     code = exporter.start_code()
     if "steps" in yaml_data.keys():
         for step in yaml_data["steps"]:
             step_index = step["index"]
-            if type(exporter) == QiskitExporter.Exporter:
+            if export_format == "qiskit":
                 if add_comments:
                     code += f"\n############ New circuit step no: {step_index} ############\n\n"
-            elif type(exporter) == OpenQASMExporter.Exporter:
+            elif export_format == "openqasm":
                 if add_comments:
                     code += f"\n//////////// New circuit step no: {step_index} ////////////\n\n"
-            elif type(exporter) == PyquilExporter.Exporter:
+            elif export_format == "pyquil":
                 if add_comments:
                     code += f"\n############ New circuit step no: {step_index} ############\n\n"
-            elif type(exporter) == QuilExporter.Exporter:
+            elif export_format == "quil":
                 if add_comments:
                     code += f"\n############ New circuit step no: {step_index} ############\n\n"
-            elif type(exporter) == CirqExporter.Exporter:
+            elif export_format == "cirq":
                 if add_comments:
                     code += f"\n############ New circuit step no: {step_index} ############\n\n"
             code += exporter.process_step(step, add_comments)
@@ -93,9 +92,9 @@ def get_exported_code(file, export_format, comments):
             no_bits = get_number_bits(yaml_data)
             exporter.set_number_bits(no_bits)
             if comments:
-                quantum_code = process_yaml(yaml_data, exporter, add_comments=True)
+                quantum_code = process_yaml(yaml_data, exporter, export_format, add_comments=True)
             else:
-                quantum_code = process_yaml(yaml_data, exporter, add_comments=False)
+                quantum_code = process_yaml(yaml_data, exporter, export_format, add_comments=False)
         except yaml.YAMLError as ex:
             quantum_code = str(ex)
     return quantum_code
@@ -137,9 +136,13 @@ def main(file, export_format, comments = False):
     quantum_code = get_exported_code(file, export_format, comments and comments.lower() in ['true', '1', 't', 'y', 'yes'])
 
     if export_format.lower() == "openqasm":
-        for code_line in quantum_code.splitlines():
-            exec(code_line)
-        quantum_code = eval('qc.qasm()')
+        exec(quantum_code)
+        try:
+            quantum_code = eval('qc.qasm()')
+        except Exception as ex:
+            quantum_code = "QASM translation exception: \n"
+            quantum_code += str(ex)
+            quantum_code += "\n"
 
     with open(output_file, "w") as outfile:
         outfile.write(quantum_code)
