@@ -334,12 +334,12 @@ class BaseExporter:
                 if gate["name"] == "u3":
                     if len(code): code += "\n"
                     code += self._gate_u3(
-                        controls, gate["targets"], gate["theta"], gate["phi'"], gate["lambda"], add_comments,
+                        controls, gate["targets"], gate["theta"], gate["phi"], gate["lambda"], add_comments,
                     )
                 elif gate["name"] == "u2":
                     if len(code): code += "\n"
                     code += self._gate_u2(
-                        controls, gate["targets"], gate["phi'"], gate["lambda"], add_comments
+                        controls, gate["targets"], gate["phi"], gate["lambda"], add_comments
                     )
                 elif gate["name"] == "u1":
                     if len(code): code += "\n"
