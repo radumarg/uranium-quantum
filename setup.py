@@ -6,20 +6,20 @@ try:
   with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
       long_description = f.read()
 except:
-  long_description = "Support libraries for the Uranium quantum computing platform."
+  long_description = "Support libraries for the Uranium quantum computing platform (https://uranium.transilvania-quantum.org/)."
 
 setup(
   name = 'uranium-quantum',
   packages = ['uranium_quantum/circuit_composer', 'uranium_quantum/circuit_exporter'],  
   version = '0.2.3',
   license='MIT',
-  description = 'Support libraries for the Uranium quantum computing platform.',
+  description = 'Support libraries for the Uranium quantum computing platform (https://uranium.transilvania-quantum.org/).',
   long_description=long_description,
   long_description_content_type='text/markdown',
   author = 'Radu Marginean',
   author_email = 'radu.marg@gmail.com',
   url = 'https://github.com/radumarg/uranium-quantum',
-  download_url = 'https://github.com/radumarg/uranium-quantum/archive/refs/tags/v0.2.3.tar.gz',
+  download_url = 'https://github.com/radumarg/uranium-quantum/releases/tag/v0.2.3',
   keywords = ['quantum', 'computing', 'uranium platform'],  
   install_requires=[            
           'click',
