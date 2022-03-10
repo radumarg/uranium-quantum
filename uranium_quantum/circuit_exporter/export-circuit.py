@@ -97,6 +97,17 @@ def get_exported_code(file, export_format, comments):
                 quantum_code = process_yaml(yaml_data, exporter, export_format, add_comments=False)
         except yaml.YAMLError as ex:
             quantum_code = str(ex)
+
+    # openqasm uses QiskitExporter
+    if export_format.lower() == "openqasm":
+        exec(quantum_code)
+        try:
+            quantum_code = eval('qc.qasm()')
+        except Exception as ex:
+            quantum_code = "QASM translation exception: \n"
+            quantum_code += str(ex)
+            quantum_code += "\n"
+
     return quantum_code
 
 
