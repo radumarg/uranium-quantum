@@ -1,4 +1,4 @@
-class ExportException(BaseException):
+class ExportException(Exception):
     pass
 
 

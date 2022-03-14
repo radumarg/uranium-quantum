@@ -11,7 +11,7 @@ except:
 setup(
   name = 'uranium-quantum',
   packages = ['uranium_quantum/circuit_composer', 'uranium_quantum/circuit_exporter'],  
-  version = '0.2.4',
+  version = '0.2.5',
   license='MIT',
   description = 'Support libraries for the Uranium quantum computing platform (https://uranium.transilvania-quantum.org/).',
   long_description=long_description,
@@ -19,7 +19,7 @@ setup(
   author = 'Radu Marginean',
   author_email = 'radu.marg@gmail.com',
   url = 'https://github.com/radumarg/uranium-quantum',
-  download_url = 'https://github.com/radumarg/uranium-quantum/releases/tag/v0.2.4',
+  download_url = 'https://github.com/radumarg/uranium-quantum/releases/tag/v0.2.5',
   keywords = ['quantum', 'computing', 'uranium platform'],  
   install_requires=[            
           'click',
