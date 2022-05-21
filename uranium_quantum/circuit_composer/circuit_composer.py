@@ -2,6 +2,10 @@
 
 from typing import Dict, List
 
+class Control:
+    def __init__(self, target, state):
+        self.target = target
+        self.state = state
 
 class QbitAleadyTaken(Exception):
     """Will be thrown when a gate exist at indicated step and qubit."""
@@ -69,7 +73,7 @@ delivering some of the logic intended by the creator of the circuit."""
     def _get_controls_targets(self, controls):
         targets = []
         for control in controls:
-            targets.append(control["target"])
+            targets.append(control.target)
         return targets
 
     def _get_aggregated_targets(self, gates):
@@ -80,6 +84,12 @@ delivering some of the logic intended by the creator of the circuit."""
 
     def _qbits_taken_in_current_step(self):
         return self._qbits_taken[self._current_step]
+
+    def _format_controls(self, controls):
+        formatted_controls = []
+        for control in controls:
+            formatted_controls.append({'target': control.target, 'state': control.state})
+        return formatted_controls
 
     def current_step(self):
         """Get number of steps"""
@@ -166,7 +176,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert self.list_of_qubits_contains_no_duplicates(self._get_controls_targets(controls) + self._get_aggregated_targets(gates)), "Target and control qubit list must contain no duplicates."
         gate = {}
         gate["name"] = "aggregate"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["gates"] = gates
         self.setup_new_gate(gate, self._get_controls_targets(controls) + self._get_aggregated_targets(gates))
         return self
@@ -177,7 +187,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert lambda_radians is not None, "Value of lambda must be specified for this gate."
         gate = {}
         gate["name"] = "u1"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["lambda"] = lambda_radians
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -190,7 +200,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert phi_radians is not None, "Value of phi must be specified for this gate."
         gate = {}
         gate["name"] = "u2"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["phi"] = phi_radians
         gate["lambda"] = lambda_radians
@@ -205,7 +215,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta_radians is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "u3"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta_radians
         gate["phi"] = phi_radians
@@ -226,7 +236,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "hadamard"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -236,7 +246,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "hadamard-xy"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -246,7 +256,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "hadamard-yz"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -256,7 +266,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "hadamard-zx"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -266,7 +276,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "pauli-x"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -276,7 +286,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "pauli-y"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -286,7 +296,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "pauli-z"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -301,7 +311,7 @@ delivering some of the logic intended by the creator of the circuit."""
             gate["root-k"] = k
         elif t:
             gate["root-t"] = t
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -316,7 +326,7 @@ delivering some of the logic intended by the creator of the circuit."""
             gate["root-k"] = k
         elif t:
             gate["root-t"] = t
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -331,7 +341,7 @@ delivering some of the logic intended by the creator of the circuit."""
             gate["root-k"] = k
         elif t:
             gate["root-t"] = t
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -346,7 +356,7 @@ delivering some of the logic intended by the creator of the circuit."""
             gate["root-k"] = k
         elif t:
             gate["root-t"] = t
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -361,7 +371,7 @@ delivering some of the logic intended by the creator of the circuit."""
             gate["root-k"] = k
         elif t:
             gate["root-t"] = t
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -376,7 +386,7 @@ delivering some of the logic intended by the creator of the circuit."""
             gate["root-k"] = k
         elif t:
             gate["root-t"] = t
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -387,7 +397,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "rx-theta"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -399,7 +409,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "ry-theta"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -411,7 +421,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "rz-theta"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -422,7 +432,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "s"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -432,7 +442,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "s-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -443,7 +453,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "p"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -454,7 +464,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "t"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -464,7 +474,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "t-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -474,7 +484,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "v"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -484,7 +494,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "v-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -494,7 +504,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "h"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -504,7 +514,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "h-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -514,7 +524,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "c"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -524,7 +534,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 1, "This is a one qubit gate, please specify as argument a list containing one target qubit."
         gate = {}
         gate["name"] = "c-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -535,7 +545,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "xx"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -547,7 +557,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "yy"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -559,7 +569,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "zz"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -571,7 +581,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "xy"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -582,7 +592,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "swap"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -592,7 +602,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "iswap"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -602,7 +612,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "fswap"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -613,7 +623,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "swap-theta"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -624,7 +634,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "sqrt-swap"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -634,7 +644,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "sqrt-swap-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -644,7 +654,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "swap-root"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["root-t"] = t
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -655,7 +665,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "swap-root-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["root-t"] = t
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -666,7 +676,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "molmer-sorensen"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -676,7 +686,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "molmer-sorensen-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -686,7 +696,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "w"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -696,7 +706,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "berkeley"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -706,7 +716,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "berkeley-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -716,7 +726,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "ecp"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -726,7 +736,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "ecp-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -736,7 +746,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "magic"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -746,7 +756,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert len(targets) == 2, "For a two qubit gate you need to specify two target qubits."
         gate = {}
         gate["name"] = "magic-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
         return self
@@ -757,7 +767,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "cross-resonance"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -769,7 +779,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "cross-resonance-dagger"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)
@@ -781,7 +791,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "a"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         gate["phi"] = phi
@@ -794,7 +804,7 @@ delivering some of the logic intended by the creator of the circuit."""
         assert theta is not None, "Value of theta must be specified for this gate."
         gate = {}
         gate["name"] = "givens"
-        gate["controls"] = controls
+        gate["controls"] = self._format_controls(controls)
         gate["targets"] = targets
         gate["theta"] = theta
         self.setup_new_gate(gate, self._get_controls_targets(controls) + targets)

@@ -24,10 +24,13 @@ class BaseExporter:
         if "gates" in step:
             for gate in step["gates"]:
 
-                controls, targets, gates, root, theta_radians, phi_radians, lambda_radians, bit = (
+                controls, targets, gates, root, theta_radians, phi_radians, lambda_radians, bit, circuit_id, circuit_abbreviation, circuit_power = (
                     [],
                     [],
                     [],
+                    None,
+                    None,
+                    None,
                     None,
                     None,
                     None,
@@ -50,6 +53,12 @@ class BaseExporter:
                     lambda_radians = gate["lambda"]
                 if "bit" in gate:
                     bit = gate["bit"]
+                if "circuit_id" in gate:
+                    circuit_id = gate["circuit_id"]
+                if "circuit_abbreviation" in gate:
+                    circuit_abbreviation = gate["circuit_abbreviation"]
+                if "circuit_power" in gate:
+                    circuit_power = gate["circuit_power"]
 
                 name = gate["name"]
                 output += self.process_gate(
@@ -62,6 +71,9 @@ class BaseExporter:
                     phi_radians,
                     lambda_radians,
                     bit,
+                    circuit_id,
+                    circuit_abbreviation,
+                    circuit_power,
                     add_comments,
                 )
                 output += "\n"
@@ -78,10 +90,17 @@ class BaseExporter:
         phi_radians,
         lambda_radians,
         bit,
+        circuit_id,
+        circuit_abbreviation,
+        circuit_power,
         add_comments,
     ):
         """Create export code corresponding to a gate in yaml circuit."""
-        if name == "u3":
+        if name == "circuit":
+            return self._gate_circuit(
+                controls, targets, circuit_id, circuit_abbreviation, circuit_power, add_comments,
+            )
+        elif name == "u3":
             return self._gate_u3(
                 controls, targets, theta_radians, phi_radians, lambda_radians, add_comments,
             )
@@ -487,6 +506,12 @@ class BaseExporter:
                     )
             return code
         raise ExportException(f"The gate {name} is not implemented in exporter code.")
+
+    @staticmethod
+    def _gate_circuit(
+        controls, targets, circuit_id, circuit_abbreviation, circuit_power, add_comments
+    ):
+        return ""
 
     @staticmethod
     def _gate_u3(

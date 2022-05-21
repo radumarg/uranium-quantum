@@ -39,10 +39,26 @@ def get_number_bits(yaml):
                         bits = max(bits, gate["bit"] + 1)
     return bits
 
+def get_circuit_descendants(circuits, circuit_id, descendants):
+  circuit = circuits[circuit_id]
+  for step in circuit["steps"]:
+      gates = step["gates"]
+      for gate in gates:
+          if gate["name"] == "circuit":
+              gate_circuit_id = gate["circuit_id"]
+              descendants.append(gate_circuit_id)
+              get_circuit_descendants(circuits, gate_circuit_id, descendants)
 
-def process_yaml(yaml_data, exporter, export_format, add_comments):
+  return descendants
+
+def get_imports_and_or_headers_section(exporter):
+    """ get export circuit header section"""
+    return exporter.imports_and_or_headers_section()
+
+def process_circuit_yaml(yaml_data, exporter, export_format, add_comments):
     """Export quantium circuit from YAML format to target language."""
-    code = exporter.start_code()
+    circuit_name = yaml_data["circuit_name"].lower().replace(" ", "_")
+    code = exporter.start_circuit_code(circuit_name)
     if "steps" in yaml_data.keys():
         for step in yaml_data["steps"]:
             step_index = step["index"]
@@ -62,11 +78,11 @@ def process_yaml(yaml_data, exporter, export_format, add_comments):
                 if add_comments:
                     code += f"\n############ New circuit step no: {step_index} ############\n\n"
             code += exporter.process_step(step, add_comments)
-    code += exporter.end_code()
+    code += exporter.end_circuit_code()
     return code
 
 
-def get_exported_code(file, export_format, comments):
+def get_exported_code(files, main_circuit_id, export_format, comments):
     """Get circuit code in exported format"""
 
     exporter = None
@@ -83,20 +99,38 @@ def get_exported_code(file, export_format, comments):
     else:
         raise Exception(f"Export format {export_format} is not supported.")
 
-    quantum_code = ""
-    with open(file, "r") as stream:
-        try:
-            yaml_data = yaml.safe_load(stream)
-            no_qubits = get_number_qubits(yaml_data)
-            exporter.set_number_qubits(no_qubits)
-            no_bits = get_number_bits(yaml_data)
-            exporter.set_number_bits(no_bits)
-            if comments:
-                quantum_code = process_yaml(yaml_data, exporter, export_format, add_comments=True)
-            else:
-                quantum_code = process_yaml(yaml_data, exporter, export_format, add_comments=False)
-        except yaml.YAMLError as ex:
-            quantum_code = str(ex)
+    quantum_code = get_imports_and_or_headers_section(exporter)
+
+    circuit_codes = {}
+    circuit_objects = {}
+
+    for file in files:
+        with open(file, "r") as stream:
+            try:
+                yaml_data = yaml.safe_load(stream)
+                circuit_id = yaml_data["circuit_id"]
+                circuit_objects[circuit_id] = yaml_data
+                no_qubits = get_number_qubits(yaml_data)
+                exporter.set_number_qubits(no_qubits)
+                no_bits = get_number_bits(yaml_data)
+                exporter.set_number_bits(no_bits)
+                if comments:
+                    circuit_code = process_circuit_yaml(yaml_data, exporter, export_format, add_comments=True)
+                else:
+                    circuit_code = process_circuit_yaml(yaml_data, exporter, export_format, add_comments=False)
+                circuit_codes[circuit_id] = circuit_code
+            except yaml.YAMLError as ex:
+                quantum_code = str(ex)
+                return quantum_code
+
+    main_circuit_descendants = []
+    get_circuit_descendants(circuit_objects, main_circuit_id, main_circuit_descendants)
+
+    for circuit_id in main_circuit_descendants:
+        quantum_code += circuit_codes[circuit_id]
+        quantum_code += "\n"
+
+    quantum_code += circuit_codes[main_circuit_id]
 
     # openqasm uses QiskitExporter
     if export_format.lower() == "openqasm":
@@ -113,7 +147,11 @@ def get_exported_code(file, export_format, comments):
 
 @click.command()
 @click.option(
-    "--file", "-f", required=True, help="A file with quantum circuit in yaml format."
+    "--files",
+    "-f",
+    required=True,
+    multiple=True,
+    help="One or more files with quantum circuits in yaml format."
 )
 @click.option(
     "--export_format",
@@ -122,29 +160,38 @@ def get_exported_code(file, export_format, comments):
     help="Specific format for exporting the circuit into: 'qiskit', 'openqasm', 'pyquil', 'quil' or 'cirq'.",
 )
 @click.option(
-    "-comments", "-c", required=False, help="Add comments with step index gate names in exported code."
+    "--circuit_id",
+    "-i",
+    required=True,
+    help="The id of the circuit to export.",
 )
-def main(file, export_format, comments = False):
+@click.option(
+    "-comments",
+    "-c",
+    required=False,
+    help="Add comments with step index gate names in exported code."
+)
+def main(files, export_format, circuit_id, comments = False):
 
-    output_file = file.replace(".yaml", f"_{export_format}.py")
+    output_file = f"exported_circuit_{export_format}.py"
 
-    if not file.endswith(".yaml"):
-        print("A yaml file is required as input for this script.")
-        return
+    for file in files:
+      if not file.endswith(".yaml"):
+          print("One or more yaml file is required as input for this script.")
+          return
 
     if export_format.lower() == "qiskit":
         pass
     elif export_format.lower() == "openqasm":
-        output_file = file.replace(".yaml", ".qasm")
+        output_file = "exported_circuit.qasm"
     elif export_format.lower() == "pyquil":
         raise Exception("The pyquil exporter is not yet implemented.")
     elif export_format.lower() == "quil":
-        output_file = file.replace(".yaml", ".quil")
         raise Exception("The quil exporter is not yet implemented.")
     elif export_format.lower() == "cirq":
         raise Exception("The cirq exporter is not yet implemented.")
 
-    quantum_code = get_exported_code(file, export_format, comments and comments.lower() in ['true', '1', 't', 'y', 'yes'])
+    quantum_code = get_exported_code(files, int(circuit_id), export_format, comments and comments.lower() in ['true', '1', 't', 'y', 'yes'])
 
     if export_format.lower() == "openqasm":
         exec(quantum_code)

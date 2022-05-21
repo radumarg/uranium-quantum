@@ -53,7 +53,7 @@ def cu3(theta_radians, phi_radians, lambda_radians):\n\
     return cirq.MatrixGate(np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, np.cos(theta_radians/2), -np.exp(1j * lambda_radians) * np.sin(theta_radians/2)], [0, 0, np.exp(1j * phi_radians) * np.sin(theta_radians/2), np.exp(1j * lambda_radians+1j * phi_radians) * np.cos(theta_radians/2)]]))\n\
 \n"
 
-    def start_code(self):
+    def start_circuit_code(self, circuit_name):
         return (
             self._define_import_code_section()
             + "\n"
@@ -72,7 +72,7 @@ def cu3(theta_radians, phi_radians, lambda_radians):\n\
             + "circuit = cirq.Circuit(\n\n"
         )
 
-    def end_code(self):
+    def end_circuit_code(self):
         return f"\
 )\n\
 \n\

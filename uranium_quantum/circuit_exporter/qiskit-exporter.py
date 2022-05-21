@@ -3,7 +3,7 @@ import numpy as np
 
 BaseExporter = importlib.import_module("uranium_quantum.circuit_exporter.base-exporter")
 class Exporter(BaseExporter.BaseExporter):
-    def start_code(self):
+    def imports_and_or_headers_section(self):
         return f"\
 import numpy as np\n\
 from qiskit import QuantumRegister\n\
@@ -19,12 +19,14 @@ from qiskit.circuit.library import SGate, SdgGate, TGate, TdgGate\n\
 from qiskit.circuit.library import UGate, U1Gate\n\
 from qiskit.circuit.library import SwapGate, iSwapGate\n\
 from uranium_quantum.circuit_exporter.qiskit_custom_gates import *\n\
-\n\
-cr = ClassicalRegister({self._bits})\n\
-qr = QuantumRegister({self._qubits})\n\
-qc = QuantumCircuit(qr, cr)\n\n"
+\n\n"
+    def start_circuit_code(self, circuit_name):
+        return f"\
+cr_{circuit_name} = ClassicalRegister({self._bits})\n\
+qr_{circuit_name} = QuantumRegister({self._qubits})\n\
+qc_{circuit_name} = QuantumCircuit(qr_{circuit_name}, cr_{circuit_name})\n\n\n"
 
-    def end_code(self):
+    def end_circuit_code(self):
         return f""
 
     @staticmethod
@@ -759,12 +761,21 @@ qc = QuantumCircuit(qr, cr)\n\n"
         return out
 
     @staticmethod
+    def _gate_circuit(
+        controls, targets, circuit_id, circuit_abbreviation, circuit_power, add_comments
+    ):
+        out = "# qft gate\n" if add_comments else ""
+        return out
+
+    @staticmethod
     def _gate_qft(controls, targets, add_comments=True):
-        raise BaseExporter.ExportException("The qft gate is not yet implemented.")
+        out = "# qft gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_qft_dagger(controls, targets, add_comments=True):
-        raise BaseExporter.ExportException("The qft gate is not yet implemented.")
+        out = "# qft gate\n" if add_comments else ""
+        return out
 
     @staticmethod
     def _gate_measure_x(targets, classic_bit, add_comments=True):

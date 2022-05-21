@@ -118,7 +118,7 @@ cu3_defgate = DefGate('cu3', cu3_array, [theta_radians, phi_radians, lambda_radi
 cu3 = cu3_defgate.get_constructor()\n\
 p.inst(cu3_defgate)\n"
 
-    def start_code(self):
+    def start_circuit_code(self, circuit_name):
         return (
             self._define_import_code_section()
             + "\n"
@@ -148,7 +148,7 @@ p.inst(cu3_defgate)\n"
             + "\n"
         )
 
-    def end_code(self):
+    def end_circuit_code(self):
         return f'\
 qc = get_qc("8q-qvm")\n\
 p.wrap_in_numshots_loop(1000)\n\

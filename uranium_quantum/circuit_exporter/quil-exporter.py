@@ -109,7 +109,7 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
     0, 0, COS(%theta/2), -1*EXP(i*%lambda)*SIN(%theta/2)\n\
     0, 0, EXP(i*%phi)*SIN(%theta/2), EXP(i*%lambda + i*%phi)*COS(%theta/2)\n"
 
-    def start_code(self):
+    def start_circuit_code(self, circuit_name):
         return (
             self._define_initial_code_section()
             + "\n"
@@ -139,7 +139,7 @@ DEFGATE cu3(%theta, %phi, %lambda):\n\
             + "\n"
         )
 
-    def end_code(self):
+    def end_circuit_code(self):
         return out
 
     @staticmethod
