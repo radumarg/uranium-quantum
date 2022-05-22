@@ -46,7 +46,8 @@ def get_circuit_descendants(circuits, circuit_id, descendants):
       for gate in gates:
           if gate["name"] == "circuit":
               gate_circuit_id = gate["circuit_id"]
-              descendants.append(gate_circuit_id)
+              if not gate_circuit_id in descendants: 
+                  descendants.append(gate_circuit_id)
               get_circuit_descendants(circuits, gate_circuit_id, descendants)
 
   return descendants
@@ -55,9 +56,8 @@ def get_imports_and_or_headers_section(exporter):
     """ get export circuit header section"""
     return exporter.imports_and_or_headers_section()
 
-def process_circuit_yaml(yaml_data, exporter, export_format, add_comments):
+def process_circuit_yaml(yaml_data, circuit_name, circuit_names, exporter, export_format, add_comments, skip_non_unitary_gates):
     """Export quantium circuit from YAML format to target language."""
-    circuit_name = yaml_data["circuit_name"].lower().replace(" ", "_")
     code = exporter.start_circuit_code(circuit_name)
     if "steps" in yaml_data.keys():
         for step in yaml_data["steps"]:
@@ -77,13 +77,14 @@ def process_circuit_yaml(yaml_data, exporter, export_format, add_comments):
             elif export_format == "cirq":
                 if add_comments:
                     code += f"\n############ New circuit step no: {step_index} ############\n\n"
-            code += exporter.process_step(step, add_comments)
+            code += exporter.process_step(step, circuit_name, circuit_names, add_comments, skip_non_unitary_gates)
     code += exporter.end_circuit_code()
     return code
 
 
 def get_exported_code(files, main_circuit_id, export_format, comments):
     """Get circuit code in exported format"""
+    add_comments = True if comments else False
 
     exporter = None
     if export_format.lower() == "qiskit":
@@ -103,7 +104,20 @@ def get_exported_code(files, main_circuit_id, export_format, comments):
 
     circuit_codes = {}
     circuit_objects = {}
+    circuit_names = {}
 
+    # collect circuit_names
+    for file in files:
+        with open(file, "r") as stream:
+            try:
+                yaml_data = yaml.safe_load(stream)
+                circuit_id = yaml_data["circuit_id"]
+                circuit_names[circuit_id] = yaml_data["circuit_name"].lower().replace(" ", "_")
+            except yaml.YAMLError as ex:
+                quantum_code = str(ex)
+                return quantum_code
+
+    # creating a custom gate for each circuit
     for file in files:
         with open(file, "r") as stream:
             try:
@@ -112,12 +126,10 @@ def get_exported_code(files, main_circuit_id, export_format, comments):
                 circuit_objects[circuit_id] = yaml_data
                 no_qubits = get_number_qubits(yaml_data)
                 exporter.set_number_qubits(no_qubits)
-                no_bits = get_number_bits(yaml_data)
-                exporter.set_number_bits(no_bits)
-                if comments:
-                    circuit_code = process_circuit_yaml(yaml_data, exporter, export_format, add_comments=True)
-                else:
-                    circuit_code = process_circuit_yaml(yaml_data, exporter, export_format, add_comments=False)
+                # a circuit with classical bits cannot be converted to a gate
+                exporter.set_number_bits(0)
+                circuit_name = yaml_data["circuit_name"].lower().replace(" ", "_")
+                circuit_code = process_circuit_yaml(yaml_data, circuit_name, circuit_names, exporter, export_format, add_comments, True)
                 circuit_codes[circuit_id] = circuit_code
             except yaml.YAMLError as ex:
                 quantum_code = str(ex)
@@ -125,12 +137,21 @@ def get_exported_code(files, main_circuit_id, export_format, comments):
 
     main_circuit_descendants = []
     get_circuit_descendants(circuit_objects, main_circuit_id, main_circuit_descendants)
+    # most elementary circuits should be placed first, circuits
+    # that depend on elementary circuits should be added later:
+    main_circuit_descendants.reverse()
 
     for circuit_id in main_circuit_descendants:
         quantum_code += circuit_codes[circuit_id]
         quantum_code += "\n"
 
-    quantum_code += circuit_codes[main_circuit_id]
+    # process main circuit
+    main_circuit_yaml_data = circuit_objects[main_circuit_id]
+    no_qubits = get_number_qubits(main_circuit_yaml_data)
+    exporter.set_number_qubits(no_qubits)
+    no_bits = get_number_bits(main_circuit_yaml_data)
+    exporter.set_number_bits(no_bits)
+    quantum_code += process_circuit_yaml(main_circuit_yaml_data, "main", circuit_names, exporter, export_format, add_comments, False)
 
     # openqasm uses QiskitExporter
     if export_format.lower() == "openqasm":
