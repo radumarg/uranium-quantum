@@ -11,7 +11,7 @@ except:
 setup(
   name = 'uranium-quantum',
   packages = ['uranium_quantum/circuit_composer', 'uranium_quantum/circuit_exporter'],  
-  version = '0.2.5',
+  version = '0.3.0',
   license='MIT',
   description = 'Support libraries for the Uranium quantum computing platform (https://uranium.transilvania-quantum.org/).',
   long_description=long_description,
@@ -34,5 +34,7 @@ setup(
     'Programming Language :: Python :: 3',
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
   ],
 )
