@@ -18,6 +18,7 @@ from qiskit.circuit.library import SXGate, SXdgGate\n\
 from qiskit.circuit.library import SGate, SdgGate, TGate, TdgGate\n\
 from qiskit.circuit.library import UGate, U1Gate\n\
 from qiskit.circuit.library import SwapGate, iSwapGate\n\
+from qiskit.circuit.library import QFT\n\
 from uranium_quantum.circuit_exporter.qiskit_custom_gates import *\n\
 \n\n"
     def start_circuit_code(self, circuit_name):
@@ -49,7 +50,7 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
         return controlstates
 
     @staticmethod
-    def get_plain_gate(name, label, theta_radians=None, phi_radians=None, lambda_radians=None, root=None):
+    def get_plain_gate(name, targets, label, theta_radians=None, phi_radians=None, lambda_radians=None, root=None):
         params = ""
         if theta_radians != None:
           params += f"{theta_radians}"
@@ -68,6 +69,10 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
             params += f", {root}"
           else:
             params += f"{root}"
+
+        if name == "QFT":
+            params = len(targets)
+
         if params:
             if label:
                 return f"{name}({params}, label='{label}')"
@@ -80,7 +85,7 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
                 return f"{name}()"
 
     @staticmethod
-    def get_controlled_gate(name, controls, label, theta_radians=None, phi_radians=None, lambda_radians=None, root=None):
+    def get_controlled_gate(name, controls, targets, label, theta_radians=None, phi_radians=None, lambda_radians=None, root=None):
         controlstates = Exporter.get_control_states(controls)
         params = ""
         if theta_radians != None:
@@ -100,6 +105,10 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
                 params += f", {root}"
             else:
                 params += f"{root}"
+
+        if name == "QFT":
+            params = len(targets)
+
         if label:
             return f"{name}({params}).control(num_ctrl_qubits={len(controls)}, ctrl_state='{controlstates}', label='{label}')"
         else:
@@ -123,11 +132,14 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
         return f"qc_{circuit_name}.unitary(gate_undo_rotation_to_y_basis(), [{target}])\n"
 
     @staticmethod
-    def controlled_gate_code(name, circuit_name, controls, targets, label=None, theta_radians=None, phi_radians=None, root=None, lambda_radians=None):
+    def controlled_gate_code(name, circuit_name, controls, targets, label=None, theta_radians=None, phi_radians=None, root=None, lambda_radians=None, inverse=False, power=1):
         assert isinstance(circuit_name, str)
         assert isinstance(controls, list)
         assert isinstance(targets, list)
-        controlled_gate = Exporter.get_controlled_gate(name, controls, label, theta_radians, phi_radians, lambda_radians, root)
+        if inverse:
+            controlled_gate = Exporter.get_controlled_gate(name, controls, targets, label, theta_radians, phi_radians, lambda_radians, root) + ".inverse()"
+        else:
+            controlled_gate = Exporter.get_controlled_gate(name, controls, targets, label, theta_radians, phi_radians, lambda_radians, root)
 
         qubits = ""
         for control in controls:
@@ -146,7 +158,8 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
             elif '+' in control['state'] or '-' in control['state']:
                 code += Exporter.rotate_state_to_x_basis(circuit_name, control['target'])
 
-        code += f"qc_{circuit_name}.append({controlled_gate}, [{qubits}])\n"
+        for _ in range(abs(power)):
+            code += f"qc_{circuit_name}.append({controlled_gate}, [{qubits}])\n"
 
         for control in controls:
             if '+i' in control['state'] or '-i' in control['state']:
@@ -158,16 +171,22 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
 
 
     @staticmethod
-    def plain_gate_code(name, circuit_name, targets, label=None, theta_radians=None, phi_radians=None, root=None, lambda_radians=None):
+    def plain_gate_code(name, circuit_name, targets, label=None, theta_radians=None, phi_radians=None, root=None, lambda_radians=None, inverse=False, power=1):
         assert isinstance(circuit_name, str)
         assert isinstance(targets, list)
-        plain_gate = Exporter.get_plain_gate(name, label, theta_radians, phi_radians, lambda_radians, root)
+        if inverse:
+          plain_gate = Exporter.get_plain_gate(name, targets, label, theta_radians, phi_radians, lambda_radians, root) + ".inverse()"
+        else:
+          plain_gate = Exporter.get_plain_gate(name, targets, label, theta_radians, phi_radians, lambda_radians, root)
         qubits = ""
         for target in targets:
             if qubits:
                 qubits += ", "
             qubits += f"qr_{circuit_name}[{target}]"
-        return f"qc_{circuit_name}.append({plain_gate}, [{qubits}])"
+        out = ""
+        for _ in range(abs(power)):
+            out += f"qc_{circuit_name}.append({plain_gate}, [{qubits}])\n"
+        return out
 
     @staticmethod
     def _gate_u3(
@@ -776,22 +795,35 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
         circuit_name, controls, targets, circuit_id, circuit_gate_name, circuit_power, add_comments
     ):
         out = "# circuit gate\n" if add_comments else ""
+        take_inverse = circuit_power < 0
         if controls:
-            code = Exporter.controlled_gate_code(f'qc_{circuit_gate_name}.to_gate', circuit_name, controls, targets, label="circuit_gate_name")
+            code = Exporter.controlled_gate_code(f'qc_{circuit_gate_name}.to_gate', circuit_name, controls, targets, label=circuit_gate_name, inverse=take_inverse, power=abs(circuit_power))
             out += f"{code}"
         else:
-            code = Exporter.plain_gate_code(f'qc_{circuit_gate_name}.to_gate', circuit_name, targets, label="circuit_gate_name")
-            out += f"{code}\n"
+            code = Exporter.plain_gate_code(f'qc_{circuit_gate_name}.to_gate', circuit_name, targets, label=circuit_gate_name, inverse=take_inverse, power=abs(circuit_power))
+            out += f"{code}"
         return out
 
     @staticmethod
     def _gate_qft(circuit_name, controls, targets, add_comments=True):
         out = "# qft gate\n" if add_comments else ""
+        if controls:
+            code = Exporter.controlled_gate_code('QFT', circuit_name, controls, targets)
+            out += f"{code}"
+        else:
+            code = Exporter.plain_gate_code('QFT', circuit_name, targets)
+            out += f"{code}\n"
         return out
 
     @staticmethod
     def _gate_qft_dagger(circuit_name, controls, targets, add_comments=True):
-        out = "# qft gate\n" if add_comments else ""
+        out = "# qft-dagger gate\n" if add_comments else ""
+        if controls:
+            code = Exporter.controlled_gate_code('QFT', circuit_name, controls, targets, inverse=True)
+            out += f"{code}"
+        else:
+            code = Exporter.plain_gate_code('QFT', circuit_name, targets, inverse=True)
+            out += f"{code}\n"
         return out
 
     @staticmethod
