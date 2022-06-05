@@ -81,10 +81,38 @@ def process_circuit_yaml(yaml_data, circuit_name, circuit_names, exporter, expor
     code += exporter.end_circuit_code()
     return code
 
+def collect_circuit_name(stream, circuit_names):
+    try:
+        yaml_data = yaml.safe_load(stream)
+        circuit_id = yaml_data["circuit_id"]
+        circuit_names[circuit_id] = yaml_data["circuit_name"].lower().replace(" ", "_")
+    except yaml.YAMLError as ex:
+        quantum_code = str(ex)
+        return quantum_code
 
-def get_exported_code(files, main_circuit_id, export_format, comments):
+
+def collect_circuit(stream, circuit_objects, circuit_codes, circuit_names, exporter, export_format, add_comments):
+    try:
+        yaml_data = yaml.safe_load(stream)
+        circuit_id = yaml_data["circuit_id"]
+        circuit_objects[circuit_id] = yaml_data
+        no_qubits = get_number_qubits(yaml_data)
+        exporter.set_number_qubits(no_qubits)
+        # a circuit with classical bits cannot be converted to a gate
+        exporter.set_number_bits(0)
+        circuit_name = yaml_data["circuit_name"].lower().replace(" ", "_")
+        circuit_code = process_circuit_yaml(yaml_data, circuit_name, circuit_names, exporter, export_format, add_comments, True)
+        circuit_codes[circuit_id] = circuit_code
+    except yaml.YAMLError as ex:
+        quantum_code = str(ex)
+        return quantum_code
+
+def get_exported_code(main_circuit_id, export_format, comments, files=None, file_fields=None):
     """Get circuit code in exported format"""
     add_comments = True if comments else False
+
+    if (files == None and file_fields == None) or (files != None and file_fields != None):
+        raise Exception("Either a list of file or a list of file fields must be supplyed.")
 
     exporter = None
     if export_format.lower() == "qiskit":
@@ -106,34 +134,25 @@ def get_exported_code(files, main_circuit_id, export_format, comments):
     circuit_objects = {}
     circuit_names = {}
 
-    # collect circuit_names
-    for file in files:
-        with open(file, "r") as stream:
-            try:
-                yaml_data = yaml.safe_load(stream)
-                circuit_id = yaml_data["circuit_id"]
-                circuit_names[circuit_id] = yaml_data["circuit_name"].lower().replace(" ", "_")
-            except yaml.YAMLError as ex:
-                quantum_code = str(ex)
-                return quantum_code
+    if files:
+      for file in files:
+          with open(file, "r") as stream:
+              collect_circuit_name(stream, circuit_names)
 
-    # creating a custom gate for each circuit
-    for file in files:
-        with open(file, "r") as stream:
-            try:
-                yaml_data = yaml.safe_load(stream)
-                circuit_id = yaml_data["circuit_id"]
-                circuit_objects[circuit_id] = yaml_data
-                no_qubits = get_number_qubits(yaml_data)
-                exporter.set_number_qubits(no_qubits)
-                # a circuit with classical bits cannot be converted to a gate
-                exporter.set_number_bits(0)
-                circuit_name = yaml_data["circuit_name"].lower().replace(" ", "_")
-                circuit_code = process_circuit_yaml(yaml_data, circuit_name, circuit_names, exporter, export_format, add_comments, True)
-                circuit_codes[circuit_id] = circuit_code
-            except yaml.YAMLError as ex:
-                quantum_code = str(ex)
-                return quantum_code
+    if file_fields:
+        for file_field in file_fields:
+            stream = file_field.read()
+            collect_circuit_name(stream, circuit_names)
+
+    if files:
+        for file in files:
+            with open(file, "r") as stream:
+                collect_circuit(stream, circuit_objects, circuit_codes, circuit_names, exporter, export_format, add_comments)
+
+    if file_fields:
+        for file_field in file_fields:
+            stream = file_field.read()
+            collect_circuit(stream, circuit_objects, circuit_codes, circuit_names, exporter, export_format, add_comments)
 
     main_circuit_descendants = []
     get_circuit_descendants(circuit_objects, main_circuit_id, main_circuit_descendants)
@@ -212,7 +231,7 @@ def main(files, export_format, circuit_id, comments = False):
     elif export_format.lower() == "cirq":
         raise Exception("The cirq exporter is not yet implemented.")
 
-    quantum_code = get_exported_code(files, int(circuit_id), export_format, comments and comments.lower() in ['true', '1', 't', 'y', 'yes'])
+    quantum_code = get_exported_code(int(circuit_id), export_format, comments and comments.lower() in ['true', '1', 't', 'y', 'yes'], files=files)
 
     if export_format.lower() == "openqasm":
         exec(quantum_code)
