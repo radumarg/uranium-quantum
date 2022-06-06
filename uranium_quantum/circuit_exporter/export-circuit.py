@@ -29,7 +29,7 @@ def get_number_qubits(yaml):
 
 
 def get_number_bits(yaml):
-    """Extract the numebr of bits in yaml circuit."""
+    """Extract the number of bits in yaml circuit."""
     bits = 0
     if "steps" in yaml.keys():
         for step in yaml["steps"]:
@@ -117,7 +117,8 @@ def get_exported_code(files, main_circuit_id, export_format, comments):
                 quantum_code = str(ex)
                 return quantum_code
 
-    # creating a custom gate for each circuit
+    # creating a custom circuit gate for each circuit
+    # in case we the circuit is reused in a different one
     for file in files:
         with open(file, "r") as stream:
             try:
