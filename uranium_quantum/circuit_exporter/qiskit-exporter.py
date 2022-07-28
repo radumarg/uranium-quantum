@@ -50,6 +50,17 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
         return controlstates
 
     @staticmethod
+    def get_circuit_power(power):
+      sign = 1
+      if power[0] == '-':
+          sign = -1
+          power = power[1:]
+      if '^' in power:
+        return sign * (2 ** int(power[2:]))
+      else:
+        return sign * int(power)
+
+    @staticmethod
     def get_plain_gate(name, targets, label, theta_radians=None, phi_radians=None, lambda_radians=None, root=None):
         params = ""
         if theta_radians != None:
@@ -795,6 +806,7 @@ qc_{circuit_name} = QuantumCircuit(qr_{circuit_name})\n\n\n"
         circuit_name, controls, targets, circuit_id, circuit_gate_name, circuit_power, add_comments
     ):
         out = "# circuit gate\n" if add_comments else ""
+        circuit_power = Exporter.get_circuit_power(circuit_power)
         take_inverse = circuit_power < 0
         if controls:
             code = Exporter.controlled_gate_code(f'qc_{circuit_gate_name}.to_gate', circuit_name, controls, targets, label=circuit_gate_name, inverse=take_inverse, power=abs(circuit_power))
