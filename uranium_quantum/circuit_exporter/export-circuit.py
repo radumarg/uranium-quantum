@@ -158,7 +158,7 @@ def get_exported_code(files, main_circuit_id, export_format, comments):
     if export_format.lower() == "openqasm":
         exec(quantum_code)
         try:
-            quantum_code = eval('qc.qasm()')
+            quantum_code = eval('qc_main.qasm()')
         except Exception as ex:
             quantum_code = "QASM translation exception: \n"
             quantum_code += str(ex)
@@ -218,7 +218,7 @@ def main(files, export_format, circuit_id, comments = False):
     if export_format.lower() == "openqasm":
         exec(quantum_code)
         try:
-            quantum_code = eval('qc.qasm()')
+            quantum_code = eval('qc_main.qasm()')
         except Exception as ex:
             quantum_code = "QASM translation exception: \n"
             quantum_code += str(ex)
